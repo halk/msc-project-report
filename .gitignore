@@ -2,3 +2,6 @@ index.aux
 index.log
 index.synctex.gz*
 index.pdf
+index.lof
+index.toc
+index.fdb_latexmk
