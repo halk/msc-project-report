@@ -9,6 +9,7 @@ In this section an overview of the design, architecture and distinctive features
 The architecture of this project is designed to meet the requirements discussed in section \ref{problem}. First, a bird's eye view is given on where this recommender framework fits into existing systems. Then, the internal architecture of the framework is explained. Finally, distinctive features of this framework are introduced.
 
 \subsection{Serviceoriented Architecture (SOA)}
+\label{sol-design-soa}
 
 \begin{figure}[ht]
     \includegraphics[width=0.7\textwidth,center]{solution/soa/soa.pdf}
@@ -30,7 +31,7 @@ In figure \ref{fig:soa} a possible architecture of this project is shown. The fr
 \begin{description}
     \item[Master Data] enables service consumers to create, update or delete a data node in the framework. An identifier and type are mandatory fields. The service consumer is allowed to send any further features of the node which it thinks is relevant to the framework.
     \item[Event] accepts notifications about interactions or preferences between two or more nodes such as \emph{'X purchased Y and Z'}. The payload -- content of the message -- may contain a \emph{weight} which is a numeric value. It is useful for e.g. \emph{'X rated Y with 10'}.
-    \item[Recommendation Query] requests recommendations for a specific recommendation model. The recommendation model identifier is mandatory. A node identifier and type are only mandatory if the model excepts it. This is the only service which expects a result.
+    \item[Recommendation Query] requests recommendations for a specific \emph{recommendation model}. The recommendation model identifier is mandatory. A node identifier and type are only mandatory if the model excepts it. This is the only service which expects a result.
 \end{description}
 
 The recommendation framework only expects incoming requests (\emph{push strategy}) and has no outgoing communication at all.
@@ -49,56 +50,82 @@ A multi-layered architecture is a software design pattern for software programs 
 Strictly speaking, the framework is divided into two subsystems: the \emph{application programming interface (API)} and \emph{recommender ecosystem}. These subsystems are connected with a message bus. The motivation of this differentiation is of a technical rather than logical manner. The subsystems have different kind of technical requirements and this division allows me to use the most appropriate technology for each. Another side effect are the advantages of a message bus which allows me to group and prioritise messages. \emph{Recommendation queries} may be processed by a dedicated resource whereas \emph{event} messages may have higher priority -- and should be processed sooner -- than \emph{master data} messages. However this makes no difference to the responsibilities, and is therefore not further considered in the specification of layers.
 
 \subsubsection{Interface Layer}
+\label{sol-design-layer-interface}
 
 The interface layer is where services expose themselves to service consumers. Latter send requests to this layer. From a technical point of view this layer is implemented as an \emph{application programming interface (API)} via the \emph{hypertext transfer protocol (HTTP)} which is the foundation of data communication in the world wide web. The \emph{API} adopts the \emph{representational state transfer (REST)} style. An \emph{API} using \emph{REST} is called \emph{RESTful}. \citet{fielding00} -- who introduced \emph{REST} -- explains:
 
 \begin{quotation}
-    The name ``Representational State Transfer'' is intended to evoke an image of how a well-designed Web application behaves: a network of web pages (a virtual state-machine), where the user progresses through the application by selecting links (state transitions), resulting in the next page (representing the next state of the application) being transferred to the user and rendered for their use.
+    \small
+    \emph{The name ``Representational State Transfer'' is intended to evoke an image of how a well-designed Web application behaves: a network of web pages (a virtual state-machine), where the user progresses through the application by selecting links (state transitions), resulting in the next page (representing the next state of the application) being transferred to the user and rendered for their use.}
 \end{quotation}
 
-Two concepts of \emph{REST} are important to be understood: the use of \emph{uniform resource locator (URL)} and \emph{HTTP vocabulary}. The \emph{URL} provides a way to specify a resource -- in this case a service or node. The \emph{HTTP vocabulary} defines amongst others \emph{GET}, \emph{POST} and \emph{DELETE}. Combined a \emph{RESTful API} enables the access or modification of resources. E.g. to submit an event a \emph{POST} request to \emph{/events} is necessary. To delete a node with the identifier \emph{120} a \emph{DELETE} request to \emph{/nodes/120} is sufficient, whereas a \emph{GET} request to \emph{/recommendations/topseller} would return all recommendations for a recommendation model called \emph{topseller}.
+Two concepts of \emph{REST} are important to understand: the use of \emph{uniform resource locator (URL)} and \emph{HTTP vocabulary}. The \emph{URL} provides a way to specify a resource -- in this case a service or node. The \emph{HTTP vocabulary} defines amongst others \emph{GET}, \emph{POST} and \emph{DELETE}. Combined a \emph{RESTful API} enables the access or modification of resources. E.g. to submit an event a \emph{POST} request to \emph{/events} is necessary. To delete a node with the identifier \emph{120} a \emph{DELETE} request to \emph{/nodes/120} is sufficient, whereas a \emph{GET} request to \emph{/recommendations/topseller} would return all recommendations for a recommendation model called \emph{topseller}.
 
 This layer acts as \emph{service broker} and security agent at the same time. Latter is ensured by verifying the presence and correctness of an access key which is a random text. As a \emph{service broker} this layer validates the payload against mandatory fields and data types. Then, it offloads the message and submits it into the message bus for further processing. If the message is of the type \emph{notification} it acknowledges the request. If the message type is a \emph{query}, then it waits for a response from the message bus and returns that.
 
 \subsubsection{Configuration Layer}
+\label{sol-design-layer-config}
+
+This layer is the heart of the multi-purpose recommender framework and targets to satisfy the multi-purpose and interoperability requirement (as defined in \ref{problem-multipurpose}). The motivation behind this layer is to empower operators -- who use this solution -- to set up a recommender system by configuration only. The configuration layer consists of two fundamental ideas: the \emph{recommendation model} and \emph{event} subsystems.
+
+A \emph{recommendation model} is an instruction to the recommender to compute and how to compute recommendations. In the model configuration the recommender to be used is specified. An identifier allows service consumers to access recommendations for that particular model.
+
+As mentioned in section \ref{sol-design-soa}, an event is an interaction or preference between two or more nodes such as \emph{'X purchased Y and Z'}. The event subsystem provides a mechanism to allow recommendation models to listen to events. When an event message is received, the subsystem will update listeners about it. This way recommendation models receive new data. One event can be interesting for more than one recommendation model. In a traditional architecture the primary application would need to update every single recommender system. However the event subsystem makes redundant API calls obsolete as only one message is sufficient, to update many recommendation models. Figure \ref{fig:recomodel-config} shows an example configuration.
+
+\begin{figure}[ht]
+    \tiny
+    \lstset{language=XML}
+    \begin{lstlisting}
+    <config>
+        <rule name="products_of_category" recommender="simple_relation">
+            <on event="product_created" do="add" />
+            <on event="product_updated" do="update" />
+            <on event="product_removed" do="remove" />
+            <filters>
+                <filter>product.is_active = 1</filter>
+            </filters>
+        </rule>
+        <rule name="items_bought_together" recommender="item_amazon">
+            <on event="order_created" do="process" />
+        </rule>
+    </config>
+    \end{lstlisting}
+    \caption{Recommendation Model Configuration}
+    \label{fig:recomodel-config}
+\end{figure}
+
 \subsubsection{Recommendation Layer}
+\label{sol-design-layer-reco}
+
+In the \emph{recommendation layer} the actual recommender algorithms will remain. These algorithms are called explicitly based on the recommender specified by the configuration layer. The recommender algorithms are going to be unaware of the nature of the data. In the contrary it will work based on the parameters fed by the configuration layer. Then, the algorithm will build its algorithm-specific query and use the persistance layer to fetch data and eventually return recommendations.
+
+A distinctive feature of this framework will be the recommender plug-in subsystem. All recommenders will be designed as extensions. This subsystem will support extending the framework with new recommenders. This is actually a big potential to become a mechanism to define hybrid recommenders based on other recommenders in the framework and define a combination criterion (as discussed in section \ref{bg-tech-hybrid}). However most probably time would not permit to work on the latter.
+
 \subsubsection{Persistance Layer}
 
-\subsection{Distinctive Features}
-\label{sol-design-features}
+This layer provides database abstraction components which will then allow any recommender system to access any of the supported storage systems.
 
-\subsubsection{Master Data}
-\subsubsection{Event System}
 
-\subsubsection{Recommender Plugin System}
-\label{sol-feature-plugin}
 
-\subsubsection{Recommendation Models}
+\section{Technological Choices}
 
-%planning:
-%- 500 words
-%- figure
-%- api layer
-%- configuration layer
-%- engine layer
-%- event based
-%- plugin system
+In this section I will discuss my choices in technology I want to use in this project.
 
-\section{Implementation}
+\subsection{Application Programming Interface (API)}
 
-\subsection{Programming Languages \& Frameworks}
+As discussed in \ref{sol-design-layer-config} I will use a \emph{RESTful} for the \emph{API}. As \emph{REST} makes use of the \emph{HTTP} vocabulary, communication  The message format will be \emph{JavaScript Object Notation (JSON)} - a baggage-free alternative to \emph{extensible markup language (XML)}.
 
-\subsubsection{JavaScript}
-\subsubsection{Go}
-\subsubsection{PHP}
 
-\subsection{Databases}
 
-\subsubsection{Neo4j}
-\subsubsection{Redis}
-\subsubsection{MySQL}
+\subsection{Message Bus}
 
-\subsection{Other Vendors}
+\subsection{Recommender Ecosystem}
 
-\subsubsection{RabbitMQ}
-\subsubsection{Git \& BitBucket}
+\subsubsection{Storage Software}
+
+
+\subsection{Others}
+
+git bitbucket
+newrelic
+vagrant virtualbox

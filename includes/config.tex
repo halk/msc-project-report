@@ -7,6 +7,7 @@
 \usepackage{mathtools}
 \usepackage{listings}
 \usepackage{float}
+\usepackage[svgnames]{xcolor}
 \usepackage[export]{adjustbox}
 \usepackage[top=1in, bottom=1in, left=1.5in, right=1in]{geometry}
 \usepackage[font=small]{caption}
@@ -19,3 +20,19 @@
 
 % images
 \graphicspath{{media/}}
+
+% XML listing
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  moredelim=[s][\bfseries\color{Maroon}]{<}{\ },
+  moredelim=[s][\bfseries\color{Maroon}]{</}{>},
+  moredelim=[l][\bfseries\color{Maroon}]{/>},
+  moredelim=[l][\bfseries\color{Maroon}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  commentstyle=\color{DarkOliveGreen},
+  stringstyle=\color{blue},
+  identifierstyle=\color{red}
+}
