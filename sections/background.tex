@@ -1,6 +1,6 @@
 \chapter{Background Research: Recommender Systems}
 
-This chapter introduces the fundamental concepts and techniques of recommender systems. Then, it discusses the adoption of recommender systems in research and enterprises. Finally, it gives two examples of algorithms commonly used in recommender systems.
+This section introduces the fundamental concepts and techniques of recommender systems. Then, it discusses the adoption of recommender systems in research and enterprises. Finally, it gives two examples of algorithms commonly used in recommender systems.
 
 \section{Concepts}
 
@@ -22,12 +22,12 @@ In the course of development different techniques to building recommendations em
 \label{bg-tech-collaborative}
 
 \begin{figure}[ht]
-    \includegraphics[width=\textwidth,center]{background/techniques/collaborative.pdf}
+    \includegraphics[width=0.7\textwidth,center]{background/techniques/collaborative.pdf}
     \caption{Collaborative Filtering}
     \label{fig:collaborative}
 \end{figure}
 
-Basically this technique recommends items other users with similar preferences interacted with e.g. liked or purchased. In order to do this the recommender system needs to observe users' behaviours and interactions. Based on these learnings, it will then look up other users with similar behaviour patterns and build recommendations from their preferences -- preferrably items which the original user has not experienced yet (see figure \ref{fig:collaborative}).
+Basically this technique recommends items other users with similar preferences interacted with e.g. liked or purchased. In order to do this the recommender system needs to observe users' behaviours and interactions. Based on these learnings, it will then look up other users with similar behaviour patterns and build recommendations from their preferences -- preferably items which the active user has not experienced yet (see figure \ref{fig:collaborative}).
 
 The major advantage of the collaborative filtering approach is that the recommender system does not require any knowledge about the items.
 
@@ -37,7 +37,7 @@ Figure \ref{fig:collaborative} illustrates a scenario where the active customer 
 \label{bg-tech-itembased}
 
 \begin{figure}[ht]
-    \includegraphics[width=\textwidth,center]{background/techniques/itembased.pdf}
+    \includegraphics[width=0.7\textwidth,center]{background/techniques/itembased.pdf}
     \caption{Item-to-Item Collaborative Filtering}
     \label{fig:itembased}
 \end{figure}
@@ -48,11 +48,11 @@ Given that the item range can be very wide, item-to-item filtering methods requi
 
 Figure \ref{fig:itembased} demonstrates a customer who has purchased an item in the past. The recommender system looks up items which were purchased together with that item and recommends them to the customer.
 
-\subsection{Content-Based Filtering}
+\subsection{Contentbased Filtering}
 
 \begin{figure}[ht]
-    \includegraphics[width=\textwidth,center]{background/techniques/contentbased.pdf}
-    \caption{Content-Based Filtering}
+    \includegraphics[width=0.7\textwidth,center]{background/techniques/contentbased.pdf}
+    \caption{Contentbased Filtering}
     \label{fig:contentbased}
 \end{figure}
 
@@ -61,7 +61,7 @@ Content-based recommendation methods make use of item features to find similar i
 \subsection{Demographic Filtering}
 
 \begin{figure}[ht]
-    \includegraphics[width=\textwidth,center]{background/techniques/demographic.pdf}
+    \includegraphics[width=0.7\textwidth,center]{background/techniques/demographic.pdf}
     \caption{Demographic Filtering}
     \label{fig:demographic}
 \end{figure}
@@ -70,11 +70,11 @@ The demographic filtering is similar to the content-based method with the signif
 
 Figure \ref{fig:demographic} shows how a demographic filtering recommender system would recommend an item to customer A based on a customer base of three customers with previous purchase history. The recommender analyses the customer profile features and eventually decides relying on the age feature that customer C is similar to customer A. Hence the system recommends a product customer C purchased in the past.
 
-\subsection{Knowledge-Based Filtering}
+\subsection{Knowledgebased Filtering}
 
 \begin{figure}[ht]
-    \includegraphics[width=\textwidth,center]{background/techniques/knowledgebased.pdf}
-    \caption{Knowledge-Based Filtering}
+    \includegraphics[width=0.7\textwidth,center]{background/techniques/knowledgebased.pdf}
+    \caption{Knowledgebased Filtering}
     \label{fig:knowledgebased}
 \end{figure}
 
@@ -83,8 +83,9 @@ Recommendations of knowledge-based systems rely on specific domain knowledge to 
 An example of a knowledge-based recommender is figure \ref{fig:knowledgebased} which recommends a monitor as a peripheral to a customer who views a laptop. This is based on explicit knowledge that amongst others external screens are a demand for laptop users.
 
 \subsection{Hybrids}
+\label{bg-tech-hybrid}
 
-Hybrid recommender systems make us of two or more individual recommender systems -- hereinafter referred to as components -- to combine beforementioned techniques. One possible motivation of using hybrid systems may be to overcome weaknesses of one approach by combining it with another. However it is also possible to combine systems implementing the same technique but e.g. using different knowledge sources. There are many possible ways of combining techniques of which \citet{burke07} identified seven:
+Hybrid recommender systems make us of two or more individual recommender systems -- hereinafter referred to as components -- to combine aforementioned techniques. One possible motivation of using hybrid systems may be to overcome weaknesses of one approach by combining it with another. However it is also possible to combine systems implementing the same technique but e.g. using different knowledge sources. There are many possible ways of combining techniques of which \citet{burke07} identified seven:
 
 \begin{description}
     \item[Weighted] The scores of recommender components are combined using a linear formula. A score is a numerical rank attached to items.
@@ -94,7 +95,7 @@ Hybrid recommender systems make us of two or more individual recommender systems
     \item[Feature Augmentation] Similar to \textit{feature combination} this approach's contributing component adds new features rather than modify them (see figure \ref{fig:featureaugmenting}).
 
     \begin{figure}[ht]
-        \includegraphics[width=\textwidth,center]{background/techniques/featureaugmenting.pdf}
+        \includegraphics[width=0.7\textwidth,center]{background/techniques/featureaugmenting.pdf}
         \caption{Feature Augmenting Hybrid Recommender System}
         \label{fig:featureaugmenting}
     \end{figure}
@@ -104,33 +105,17 @@ Hybrid recommender systems make us of two or more individual recommender systems
 \end{description}
 
 \section{Adoption}
+\label{bg-adoption}
 
 \citet{ricci11} note that research on recommender systems is relatively new compared to other classical information retrieval methods like databases and search engines. However it is gaining attention due to various reasons. First of all e-commerce companies including Amazon, YouTube and Netflix invest a lot in recommender systems. As trendsetters and pioneers for other institutions they build a demand for further research and development. Dedicated conferences and academic courses as well as its adaption in several academic journals are indicators of recognition of this research area.
 
-E-commerce companies running recommender systems hope among others to increase number of items sold, sell more diverse items, increase customer satisfaction and recommend sequences plus bundles \cite{herlocker04}. I will illustrate the usage with two examples.
-
-\subsection{Netflix}
-
-\begin{figure}[ht]
-    \includegraphics[width=\textwidth,center]{background/adoption/netflix.png}
-    \caption{Netflix Recommendations}
-    \label{fig:netflix}
-\end{figure}
-
-Netflix offers their on-demand video streaming with a simplified user interface across all platforms including smartphones and tablets. There is only limited functionality to navigate through their items. It rather focuses on ranked lists around a topic or genre. Once subscribers start using their service, the recommender system of Netflix on one hand builds new, personalised lists in relation to that item. On the other hand it updates existing lists with that learning.
-
-Their recommender system is such a fundamental part of their business model that they launched a competition called Netflix Prize and asked expert teams to propose a more accurate algorithm. They eventually awarded a million dollar to the best scoring team \cite{netflix09}.
-
-\subsection{Amazon}
-\label{bg-adopt-amazon}
+E-commerce companies running recommender systems hope among others to increase number of items sold, sell more diverse items, increase customer satisfaction and recommend sequences plus bundles \cite{herlocker04}.
 
 \begin{figure}[ht]
     \includegraphics[width=\textwidth,center]{background/techniques/amazon.png}
     \caption{Item-to-Item Recommendations by Amazon}
     \label{fig:itembased-amazon}
 \end{figure}
-
-The online retailer Amazon relies on recommender systems throughout their e-commerce platform. They are not limited to the website but are in fact also used in their email campaigns. As covered in detail in in section \ref{bg-tech-itembased} Amazon popularised \textit{item-based collaborative filtering} which surprisingly focuses on items rather than users. The user's collaboration is taken into account to put items into relation.
 
 
 
