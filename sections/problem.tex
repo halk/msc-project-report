@@ -9,9 +9,9 @@ Finally, existing research as well as solutions are examined in their coping wit
 
 
 
-\section{Framework Requirements}
+\section{Project Requirements}
 
-\subsection{Multipurpose \& Interoperability}
+\subsection{Multi-Purpose \& Interoperability}
 \label{problem-multipurpose}
 
 A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques. Ideally this system is open and extendable for possible forthcoming, yet unknown requirements. It is not to be confused with hybrid recommender systems (see section \ref{bg-tech-hybrid}) which combine different systems into one. In this project I will provide an ecosystem to plug different recommender systems in (see section \ref{sol-design-layer-reco}).
@@ -21,13 +21,13 @@ Another requirement is the interoperability between recommender systems. \citet{
 \begin{description}
     \item[Interoperability of the recommendation queries] which allows the same query to be reused. This is in particular useful for hybrid recommender systems which feeds the same query into different systems. \citet{adomavicius05} go further and creates a \emph{Recommendation Query Language (RQL)}. The use of an RQL would go beyond the scope of this project. Therefore I will limit this criterion to query parameters rather than the full query and rely on the recommender system to build the query based on these parameters. To give an example, the query parameters for figure \ref{fig:contentbased} would be the customer reference and the rated item (in this case the laptop). A content-based recommender system would compute these parameters by looking up similar items whereas a collaborative filtering system would look for other users who rated this item.
     \item[Interoperability of the user and the domain models] which allows the exchange of models and other data among different recommender systems. In this project I will go a step further and allow direct access to persistence layers to all recommender systems.
-    \item[Interoperability of the recommendation results] which empowers recommender systems to reuse the results. This is in particular useful for hybrid recommender systems which feeds the same query into different systems. Yet there is no use casein this project and therefore not covered.
+    \item[Interoperability of the recommendation results] which empowers recommender systems to reuse the results. This is in particular useful for hybrid recommender systems which feeds the same query into different systems. Yet there is no use case in this project and therefore not covered.
 \end{description}
 
 \subsection{Abstraction}
 \label{problem-abstraction}
 
-Recommender systems are usually tightly coupled to the primary application, which is the main application using the recommender system. \citet{cortizo10} claim that recommender systems are designed for a specific data structure. This comes with the following challenges:
+This requirement suggests to separate a software or architecture into components or concerns. In this section the process of abstraction is illustrated based on a tightly-coupled, example architecture. With every discussed problem the architecture will become one step closer to loose coupling. 
 
 \begin{description}
 
@@ -35,7 +35,7 @@ Recommender systems are usually tightly coupled to the primary application, whic
 
     \begin{figure}[H]
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/complexity.pdf}
-        \caption{Abstraction: Complexity}
+        \caption[Abstraction: Complexity]{Abstraction: Complexity -- when the recommender system is replaced or changed, all red components are affected.}
         \label{fig:abstraction-complexity}
     \end{figure}
 
@@ -59,7 +59,7 @@ Recommender systems are usually tightly coupled to the primary application, whic
 
     \begin{figure}[H]
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/dependancy.pdf}
-        \caption{Abstraction: Dependancy Issues}
+        \caption[Abstraction: Dependancy Issues]{Abstraction: Dependancy Issues -- when the recommender system is replaced all dependancies (red arrows and elements) might require changes as well.}
         \label{fig:abstraction-dependancy}
     \end{figure}
 
@@ -67,11 +67,11 @@ Recommender systems are usually tightly coupled to the primary application, whic
 
     \begin{figure}[H]
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/encapsulation.pdf}
-        \caption{Abstraction: Encapsulation}
+        \caption[Abstraction: Encapsulation]{Abstraction: Encapsulation -- when the recommender system is replaced no other component is affected.}
         \label{fig:abstraction-encapsulation}
     \end{figure}
 \end{description}
 
 \subsection{Ease of Integration}
 
-The complexity and cost of integrating recommender systems is a major constraint for many projects. Given the requirements above it is even more challenging to keep the integration as easy as possible. Nonetheless abstraction should help reduce the amount of knowledge needed. Furthermore the fewer types of communication and configuration required the less effort will be necessary.
+The complexity and cost of integration of recommender systems is a major constraint for many projects. Given the requirements above it is even more challenging to keep the integration as easy as possible. Nonetheless abstraction should help reduce the amount of knowledge needed. Furthermore the fewer types of communication and configuration required the less effort will be necessary.

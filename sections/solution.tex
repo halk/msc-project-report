@@ -8,7 +8,7 @@ In this section an overview of the design, architecture and distinctive features
 
 The architecture of this project is designed to meet the requirements discussed in section \ref{problem}. First, a bird's eye view is given on where this recommender framework fits into existing systems. Then, the internal architecture of the framework is explained. Finally, distinctive features of this framework are introduced.
 
-\subsection{Serviceoriented Architecture (SOA)}
+\subsection{Service-Oriented Architecture (SOA)}
 \label{sol-design-soa}
 
 \begin{figure}[ht]
@@ -36,12 +36,12 @@ In figure \ref{fig:soa} a possible architecture of this project is shown. The fr
 
 The recommendation framework only expects incoming requests (\emph{push strategy}) and has no outgoing communication at all.
 
-\subsection{Multilayered Architecture}
+\subsection{Multi-Layered Architecture}
 \label{sol-design-layer}
 
 \begin{figure}[ht]
     \includegraphics[width=\textwidth,center]{solution/layers/layers.pdf}
-    \caption{Multilayered Architecture}
+    \caption{Multi-Layered Architecture}
     \label{fig:layers}
 \end{figure}
 
@@ -172,49 +172,56 @@ The storefront will be based on the open source e-commerce web application \emph
 
 
 
-\chapter{Project Plan}
+\section{Project Plan}
 
 This section provides a work schedule to complete this project as well as a fallback plan in case of unexpected or time-related circumstances.
 
-\section{Schedule}
+\subsection{Schedule}
 
-This project will be split into two broad phases: \emph{implementation} and \emph{evaluation}. The implementation phase is from 1st May to 31st July 2014, then the evaluation phase is until 15th September 2014. As the project has significant implementation work to be done, this strict division makes sure that enough time is left for the evaluation phase.
+This project will be split into two broad phases: \emph{implementation} and \emph{evaluation}. The implementation phase is from 5th May to 31st July 2014, then the evaluation phase is until 15th September 2014. As the project has significant implementation work to be done, this strict division makes sure that enough time is left for the evaluation phase.
 
-The schedule is devided into bi-weekly sprints with the aim that at the end of each sprint, a completed part of work is delivered. For the given time frame, there are nine sprints. Figure \ref{fig:schedule} shows the expected deliverables in these sprints.
+The schedule in figure \ref{fig:schedule} is divided into bi-weekly time frames in which one or more tasks are to be delivered. 
 
+\renewcommand{\arraystretch}{1.5}
 \begin{figure}[ht]
-    \footnotesize
+    \small
     \begin{tabularx}{\textwidth}{
         !{\vrule width 1pt} c !{\vrule width 1pt} c !{\vrule width 1pt} X !{\vrule width 1pt}
     }
         \noalign{\hrule height 1pt}
-        & \textbf{Sprint} & \textbf{Deliverables}\\
+
+        & \textbf{Time Frame} & \textbf{Tasks}\\
 
         \noalign{\hrule height 1pt}
-        \multirow{6}{*}{\begin{sideways}\textbf{Implementation}\end{sideways}} & 1 & 
+
+        & 5th - 18th May & 
         Set up virtual machine as well as Magento.\newline
         Implement interface layer.\newline
         Implement publishing to message bus.
         \\\cline{2-3}
 
-        & 2 & Implement master data service. \\\cline{2-3}
+        \multirow{5}{*}{\begin{sideways}\textbf{Implementation}\end{sideways}} & 19th May - 1st June & Implement master data service.\\\hhline{|~|-|-|}
 
-        & 3 & Implement event service. \\\cline{2-3}
+        & \cellcolor{codebg}2nd - 15th June & \cellcolor{codebg}Exam Break\\\cline{2-3}
 
-        & 4 & Implement plug-in system for recommender techniques. \\\cline{2-3}
+        & 16th - 29th June & Implement event service.\\\cline{2-3}
 
-        & 5 & Implement recommendation model service. \\\cline{2-3}
+        & 30th June - 13th July & Implement plug-in system for recommender techniques.\\\cline{2-3}
 
-        & 6 & Implement several rocemmender techniques \\
+        & 14th - 27th July & Implement recommendation model service.\\\cline{2-3}
+
+        & 28th July - 10th August & Implement several recommender techniques.\\
 
         \noalign{\hrule height 1pt}
-        \multirow{3}{*}{\begin{sideways}\textbf{Evaluation}\end{sideways}} & 7 & 
-        Evaluation of architecture and recommendation quality.\newline
-        Structure report. \\\cline{2-3}
-        
-        & 8 & Write implementation related chapters of report. \\\cline{2-3}
 
-        & 9 & Write critical evaluation related chapters of report.\newline
+        \multirow{6}{*}{\begin{sideways}\textbf{Evaluation}\end{sideways}} & 11th - 24th August & 
+        Evaluation of architecture and recommendation quality.\newline
+        Structure report.
+        \\\cline{2-3}
+        
+        & 25th August - 7th September & Write chapters of the report related to implementation and architecture.\\\cline{2-3}
+
+        & 8th - 15th September & Write remaining chapters of report and finalize.\newline
         Write documentation.\\
 
         \noalign{\hrule height 1pt}
@@ -223,7 +230,7 @@ The schedule is devided into bi-weekly sprints with the aim that at the end of e
     \label{fig:schedule}
 \end{figure}
 
-\section{Fallback Plan}
+\subsection{Fallback Plan}
 
 In this section alternative paths are defined in case of delays due to underestimated work or other external circumstances.
 
