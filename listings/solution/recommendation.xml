@@ -1,0 +1,13 @@
+<config>
+    <rule name="products_of_category" recommender="simple_relation">
+        <on event="product_created" do="add" />
+        <on event="product_updated" do="update" />
+        <on event="product_removed" do="remove" />
+        <filters>
+            <filter>product.is_active = 1</filter>
+        </filters>
+    </rule>
+    <rule name="items_bought_together" recommender="item_amazon">
+        <on event="order_created" do="process" />
+    </rule>
+</config>

@@ -149,10 +149,9 @@ The \textit{Pearson correlation coefficient} provides a measure to calculate the
 
 The \textit{Tanimoto coefficient} tells us the similarity of two sets \cite{segaran07}. It can be used to measure how similar two items or users are based on their features which is useful for \textit{content-based} and \textit{demographic filtering} methods. Below is an example of two items which we want to compare:
 
-\lstset{language=Python}
-\begin{lstlisting}
+\begin{python}
     A = [mobile, apple, iphone, black, 32G]
     B = [mobile, apple, ipad, black]
-\end{lstlisting}
+\end{python}
 
 Given the equation in figure \ref{fig:tanimoto} we come to the conclusion: \[T = \frac{N_{ab}}{(N_a + N_b - N_{ab})} = \frac{3}{5 + 4 - 3} = 0.5\]

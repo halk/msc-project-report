@@ -1,0 +1,14 @@
+{
+    "nodes": [
+        - {
+            "id": 10,
+            "type": "product",
+            "title": "Laptop"
+        },
+        - {
+            "id": 20,
+            "type": "user",
+            "name": "halil"
+        }
+    ]
+}
