@@ -1,6 +1,6 @@
 \chapter{Background Research: Recommender Systems}
 
-This section introduces the fundamental concepts and techniques of recommender systems. Then, it discusses the adoption of recommender systems in research and enterprises. Finally, it gives two examples of algorithms commonly used in recommender systems.
+This section introduces the fundamental concepts and techniques of recommender systems. Then, it gives two examples of algorithms commonly used in recommender systems. Finally, it discusses the adoption of recommender systems in research and enterprises as well as evaluates some existing solutions.
 
 \section{Concepts}
 
@@ -104,19 +104,6 @@ Hybrid recommender systems make us of two or more individual recommender systems
     \item[Meta-Level] Similar to \textit{feature combination} as well as \textit{feature agumentation}, yet the contributing component completely replaces -- instead of appends or modifies -- the initial source.
 \end{description}
 
-\section{Adoption}
-\label{bg-adoption}
-
-\citet{ricci11} note that research on recommender systems is relatively new compared to other classical information retrieval methods like databases and search engines. However it is gaining attention due to various reasons. First of all e-commerce companies including Amazon, YouTube and Netflix invest a lot in recommender systems. As trendsetters and pioneers for other institutions they build a demand for further research and development. Dedicated conferences and academic courses as well as its adaption in several academic journals are indicators of recognition of this research area.
-
-E-commerce companies running recommender systems hope among others to increase number of items sold, sell more diverse items, increase customer satisfaction and recommend sequences plus bundles \cite{herlocker04}.
-
-\begin{figure}[ht]
-    \includegraphics[width=\textwidth,center]{background/techniques/amazon.png}
-    \caption{Item-to-Item Recommendations by Amazon}
-    \label{fig:itembased-amazon}
-\end{figure}
-
 
 
 \section{Algorithms}
@@ -158,15 +145,30 @@ Given the equation in figure \ref{fig:tanimoto} we come to the conclusion: \[T =
 
 
 
+\section{Adoption}
+\label{bg-adoption}
+
+\citet{ricci11} note that research on recommender systems is relatively new compared to other classical information retrieval methods like databases and search engines. However it is gaining attention due to various reasons. First of all e-commerce companies including Amazon, YouTube and Netflix invest a lot in recommender systems. As trendsetters and pioneers for other institutions they build a demand for further research and development. Dedicated conferences and academic courses as well as its adaption in several academic journals are indicators of recognition of this research area.
+
+E-commerce companies running recommender systems hope among others to increase number of items sold, sell more diverse items, increase customer satisfaction and recommend sequences plus bundles \cite{herlocker04}.
+
+\begin{figure}[ht]
+    \includegraphics[width=\textwidth,center]{background/techniques/amazon.png}
+    \caption{Item-to-Item Recommendations by Amazon}
+    \label{fig:itembased-amazon}
+\end{figure}
+
+
+
 \section{Evaluation of Existing Research and Solutions}
 \label{prob-evaluation}
 
-As mentioned in \ref{bg-adoption}, recommender systems are considered a relatively new research area in computer science. Although it has gained attention recently, a considerable amount of research has been published on the fundamental concepts and techniques rather than on matters of integration and architecture. Nonetheless I found that \citet{cortizo10} and \citet{rack07} worked on similar approaches.
+As mentioned in the previous section, recommender systems are considered a relatively new research area in computer science. Although it has gained attention recently, a considerable amount of research has been published on the fundamental concepts and techniques rather than on matters of integration and architecture. Nonetheless I found that \citet{cortizo10} and \citet{rack07} worked on architectural considerations:
 
-\citet{cortizo10} built a \textit{general purpose multi-algorithm} recommender system to compute recommendations from different sources and serving multiple applications. They mention that they could not find any literature on the system's aspects of recommender systems. \citet{cortizo10} identified similar challenges and made similar decisions on the implementation especially using RESTful APIs (see section \ref{sol-design-layer}). The advantage of their work was that they evaluated and tested their system on a live environment. Scalability and performance were key metrics from the beginning. Their recommender system is not open source and therefore not available for me.
+\citet{cortizo10} built a \textit{general purpose multi-algorithm} recommender system to compute recommendations from different sources and serving multiple applications. They mention that they could not find any literature on the system's aspects of recommender systems. The advantage of their work was that they evaluated and tested their system on a live environment. Therefore scalability and performance were key metrics from the beginning. Their recommender system is not open source thus unavilable for me.
 
-\citet{rack07} have published a series of papers around their work on the \emph{AMAYA} recommender system. Although they have put an emphasis on multi-purposeness, their work is more oriented towards a context-aware recommender system which differentiates between contexts such as \emph{'being home'} and \emph{'being at work'}. Furthermore their recommender requires a user profile as a centre point. In summary, their architecture is not as flexible and unbiased as the design I propose. The last submitted paper about \emph{AMAYA} was in 2007 and the system is again not publicly available.
+\citet{rack07} have published a series of papers around their work on the \emph{AMAYA} recommender system. Although they have put an emphasis on multi-purposeness, their work is more oriented towards a context-aware recommender system which differentiates between contexts such as \emph{'being home'} and \emph{'being at work'}. Furthermore their recommender requires a user profile as a centre point. In that point their architecture is biased. The last paper about \emph{AMAYA} was published in 2007 and the system is not publicly available.
 
-There are several commercial recommender software available such as \emph{prudsys Realtime Decisioning Engine (RDE)} which I have integrated into a major e-commerce website in the past. In a brief analysis of commercial software I found that they usually cover only basic but common requirements for e-commerce websites. These products are closed source and therefore not beneficial for my project. 
+There are several commercial recommender software available such as \emph{prudsys Realtime Decisioning Engine (RDE)} which I have integrated into a major e-commerce website in the past. In a brief analysis of commercial software I found that they usually cover only basic but common requirements for e-commerce websites. These products are closed source as well. 
 
-\citet{hahsler11} and \citet{rack07} provide a list of open source recommender systems which are freely available. In the majority these systems are more component libraries than complete solutions. They require significant amount of work to integrate. Amongst them is \emph{Apache Mahout} -- a machine learning library which also includes collaborative filtering components. \emph{Mahout} is built upon \emph{Hadoop} which is a well-established big data software also curated by \emph{The Apache Software Foundation}. \emph{easyrec} on the other hand is a complete solution which is also using RESTful APIs. However -- similar to commercial products -- it is opiniated in favor of e-commerce websites.
+\citet{hahsler11} and \citet{rack07} provide a list of open source recommender systems which are freely available. In the majority these systems are more component libraries than complete solutions. They require significant amount of work to integrate. Amongst them is \emph{Apache Mahout} -- a machine learning library which also includes collaborative filtering components. \emph{easyrec} on the other hand is a complete solution. However -- similar to commercial products -- it is opiniated towards e-commerce websites.
