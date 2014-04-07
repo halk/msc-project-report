@@ -14,7 +14,7 @@ Finally, existing research as well as solutions are examined in their coping wit
 \subsection{Multipurpose \& Interoperability}
 \label{problem-multipurpose}
 
-A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques in parallel. Ideally this system is open and extendable for possible forthcoming, yet unknown requirements. It is not to be confused with hybrid recommender systems (see section \ref{bg-tech-hybrid}) which combine different systems into one. In this project I will provide an ecosystem to plug different recommender systems in (see section \ref{sol-design-layer-reco}).
+A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques. Ideally this system is open and extendable for possible forthcoming, yet unknown requirements. It is not to be confused with hybrid recommender systems (see section \ref{bg-tech-hybrid}) which combine different systems into one. In this project I will provide an ecosystem to plug different recommender systems in (see section \ref{sol-design-layer-reco}).
 
 Another requirement is the interoperability between recommender systems. \citet{manouselis07} differentiate between three criteria:
 
@@ -69,14 +69,6 @@ Recommender systems are usually tightly coupled to the primary application, whic
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/encapsulation.pdf}
         \caption{Abstraction: Encapsulation}
         \label{fig:abstraction-encapsulation}
-    \end{figure}
-
-    \item[Scalability] Different components have different problems regarding scalability. In terms of scalability two key scaling approaches exist. \emph{Horizontal scaling} suggests adding more nodes such as servers to the system, whereas \emph{vertical scaling} adds more resources such as memory to an existing system. Tightly coupled systems are difficult to scale. E.g. if the primary application has high \emph{random-access memory (RAM)} usage and the recommender system requires higher \emph{central processing units (CPU)}, it is not directly possible to scale horizontally by adding nodes with sufficient CPU. They also need to have enough RAM which is usually more expensive. On another note, the whole system may not support horizontal scaling at all due to design problems in the complexity. 
-
-    \begin{figure}[H]
-        \includegraphics[width=0.7\textwidth,center]{problem/abstraction/scalability.pdf}
-        \caption{Abstraction: Scalability}
-        \label{fig:abstraction-scalability}
     \end{figure}
 \end{description}
 
