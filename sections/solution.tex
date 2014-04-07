@@ -72,11 +72,11 @@ A \emph{recommendation model} is an instruction to the recommender to compute an
 
 As mentioned in section \ref{sol-design-soa}, an event is an interaction or preference between two or more nodes such as \emph{'X purchased Y and Z'}. The event subsystem provides a mechanism to allow recommendation models to listen to events. When an event message is received, the subsystem will update listeners about it. This way recommendation models receive new data. One event can be interesting for more than one recommendation model. In a traditional architecture the primary application would need to update every single recommender system. However the event subsystem makes redundant API calls obsolete as only one message is sufficient, to update many recommendation models. Figure \ref{lst:recomodel-config} shows an example configuration.
 
-\begin{listing}[ht]
+\begin{figure}[ht]
     \xmlfile{listings/solution/recommendation.xml}
     \caption{Recommendation Model Configuration}
     \label{lst:recomodel-config}
-\end{listing}
+\end{figure}
 
 \subsubsection{Recommendation Layer}
 \label{sol-design-layer-reco}
@@ -99,21 +99,21 @@ In this section I will discuss my choices in technology I want to use in this pr
 
 The \emph{API} is the interface layer in this project and has almost none business logic. In that sense it is important to use a lightweight, thin solution. As discussed in \ref{sol-design-layer-config} I will use a \emph{RESTful} approach for the \emph{API}.
 
-The \emph{API} will be built on the \emph{node.js} platform which makes use of \emph{Google Chrome}'s fast \emph{JavaScript} runtime and requires only a few lines of code to create a server. The \emph{API} will further use \emph{express} -- a web application framework for \emph{node.js}. \emph{express} is ideal for \emph{RESTful APIs} as it uses the \emph{HTTP} vocabulary as well. Figure \ref{lst:expressjs} illustrates a sample implementation of `\emph{GET} request to \emph{/recommendations/topseller}' mentioned in \ref{sol-design-layer-interface}. As visible in the figure the footprint of the implementation is very thin. As the \emph{API} has a specific format in \emph{express}, it is able to automatically generate \emph{API} documentation. Asynchronous processing capabilities will be accomplished with the \emph{node.js} module \emph{async.js}.
+The \emph{API} will be built on the \emph{node.js} platform which makes use of \emph{Google Chrome}'s fast \emph{V8 JavaScript engine} and requires only a few lines of code to create a server. The \emph{API} will further use \emph{express} -- a web application framework for \emph{node.js}. \emph{express} is ideal for \emph{RESTful APIs} as it uses the \emph{HTTP} vocabulary as well. Figure \ref{lst:expressjs} illustrates a sample implementation of `\emph{GET} request to \emph{/recommendations/topseller}' mentioned in \ref{sol-design-layer-interface}. As visible in the figure the footprint of the implementation is very thin. As the \emph{API} has a specific format in \emph{express}, it is able to automatically generate \emph{API} documentation.
 
-\begin{listing}[ht]
+\begin{figure}[ht]
     \jsfile{listings/solution/express.js}
     \caption{Sample API for recommendations in \emph{express}}
     \label{lst:expressjs}
-\end{listing}
+\end{figure}
 
-The message format will be \emph{JavaScript Object Notation (JSON)} - a thinner alternative to \emph{extensible markup language (XML)} (listing \ref{lst:sample-json}).
+The message format will be in \emph{JavaScript Object Notation (JSON)} - a thinner alternative to \emph{extensible markup language (XML)} (listing \ref{lst:sample-json}).
 
-\begin{listing}[ht]
+\begin{figure}[ht]
     \jsonfile{listings/solution/example.json}
     \caption{Sample API message in \emph{JavaScript Object Notation (JSON)}}
     \label{lst:sample-json}
-\end{listing}
+\end{figure}
 
 
 
@@ -140,6 +140,8 @@ A potential solution are graph databases which understands \emph{nodes}, \emph{p
     \label{fig:graph}
 \end{figure}
 
+If time permits an additional database system -- called \emph{Redis} -- is evaluated. \emph{Redis} is a \emph{key-value} storage where a \emph{value} is stored with a reference called \emph{key}. There are no relations. A typical query of an \emph{item-to-item collaborative filtering} method (see section \ref{bg-tech-itembased}) would be \emph{`fetch all products bought together with X'}. The recommender framework would therefore make two storage solutions available.
+
 \subsection{Others}
 
 A \emph{version control management (VCS)} namely \emph{git} will be used throughout the project. \emph{Git} is a distributed \emph{VCS} which is amongst others faster and more flexible than other \emph{VCS} such as \emph{Subversion}. The \emph{git} repository -- and therefore the source code -- will be hosted on \emph{BitBucket} to have a backup of the project anytime.
@@ -153,3 +155,17 @@ For server health and performance monitoring I will use the \emph{software as a 
 \end{figure}
 
 Finally, a virtualisation solution called \emph{VirtualBox} will be used to set up all technical and vendor requirements within a virtual machine. This prevents conflicts with dependencies on the workstation especially if versions differ. When submitting the project the virtual machine will be packaged to provide a seamless demo setup for examination.
+
+
+
+\section{Demo}
+
+The proposed architecture primarily deals with internals. Although it can be tested by simulating events, it is not very visible and tangible. Therefore the \emph{multi-purpose recommender framework} will be demonstrated on a platform which reflects real-life use cases. I will try to showcase as many different techniques -- such as collaborative and content-based filtering. As mentioned in the background research most applications using recommender systems are e-commerce websites. It is hence not surprising that one of the demos is covering that area.
+
+The storefront will be based on the open source e-commerce web application \emph{Magento} -- strictly speaking the free community edition. Having used \emph{Magento} professionally I am comfortable extending it for my testing purposes. The product database will be loaded with ca. hundred thousand individual products which allows us scalability and performance testing of the framework APIs as well.
+
+\begin{figure}[ht]
+    \includegraphics[width=\textwidth,center]{solution/tech/magento.png}
+    \caption{Open-Source Ecommerce Web Application \emph{Magento}}
+    \label{fig:magento}
+\end{figure}

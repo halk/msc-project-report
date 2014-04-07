@@ -1,18 +1,18 @@
 \chapter{Introduction}
 
-In this project I will develop a multi-purpose framework for recommender systems.
+In this project I will design and develop an alternative architecture on the integration of recommender systems.
 
-As a result of the Digital Revolution and the growth of the Internet we now live in a world of information -- so vast that it is difficult for the user to filter what they seek without assisting tools. Search engines -- such as Google and Bing -- have been developed to help finding information which are related to a search phrase. However this requires the user to build the right search phrase in advance. This leads to the question if meaningful information can be predictively delivered with and without a search phrase. This problem is what recommender systems try to solve -- yet with different approaches.
+Essentially, a \emph{recommender system} is a software which suggests useful items to a user on a given website or other platform. An item refers to any object available for the user and is subject to recommendations. A user is typically assisted in their search process on the platform which might be so vast that it becomes difficult to find the right item. Recommender systems are able to personalise so that it tries to suggest only items relevant for the particular user. In order to do this recommender systems rely on multiple techniques, notably \emph{collaborative filtering} and \emph{content-based filtering}.
 
-Recommender systems are usually very tight to the context and architecture of the primary application. Specifically implemented for particular application, it may require to know and access its database structure as well as fit into same implementation constraints such as programming language or database vendor. This project aims to research and develop a solution to easily integrate recommender systems into existing applications with minimal coupling and knowledge of each others' implementation details. The loose coupling will be achieved by using an event-based information exchange via application programming interfaces (API). Thanks to its plug-in mechanism the so can be extended with new recommender algorithms. The solution will be evaluated by demonstrating it in two different use cases.
+Recommender systems are usually tightly coupled to the context and architecture of the beforementioned platform. Bespoke recommender systems may require to know and access the platform's database structure as well as fit into the same implementation constraints such as programming languages. This paper analyses issues arising from that problem and proposes an alternative approach to overcome these issues. This project aims to deliver a \emph{multi-purpose recommender framework} which supports multiple techniques, is loosely coupled and easy to integrate. The framework provides an ecosystem with a plug-in system for recommender techniques and an event-driven learning concept. The solution of this project will be demonstrated in a real-life use case.
 
 \section{Proposal Structure}
 
 This proposal discusses specific challenges of recommender systems and -- based on the background research as well as evaluation of existing solutions -- proposes a potential solution to overcome them. Design requirements for the proposed solution are examined and resultant technology choices are defined. Finally, a project plan to ensure the project's execution is compiled.
 
 \begin{description}
-    \item[Section 2] introduces the concepts of machine learning and recommender systems. The adaption of recommender systems in research and industry are discussed. Then, an overview of recommender approaches as well as algorithms are described.
-    \item[Section 3] discusses challenges of recommender system and proposes a new approach to overcome specific aforementioned challenges. Finally, existing solutions are evaluated.
+    \item[Section 2] introduces the concept of recommender systems. An overview of recommender techniques as well as algorithms are described.
+    \item[Section 3] discusses challenges of recommender system and requirements of the proposed solution. Then, existing solutions are evaluated in their coping with these challenges.
     \item[Section 4] presents the architectural design of the solution and defines the technologies to be used.
     \item[Section 5] defines a project plan including methodology, evaluation, schedule and a fallback plan in case of complications.
 \end{description}
