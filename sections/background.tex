@@ -155,3 +155,18 @@ The \textit{Tanimoto coefficient} tells us the similarity of two sets \cite{sega
 \end{python}
 
 Given the equation in figure \ref{fig:tanimoto} we come to the conclusion: \[T = \frac{N_{ab}}{(N_a + N_b - N_{ab})} = \frac{3}{5 + 4 - 3} = 0.5\]
+
+
+
+\section{Evaluation of Existing Research and Solutions}
+\label{prob-evaluation}
+
+As mentioned in \ref{bg-adoption}, recommender systems are considered a relatively new research area in computer science. Although it has gained attention recently, a considerable amount of research has been published on the fundamental concepts and techniques rather than on matters of integration and architecture. Nonetheless I found that \citet{cortizo10} and \citet{rack07} worked on similar approaches.
+
+\citet{cortizo10} built a \textit{general purpose multi-algorithm} recommender system to compute recommendations from different sources and serving multiple applications. They mention that they could not find any literature on the system's aspects of recommender systems. \citet{cortizo10} identified similar challenges and made similar decisions on the implementation especially using RESTful APIs (see section \ref{sol-design-layer}). The advantage of their work was that they evaluated and tested their system on a live environment. Scalability and performance were key metrics from the beginning. Their recommender system is not open source and therefore not available for me.
+
+\citet{rack07} have published a series of papers around their work on the \emph{AMAYA} recommender system. Although they have put an emphasis on multi-purposeness, their work is more oriented towards a context-aware recommender system which differentiates between contexts such as \emph{'being home'} and \emph{'being at work'}. Furthermore their recommender requires a user profile as a centre point. In summary, their architecture is not as flexible and unbiased as the design I propose. The last submitted paper about \emph{AMAYA} was in 2007 and the system is again not publicly available.
+
+There are several commercial recommender software available such as \emph{prudsys Realtime Decisioning Engine (RDE)} which I have integrated into a major e-commerce website in the past. In a brief analysis of commercial software I found that they usually cover only basic but common requirements for e-commerce websites. These products are closed source and therefore not beneficial for my project. 
+
+\citet{hahsler11} and \citet{rack07} provide a list of open source recommender systems which are freely available. In the majority these systems are more component libraries than complete solutions. They require significant amount of work to integrate. Amongst them is \emph{Apache Mahout} -- a machine learning library which also includes collaborative filtering components. \emph{Mahout} is built upon \emph{Hadoop} which is a well-established big data software also curated by \emph{The Apache Software Foundation}. \emph{easyrec} on the other hand is a complete solution which is also using RESTful APIs. However -- similar to commercial products -- it is opiniated in favor of e-commerce websites.
