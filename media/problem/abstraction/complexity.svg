@@ -13,7 +13,7 @@
    height="242"
    id="svg2"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="complexity.pdf">
+   sodipodi:docname="complexity.svg">
   <metadata
      id="metadata1926">
     <rdf:RDF>
@@ -22,7 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -39,9 +39,9 @@
      inkscape:window-height="852"
      id="namedview1924"
      showgrid="false"
-     inkscape:zoom="0.76685622"
-     inkscape:cx="765.4281"
-     inkscape:cy="103.58785"
+     inkscape:zoom="2.1689969"
+     inkscape:cx="408.3448"
+     inkscape:cy="57.470013"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -296,13 +296,13 @@
          font-style="normal"
          font-weight="bold"
          text-decoration="none"
-         x="13.581819"
+         x="11.581819"
          y="11"
          id="text922"
          style="font-size:12px;font-style:normal;font-weight:bold;text-decoration:none;fill:#660000;stroke:none;font-family:Arial">
         <tspan
            style="fill:#ffffff"
-           id="tspan7525">Demographic RS</tspan>
+           id="tspan7525">Content-based RS</tspan>
       </text>
     </g>
     <g

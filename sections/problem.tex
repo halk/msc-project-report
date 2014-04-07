@@ -12,24 +12,24 @@ This section discusses the requirements of the project. The requirements \emph{i
 \subsection{Multi-Purpose \& Interoperability}
 \label{problem-multipurpose}
 
-A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques. Ideally this system is open and extendable for possible forthcoming, yet unknown requirements. It is not to be confused with hybrid recommender systems (see section \ref{bg-tech-hybrid}) which combine different systems into one. In this project I will provide an ecosystem to plug different recommender systems in (see section \ref{sol-design-layer-reco}).
+A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques. Ideally this system is open and extendable for possible forthcoming, yet unknown requirements. It is not to be confused with hybrid recommender systems (see section \ref{bg-tech-hybrid}) which combine different systems into one.
 
 Another requirement is the interoperability between recommender systems. \citet{manouselis07} differentiate between three criteria:
 
 \begin{description}
-    \item[Interoperability of the recommendation queries] which allows the same query to be reused. This is in particular useful for hybrid recommender systems which feeds the same query into different systems. \citet{adomavicius05} go further and creates a \emph{Recommendation Query Language (RQL)}. The use of an RQL would go beyond the scope of this project. Therefore I will limit this criterion to query parameters rather than the full query and rely on the recommender system to build the query based on these parameters. To give an example, the query parameters for figure \ref{fig:contentbased} would be the customer reference and the rated item (in this case the laptop). A content-based recommender system would compute these parameters by looking up similar items whereas a collaborative filtering system would look for other users who rated this item.
-    \item[Interoperability of the user and the domain models] which allows the exchange of models and other data among different recommender systems. In this project I will go a step further and allow direct access to persistence layers to all recommender systems.
-    \item[Interoperability of the recommendation results] which empowers recommender systems to reuse the results. This is in particular useful for hybrid recommender systems which feeds the same query into different systems. Yet there is no use case in this project and therefore not covered.
+    \item[Interoperability of the recommendation queries] which allows the same query to be reused. \citet{adomavicius05} go further and create a \emph{Recommendation Query Language (RQL)}. The use of an RQL would go beyond the scope of this project. Therefore I will limit this criterion to query parameters rather than the full query and rely on the recommender system to build the query based on these parameters. To give an example, the query parameters for figure \ref{fig:contentbased} would be the customer reference and the rated item (in this case the laptop).
+    \item[Interoperability of the user and the domain models] which allows the exchange of models and other data among different recommender systems. In this project I will go a step further and allow direct access to persistence layers to all recommender techniques.
+    \item[Interoperability of the recommendation results] which empowers recommender systems to reuse the results. This is in particular useful for hybrid recommender systems which feed the same query into different systems. Yet there is no use case in this project and therefore will not be covered.
 \end{description}
 
 \subsection{Abstraction}
 \label{problem-abstraction}
 
-This requirement suggests to separate a software or architecture into components or concerns. In this section the process of abstraction is illustrated based on a tightly-coupled, example architecture. With every discussed problem the architecture will become one step closer to loose coupling. 
+This requirement suggests to separate a software or architecture into smaller components. In this section the process of abstraction is illustrated based on a tightly-coupled, example architecture. With every discussed problem the architecture will become one step closer to an abstracted architecture. 
 
 \begin{description}
 
-    \item[Complexity] Applications as well as recommender systems tend to be complex. If not separated they both add to the overall complexity which makes change management very difficult, time consuming and expensive. Any change requires knowledge -- higher human resources costs --, testing and probably modifications on both systems. Figure \ref{fig:abstraction-complexity} shows a tightly coupled system whose one recommender system is getting replaced. The whole primary application as well as the database are getting affected.
+    \item[Complexity] Applications as well as recommender systems tend to be complex. If not separated, they both add to the overall complexity which makes change management very difficult, time consuming and expensive. Any change requires knowledge, testing and probably modifications on both systems. Figure \ref{fig:abstraction-complexity} shows a tightly coupled system whose one recommender system is getting replaced. The whole primary application as well as the database are affected.
 
     \begin{figure}[H]
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/complexity.pdf}
@@ -37,7 +37,7 @@ This requirement suggests to separate a software or architecture into components
         \label{fig:abstraction-complexity}
     \end{figure}
 
-    \item[Database Abstraction] Recommender systems directly using databases of the primary or other applications are problematic as on one hand they are affected to any schema changes done to the database due to application modifications. Figure \ref{fig:abstraction-database} illustrates a semi-decoupled architecture where the recommender system is outside of the primary application, yet still uses its database. This gives a false impression of loose coupling. Teams working on the primary application might not fully aware that there changes affect other systems.
+    \item[Database Abstraction] Recommender systems directly using databases of the primary application are problematic as these systems are affected by any change in the database. Figure \ref{fig:abstraction-database} illustrates a semi-decoupled architecture where the recommender system is outside of the primary application, yet still uses its database. This gives a false impression of loose coupling. Teams working on the primary application might not be fully aware that their changes affect the recommender systems.
 
     \begin{figure}[H]
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/database.pdf}
@@ -53,7 +53,7 @@ This requirement suggests to separate a software or architecture into components
         \label{fig:abstraction-resuability}
     \end{figure}
 
-    \item[Dependancy] If a system needs to be replaced or modified, it can have more or less major implications to other systems depending on that system. Figure \ref{fig:abstraction-dependancy} shows a loosely coupled architecture where the recommender technique has been changed from content-based to demographic filtering. Due to the loose coupling it has less implications than in figure \ref{fig:abstraction-complexity}. However it can still affect other systems if the communication between them included content-based filtering specific logic.
+    \item[Dependancy] If a system needs to be replaced or modified, it can have more or less major implications to other systems depending on that system. Figure \ref{fig:abstraction-dependancy} shows a loosely coupled architecture where the recommender technique has been changed to demographic filtering. In contrary to figure \ref{fig:abstraction-complexity} the primary application is not entirely affected. However the replacement can still affect other systems if the communication between them included content-based filtering specific logic.
 
     \begin{figure}[H]
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/dependancy.pdf}
@@ -61,7 +61,7 @@ This requirement suggests to separate a software or architecture into components
         \label{fig:abstraction-dependancy}
     \end{figure}
 
-    \item[Encapsulation] Information hiding is the fundamental motivation for encapsulation. The more information and implementation is hidden, the looser the coupling becomes. Figure \ref{fig:abstraction-encapsulation} illustrates a recommender system framework which hides internal details and communicates with other components in an implementation unspecific manner. A change of a technique within the framework or an external application should not have any implications.
+    \item[Encapsulation] Information hiding is the fundamental motivation for encapsulation. The more information and implementation is hidden, the looser the coupling becomes. Figure \ref{fig:abstraction-encapsulation} illustrates a recommender system framework which hides internal details and communicates with other components in a technique-independent manner. A change of a technique within the framework or an external application should not have any implications.
 
     \begin{figure}[H]
         \includegraphics[width=0.7\textwidth,center]{problem/abstraction/encapsulation.pdf}
@@ -72,4 +72,4 @@ This requirement suggests to separate a software or architecture into components
 
 \subsection{Ease of Integration}
 
-The complexity and cost of integration of recommender systems is a major constraint for many projects. Given the requirements above it is even more challenging to keep the integration as easy as possible. Nonetheless abstraction should help reduce the amount of knowledge needed. Furthermore the fewer types of communication and configuration required the less effort will be necessary.
+The complexity and cost of integration of recommender systems into existing applications is a major constraint for many projects. Ease of integration is therefore a key requirement for this project.
