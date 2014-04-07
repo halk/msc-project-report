@@ -1,4 +1,4 @@
-\chapter{Technical Solution}
+\chapter{Plan for Developing the Solution}
 
 In this section an overview of the design and architecture of the project is provided. Then, choices on the technology such as programming languages and databases are explained. Finally, a project plan is laid out.
 
@@ -26,7 +26,7 @@ A \emph{service-oriented architecture (SOA)} is a software design pattern which 
     \item[Service reusability] assure that services are designed to be reused.
 \end{description}
 
-In figure \ref{fig:soa} a possible architecture of this project is shown. The framework is designed to serve more than one application or system component. The services accept requests from any source as long as they authorise with an access key. In the mentioned figure services are divided in two types -- \emph{notification} and \emph{query}. A \emph{notification} is a message relevant to the recommender framework and is simply acknowledged as received. A \emph{query} on the other hand expects a result. The framework will define three services:
+In figure \ref{fig:soa} a possible architecture of the project is shown. The framework is designed to serve more than one application or system component. The services accept requests from any source as long as they authorise with an access key. In the mentioned figure services are divided in two types -- \emph{notification} and \emph{query}. A \emph{notification} is a message relevant to the recommender framework and is simply acknowledged as received. A \emph{query} on the other hand expects a result. The framework will define three services:
 
 \begin{description}
     \item[Master Data] enables service consumers to create, update or delete a data node in the framework. An identifier and type are mandatory fields. The service consumer is allowed to send any further features of the node which it thinks is relevant to the framework.
@@ -147,25 +147,25 @@ Finally, a virtualisation solution called \emph{VirtualBox} will be used to set 
 
 \section{Demo}
 
-The proposed architecture primarily deals with internals. Although it can be tested by simulating events, it is not very visible and tangible. Therefore the \emph{multi-purpose recommender framework} will be demonstrated on a platform which reflects real-life use cases. I will try to showcase as many different techniques -- such as collaborative and content-based filtering. As mentioned in the background research most applications using recommender systems are e-commerce websites. It is hence not surprising that one of the demos is covering that area.
-
-The storefront will be based on the open source e-commerce web application \emph{Magento} -- strictly speaking the free community edition. Having used \emph{Magento} professionally I am comfortable extending it for my testing purposes. The product database will be loaded with ca. hundred thousand individual products which allows us scalability and performance testing of the framework APIs as well.
-
-\begin{figure}[ht]
+\begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{solution/tech/magento.png}
     \caption{Open-Source Ecommerce Web Application \emph{Magento}}
     \label{fig:magento}
 \end{figure}
 
+The proposed architecture primarily deals with internals. Although it can be tested by simulating \emph{API} calls, it is not very visible and tangible. Therefore the solution will be demonstrated on a platform which reflects a real-life use case. As seen in the background research most applications using recommender systems are e-commerce websites. 
+
+It is hence not surprising that the demo will be as well an e-commerce website which will be based on the open source e-commerce web application \emph{Magento} -- strictly speaking the free community edition. Having used \emph{Magento} professionally I am comfortable extending it for my testing purposes. The product database will be loaded with ca. hundred thousand individual products which allows us to evaluate basic scalability and performance testing.
+
 
 
 \section{Project Plan}
 
-This section provides a work schedule to complete this project as well as a fallback plan in case of unexpected or time-related circumstances.
+This section provides a work schedule to complete the project as well as a fallback plan in case of unexpected or time-related circumstances.
 
 \subsection{Schedule}
 
-This project will be split into two broad phases: \emph{implementation} and \emph{evaluation}. The implementation phase is from 5th May to 31st July 2014, then the evaluation phase is until 15th September 2014. As the project has significant implementation work to be done, this strict division makes sure that enough time is left for the evaluation phase.
+The project will be split into two broad phases: \emph{implementation} and \emph{evaluation}. The implementation phase is from 5th May to 10th August 2014, then the evaluation phase is until 15th September 2014. As the project has significant implementation work to be done, this strict division makes sure that enough time is left for the evaluation phase.
 
 The schedule in figure \ref{fig:schedule} is divided into bi-weekly time frames in which one or more tasks are to be delivered. 
 
@@ -221,6 +221,6 @@ The schedule in figure \ref{fig:schedule} is divided into bi-weekly time frames 
 
 In this section alternative paths are defined in case of delays due to underestimated work or other external circumstances.
 
-The software architecture is the critical path of this project. Little is gained when layers or distinctive features are missing. Therefore I will focus on delivering them. In case of delays it is possible to decrease the number of different techniques and recommendation scenarios. In the worst case scenario the abstraction level of the recommendation model can be lowered so that recommender techniques are not as generic as purposed.
+The software architecture is the critical path of the project. Little is gained when layers or distinctive features are missing. Therefore I will focus on delivering them. In case of delays it is possible to decrease the number of different techniques and recommendation uses cases. In the worst case scenario, a the requirements of recommendations can be kept low so that I can use simpler recommender systems.
 
-\emph{Go} and \emph{Neo4j} are unfamiliar to me. In case of slow progress due to the learning process, they maybe replaced by simpler or more familiar choices. \emph{Go} could be replaced by \emph{PHP} or \emph{Python}. The usage of \emph{Redis} is planned only if time permits. However if problems arise with \emph{Neo4j}, \emph{Redis} may be used as alternative.
+\emph{Go} and \emph{Neo4j} are yet unfamiliar to me. In case of problems, they can be replaced by simpler or more familiar choices. \emph{Go} itself could be replaced by \emph{PHP} or \emph{Python}. Instead of \emph{Neo4j} the key-value store \emph{Redis} may be a simple alternative.

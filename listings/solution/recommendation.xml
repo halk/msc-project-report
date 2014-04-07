@@ -7,5 +7,6 @@
         <on event="product_rated" do="add" />
         <on event="order_created" do="add" />
     </rule>
-    <rule name="similar_products" node_type="product" recommender="content_based" />
+    <rule name="similar_products" node_type="product"
+        recommender="content_based" />
 </config>
