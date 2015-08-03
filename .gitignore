@@ -11,3 +11,5 @@ index.blg
 index.fdb_latexmk
 .sublime-project
 .sublime-project.sublime-workspace
+_minted-index
+texput.log
