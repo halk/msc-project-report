@@ -1,17 +1,5 @@
 \chapter{Architecture \& Design}
 
-\section{Objectives}
-
-\emph{Status: Not Started}
-
-\begin{itemize}
-\item Refer to proposal
-\item Interoperability
-\item Abstraction
-\item Ease of integration
-\item Recommender ecosystem
-\end{itemize}
-
 \section{Integrating Applications}
 
 \emph{Status: Not Started}
@@ -27,35 +15,66 @@
 
 \section{Framework}
 
-
 \emph{Status: Not Started}
 
 \begin{itemize}
-\item Explain exclusion of engine layer
-\item Explain workers
+\item Centrepiece of this work
 \end{itemize}
 
 \subsection{API}
 
-\subsection{Concepts}
+\emph{Status: Not Started}
 
-\subsubsection{Events}
-\subsubsection{Taxonomy}
-\subsubsection{Recommender}
-\subsubsection{Hybrid Recommender}
-
-\subsection{Configuration}
+\begin{itemize}
+\item No business
+\end{itemize}
 
 \subsection{Worker}
 
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Holds business logic
+\item Priority for recommendations
+\item Can be spinned up as many as needed
+\end{itemize}
+
+\subsection{Concepts}
+
+\emph{Status: Not Started}
+
+\subsubsection{Events}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item No master data specific logic, those are also treated as events
+\end{itemize}
+
+\subsubsection{Taxonomy}
+
+\emph{Status: Not Started}
+
+\subsubsection{Recommender}
+
+\emph{Status: Not Started}
+
+\subsubsection{Hybrid Recommender}
+
+\emph{Status: Not Started}
+
 \section{Engines}
 
-\subsection{In Common}
+\emph{Status: Not Started}
 
-\subsection{Item Similarity}
+\begin{itemize}
+\item Explain why separate from framework
+\item Explain why no single layer and single storage
+\item Enables to use the best technology incl. storage technology for the use-case
+\item Enables to use existing recommender implementations in their technology stack
+\item Requires a thin engine adapter in the framework
+\end{itemize}
 
-\subsection{Weighted (Hybrid)}
+\subsection{Hybrid Recommender Engines}
 
-\section{Demonstration on Magento}
-
-\subsection{Recommendation Use Cases}
+\emph{Status: Not Started}

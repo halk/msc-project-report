@@ -1,60 +1,155 @@
-\chapter*{Appendix A: User Manuals}
-\addcontentsline{toc}{chapter}{Appendix A: User Manuals}
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
+\renewcommand{\thesection}{\Alph{section}}
 
-\section{Installation \& Provisioning}
+\section{User Manuals}
 
-\subsection{Installation}
+\subsection{Installation \& Provisioning}
 
-\subsubsection{Check-out source code}
+\subsubsection{Install Source Code}
 
-\subsubsection{Set up virtual machine}
+\subsubsection{Install Virtual Machine}
 
-\subsection{Useful commands}
+\subsubsection{Useful Commands}
 
-\section{Framework}
+\subsection{Framework}
 
-\subsection{Flower}
+\emph{Status: Not Started}
 
-\subsection{Testing}
+\begin{itemize}
+\item URL
+\item Path to code
+\item Path to logs
+\end{itemize}
 
-\subsection{Useful commands}
+\subsubsection{Run Tests}
 
-\section{Recommendation Engine: In-Common}
+\subsubsection{Testing}
 
-\subsection{Neo4j Browser}
-
-\subsection{Testing}
-
-\subsection{Useful commands}
-
-\section{Recommendation Engine: Item-Similarity}
-
-\subsection{Testing}
-
-\subsection{Useful commands}
-
-\section{Demo Application: Magento}
-
-\subsection{Get recommendations}
-
-\subsection{Master Data}
-
-\subsubsection{Run Export}
-
-\subsubsection{Manage Attributes to Export}
-
-\subsection{Useful commands}
+\subsubsection{Useful Commands}
 
 
-\chapter*{Appendix B: Source Code}
-\addcontentsline{toc}{chapter}{Appendix B: Source Code}
+\subsection{Recommendation Engine: In-Common}
 
-\section{Framework}
+\emph{Status: Not Started}
 
-\section{Recommendation Engine: In-Common}
+\begin{itemize}
+\item URL
+\item Path to code
+\item Path to logs
+\end{itemize}
 
-\section{Recommendation Engine: Item-Similarity}
+\subsubsection{Neo4j Browser}
 
-\section{Demo Application: Magento}
+\emph{Status: Not Started}
 
-\section{Provisioning}
+\begin{itemize}
+\item Browse msc.koklu.me:7474
+\end{itemize}
+
+\subsubsection{Run Tests}
+
+\emph{Status: Not Started}
+
+\subsubsection{Restart engine}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Connect to vagrant SSH
+\item Run sudo supervisorctl restart inCommon
+\end{itemize}
+
+
+\subsection{Recommendation Engine: Item-Similarity}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item URL
+\item Path to code
+\item Path to logs
+\end{itemize}
+
+\subsubsection{Run Tests}
+
+\emph{Status: Not Started}
+
+\subsubsection{Connect to MongoDB}
+
+\emph{Status: Not Started}
+
+
+
+\subsection{Demo Application: Magento}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item URL
+\item Admin URL
+\item Path to code
+\item Path to logs
+\end{itemize}
+
+\subsubsection{Get recommendations}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Open two browsers
+\item Login with both into two accounts
+\item View the same product with both
+\item View different products with both
+\item See homepage
+\item Add the same product to wishlist with both
+\item Add different products to wishlist with both
+\item See Account > My Wishlist
+\item See Account for hybrid
+\item Add items to basket with any browser
+\item See similar items
+\end{itemize}
+
+\subsubsection{Run Master Data Export}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Login into vagrant SSH
+\item Change directory
+\item Run php command
+\end{itemize}
+
+\subsubsection{Manage Master Data Attributes to Export}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Login to Admin
+\item Go to Catalogue > Attributes
+\item Choose attribute to edit
+\item Set ``Use in Recommender'' to Yes
+\item Save
+\item Run MasterData export
+\end{itemize}
+
+\subsubsection{Clear Cache}
+
+\emph{Status: Not Started}
+
+\subsubsection{Connect to DB}
+
+\emph{Status: Not Started}
+
+
+\section{Source Code}
+
+\subsection{Framework}
+
+\subsection{Recommendation Engine: In-Common}
+
+\subsection{Recommendation Engine: Item-Similarity}
+
+\subsection{Demo Application: Magento}
+
+\subsection{Provisioning}

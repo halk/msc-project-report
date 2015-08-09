@@ -2,32 +2,166 @@
 
 \section{Framework}
 
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Entirely based on Python
+\item Explain dropping of Nodejs in favor of Python (due to Celery)
+\end{itemize}
+
 \subsection{API}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item POST, DELETE and GET methods
+\end{itemize}
 
 \subsection{Task Queue \& Celery}
 
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Celery for Task Queue
+\item Flower utility app
+\item Based RabbitMQ
+\end{itemize}
+
 \subsection{Configuration}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Config.xml
+\item XSD schema
+\end{itemize}
 
 \subsection{Engine Adapters}
 
-\subsection{Testing}
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Thin clients for engines
+\item Hybrid
+\end{itemize}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Functional testing and unit testing
+\end{itemize}
 
 \section{Engines}
 
-\subsection{In Common}
+\subsection{Collaborative Recommender: In Common}
 
-\subsection{Item Similarity}
+\emph{Status: Not Started}
 
-\section{Demonstration on Magento}
+\begin{itemize}
+\item Collaborative filtering
+\item Real-time
+\item Data and domain agnostic
+\item Based on Go
+\item API
+\item Based on graphical databases and nodes
+\item Figure to show diagram for adding, deleting and reading
+\item Unit testing
+\end{itemize}
+
+\subsection{Content-Based Recommender: Item Similarity}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Content-based filtering
+\item Silex, MongoDB, Doctrine ODM
+\item Requires master data
+\item Show diagram for adding, deleting and reading
+\item How similarity is calculated
+\item Unit testing
+\end{itemize}
+
+\subsection{Hybrid Recommender: Weighted}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Weight
+\item No specific implementation, assisting methods to access components, rest job of the adapter
+\end{itemize}
+
+\section{Demo Application: Magento}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Technical curiosity as a professional Magento1 developer
+\item In contrary to Magento1, custom code is not mixed into several locations and committed all together
+\item Magento2 is loaded via package management and modules are self-sufficient
+\item Using first public beta version, newer versions out but those were not stable enough to demo
+\item Setup script known to change in one of these versions, which makes it incompatible to the provisioning code
+\end{itemize}
 
 \subsection{Events}
 
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Explain user and visitor ID
+\item Explain event subsystem of Magento2
+\item Explain all implemented events for recommender
+\end{itemize}
+
 \subsection{Master Data}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Translates into events
+\item Product save event
+\item Full export via shell script (show performance)
+\item Give numbers
+\item Explain attribute model in Magento
+\item Explain ``Used in recommender'' setting
+\item Explain sample data and fixtures overridden
+\item Explain system attributes
+\end{itemize}
 
 \subsection{Recommendations}
 
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Explain client
+\item Explain recommender models
+\item Explain recommender blocks/widgets
+\end{itemize}
+
 \section{Provisioning}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Set up system, vendors and configurations
+\item Not ready for production
+\end{itemize}
 
 \subsection{Virtualisation with Vagrant}
 
-\subsection{Puppet Configuration Management}
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Explain vagrant and Virtualbox/VMWare support
+\item Explain VagrantCloud and reasoning behind this (why not just build directly?)
+\end{itemize}
+
+\subsection{Configuration Management with Puppet}
+
+\emph{Status: Not Started}
+
+\begin{itemize}
+\item Infrastructure as code
+\item Puppet/Ruby (mention alternatives Chef, Saltstack and Ansible)
+\item Explain the usage of external modules
+\item In detail explain own modules
+\end{itemize}
