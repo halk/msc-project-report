@@ -1,0 +1,132 @@
+\begin{codebox}[Directory structure]
+\begin{minted}{text}
+├─ Vagrantfile
+├─ provision
+│  ├─ config.yaml
+│  ├─ hiera.yaml
+│  ├─ hieradata
+│  │  └─ common.yaml
+│  ├─ manifests
+│  │  └─ init.pp
+│  └─ modules
+│     ├─ apache
+│     ├─ apt
+│     ├─ concat
+│     ├─ erlang
+│     ├─ gcc
+│     ├─ golang
+│     ├─ hiera2define
+│     │  └─ manifests
+│     │     ├─ apache_mods.pp
+│     │     ├─ apt_ppas.pp
+│     │     └─ init.pp
+│     ├─ inifile
+│     ├─ magento
+│     │  └─ manifests
+│     │     ├─ init.pp
+│     │     ├─ install.pp
+│     │     └─ vhost.pp
+│     ├─ mailcatcher
+│     ├─ mongodb
+│     ├─ neo4j
+│     │  ├─ manifests
+│     │  │  └─ init.pp
+│     │  └─ templates
+│     │     └─ limits.conf.rb
+│     ├─ percona
+│     ├─ php
+│     ├─ python
+│     ├─ rabbitmq
+│     ├─ recommender
+│     │  └─ manifests
+│     │     ├─ api.pp
+│     │     ├─ celery.pp
+│     │     ├─ engines.pp
+│     │     ├─ flower.pp
+│     │     ├─ init.pp
+│     │     └─ install.pp
+│     ├─ redis
+│     ├─ ruby
+│     ├─ staging
+│     ├─ stdlib
+│     ├─ supervisord
+│     ├─ timezone
+│     ├─ vim
+│     ├─ wget
+│     ├─ zsh
+│     │  ├─ manifests
+│     │  │  └─ init.pp
+│     │  └─ templates
+│     │     └─ zshrc.rb
+│     └─ zypprepo
+└─ .gitmodules
+
+\end{minted}
+\end{codebox}
+
+\begin{codebox}[Vagrantfile]
+\inputminted{ruby}{./includes/source/Vagrantfile}
+\end{codebox}
+\begin{codebox}[provision/config.yaml]
+\inputminted{yaml}{./includes/source/provision/config.yaml}
+\end{codebox}
+\begin{codebox}[provision/hiera.yaml]
+\inputminted{yaml}{./includes/source/provision/hiera.yaml}
+\end{codebox}
+\begin{codebox}[provision/hieradata/common.yaml]
+\inputminted{yaml}{./includes/source/provision/hieradata/common.yaml}
+\end{codebox}
+\begin{codebox}[provision/manifests/init.pp]
+\inputminted{puppet}{./includes/source/provision/manifests/init.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/hiera2define/manifests/apache\string_mods.pp]
+\inputminted{puppet}{./includes/source/provision/modules/hiera2define/manifests/apache\string_mods.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/hiera2define/manifests/apt\string_ppas.pp]
+\inputminted{puppet}{./includes/source/provision/modules/hiera2define/manifests/apt\string_ppas.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/hiera2define/manifests/init.pp]
+\inputminted{puppet}{./includes/source/provision/modules/hiera2define/manifests/init.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/magento/manifests/init.pp]
+\inputminted{puppet}{./includes/source/provision/modules/magento/manifests/init.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/magento/manifests/install.pp]
+\inputminted{puppet}{./includes/source/provision/modules/magento/manifests/install.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/magento/manifests/vhost.pp]
+\inputminted{puppet}{./includes/source/provision/modules/magento/manifests/vhost.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/neo4j/manifests/init.pp]
+\inputminted{puppet}{./includes/source/provision/modules/neo4j/manifests/init.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/neo4j/templates/limits.conf.rb]
+\inputminted{rb}{./includes/source/provision/modules/neo4j/templates/limits.conf.rb}
+\end{codebox}
+\begin{codebox}[provision/modules/recommender/manifests/api.pp]
+\inputminted{puppet}{./includes/source/provision/modules/recommender/manifests/api.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/recommender/manifests/celery.pp]
+\inputminted{puppet}{./includes/source/provision/modules/recommender/manifests/celery.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/recommender/manifests/engines.pp]
+\inputminted{puppet}{./includes/source/provision/modules/recommender/manifests/engines.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/recommender/manifests/flower.pp]
+\inputminted{puppet}{./includes/source/provision/modules/recommender/manifests/flower.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/recommender/manifests/init.pp]
+\inputminted{puppet}{./includes/source/provision/modules/recommender/manifests/init.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/recommender/manifests/install.pp]
+\inputminted{puppet}{./includes/source/provision/modules/recommender/manifests/install.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/zsh/manifests/init.pp]
+\inputminted{puppet}{./includes/source/provision/modules/zsh/manifests/init.pp}
+\end{codebox}
+\begin{codebox}[provision/modules/zsh/templates/zshrc.rb]
+\inputminted{rb}{./includes/source/provision/modules/zsh/templates/zshrc.rb}
+\end{codebox}
+\begin{codebox}[.gitmodules]
+\inputminted{text}{./includes/source/.gitmodules}
+\end{codebox}

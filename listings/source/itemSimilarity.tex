@@ -1,0 +1,85 @@
+\begin{codebox}[Directory structure]
+\begin{minted}{text}
+└─ engines
+   └─ itemSimilarity
+      ├─ composer.json
+      ├─ composer.lock
+      ├─ log
+      ├─ phpunit.xml
+      ├─ src
+      │  ├─ Koklu
+      │  │  ├─ Entity
+      │  │  │  ├─ Item.php
+      │  │  │  └─ Similar.php
+      │  │  ├─ Model
+      │  │  │  ├─ ItemManager.php
+      │  │  │  ├─ Recommender.php
+      │  │  │  └─ Similarity
+      │  │  │     ├─ SimilarityInterface.php
+      │  │  │     └─ TanimotoCoefficient.php
+      │  │  ├─ Repository
+      │  │  │  └─ ItemRepository.php
+      │  │  └─ Service
+      │  │     └─ RecommenderService.php
+      │  ├─ app.php
+      │  └─ bootstrap.php
+      ├─ tests
+      │  ├─ Koklu
+      │  │  └─ Tests
+      │  │     └─ RecommenderTest.php
+      │  └─ bootstrap.php
+      └─ web
+         ├─ .htaccess
+         └─ index.php
+
+\end{minted}
+\end{codebox}
+
+\begin{codebox}[engines/itemSimilarity/composer.json]
+\inputminted{json}{./includes/source/engines/itemSimilarity/composer.json}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/phpunit.xml]
+\inputminted{xml}{./includes/source/engines/itemSimilarity/phpunit.xml}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Entity/Item.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Entity/Item.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Entity/Similar.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Entity/Similar.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Model/ItemManager.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Model/ItemManager.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Model/Recommender.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Model/Recommender.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Model/Similarity/SimilarityInterface.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Model/Similarity/SimilarityInterface.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Model/Similarity/TanimotoCoefficient.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Model/Similarity/TanimotoCoefficient.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Repository/ItemRepository.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Repository/ItemRepository.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/Koklu/Service/RecommenderService.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Service/RecommenderService.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/app.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/app.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/src/bootstrap.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/src/bootstrap.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/tests/Koklu/Tests/RecommenderTest.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/tests/Koklu/Tests/RecommenderTest.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/tests/bootstrap.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/tests/bootstrap.php}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/web/.htaccess]
+\inputminted{apache}{./includes/source/engines/itemSimilarity/web/.htaccess}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/web/index.php]
+\inputminted{php}{./includes/source/engines/itemSimilarity/web/index.php}
+\end{codebox}

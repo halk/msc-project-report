@@ -1,0 +1,165 @@
+\begin{codebox}[Directory structure]
+\begin{minted}{text}
+└─ framework
+   ├─ api
+   │  ├─ __init__.py
+   │  ├─ event.py
+   │  └─ recommend.py
+   ├─ api.wsgi
+   ├─ config
+   │  ├─ config.xml
+   │  └─ config.xsd
+   ├─ config.py
+   ├─ core
+   │  ├─ __init__.py
+   │  ├─ config.py
+   │  ├─ engine
+   │  │  ├─ __init__.py
+   │  │  └─ hybrid.py
+   │  └─ taxonomy.py
+   ├─ engines
+   │  ├─ __init__.py
+   │  ├─ hybrid
+   │  │  ├─ __init__.py
+   │  │  └─ weighted.py
+   │  ├─ in_common.py
+   │  └─ item_similarity.py
+   ├─ log
+   ├─ monitor.py
+   ├─ requirements.txt
+   ├─ tests
+   │  ├─ __init__.py
+   │  ├─ api
+   │  │  ├─ __init__.py
+   │  │  ├─ test_event.py
+   │  │  ├─ test_index.py
+   │  │  └─ test_recommend.py
+   │  ├─ config
+   │  │  ├─ __init__.py
+   │  │  ├─ config.xml
+   │  │  └─ config_xsd_test.py
+   │  ├─ core
+   │  │  ├─ __init__.py
+   │  │  ├─ engine
+   │  │  │  ├─ __init__.py
+   │  │  │  ├─ test_hybrid.py
+   │  │  │  └─ test_init.py
+   │  │  ├─ test_config.py
+   │  │  └─ test_taxonomy.py
+   │  └─ engines
+   │     ├─ __init__.py
+   │     ├─ hybrid
+   │     │  ├─ __init__.py
+   │     │  └─ test_weighted.py
+   │     ├─ test_in_common.py
+   │     └─ test_item_similarity.py
+   └─ worker
+      ├─ __init__.py
+      ├─ event.py
+      └─ recommend.py
+
+\end{minted}
+\end{codebox}
+
+\begin{codebox}[framework/api/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/api/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/api/event.py]
+\inputminted{py}{./includes/source/framework/api/event.py}
+\end{codebox}
+\begin{codebox}[framework/api/recommend.py]
+\inputminted{py}{./includes/source/framework/api/recommend.py}
+\end{codebox}
+\begin{codebox}[framework/api.wsgi]
+\inputminted{py}{./includes/source/framework/api.wsgi}
+\end{codebox}
+\begin{codebox}[framework/config/config.xml]
+\inputminted{xml}{./includes/source/framework/config/config.xml}
+\end{codebox}
+\begin{codebox}[framework/config/config.xsd]
+\inputminted{xml}{./includes/source/framework/config/config.xsd}
+\end{codebox}
+\begin{codebox}[framework/config.py]
+\inputminted{py}{./includes/source/framework/config.py}
+\end{codebox}
+\begin{codebox}[framework/core/config.py]
+\inputminted{py}{./includes/source/framework/core/config.py}
+\end{codebox}
+\begin{codebox}[framework/core/engine/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/core/engine/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/core/engine/hybrid.py]
+\inputminted{py}{./includes/source/framework/core/engine/hybrid.py}
+\end{codebox}
+\begin{codebox}[framework/core/taxonomy.py]
+\inputminted{py}{./includes/source/framework/core/taxonomy.py}
+\end{codebox}
+\begin{codebox}[framework/engines/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/engines/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/engines/hybrid/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/engines/hybrid/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/engines/hybrid/weighted.py]
+\inputminted{py}{./includes/source/framework/engines/hybrid/weighted.py}
+\end{codebox}
+\begin{codebox}[framework/engines/in\string_common.py]
+\inputminted{py}{./includes/source/framework/engines/in\string_common.py}
+\end{codebox}
+\begin{codebox}[framework/engines/item\string_similarity.py]
+\inputminted{py}{./includes/source/framework/engines/item\string_similarity.py}
+\end{codebox}
+\begin{codebox}[framework/requirements.txt]
+\inputminted{text}{./includes/source/framework/requirements.txt}
+\end{codebox}
+\begin{codebox}[framework/tests/api/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/tests/api/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/tests/api/test\string_event.py]
+\inputminted{py}{./includes/source/framework/tests/api/test\string_event.py}
+\end{codebox}
+\begin{codebox}[framework/tests/api/test\string_index.py]
+\inputminted{py}{./includes/source/framework/tests/api/test\string_index.py}
+\end{codebox}
+\begin{codebox}[framework/tests/api/test\string_recommend.py]
+\inputminted{py}{./includes/source/framework/tests/api/test\string_recommend.py}
+\end{codebox}
+\begin{codebox}[framework/tests/config/config.xml]
+\inputminted{xml}{./includes/source/framework/tests/config/config.xml}
+\end{codebox}
+\begin{codebox}[framework/tests/config/config\string_xsd\string_test.py]
+\inputminted{py}{./includes/source/framework/tests/config/config\string_xsd\string_test.py}
+\end{codebox}
+\begin{codebox}[framework/tests/core/engine/test\string_hybrid.py]
+\inputminted{py}{./includes/source/framework/tests/core/engine/test\string_hybrid.py}
+\end{codebox}
+\begin{codebox}[framework/tests/core/engine/test\string_init.py]
+\inputminted{py}{./includes/source/framework/tests/core/engine/test\string_init.py}
+\end{codebox}
+\begin{codebox}[framework/tests/core/test\string_config.py]
+\inputminted{py}{./includes/source/framework/tests/core/test\string_config.py}
+\end{codebox}
+\begin{codebox}[framework/tests/core/test\string_taxonomy.py]
+\inputminted{py}{./includes/source/framework/tests/core/test\string_taxonomy.py}
+\end{codebox}
+\begin{codebox}[framework/tests/engines/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/tests/engines/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/tests/engines/hybrid/test\string_weighted.py]
+\inputminted{py}{./includes/source/framework/tests/engines/hybrid/test\string_weighted.py}
+\end{codebox}
+\begin{codebox}[framework/tests/engines/test\string_in\string_common.py]
+\inputminted{py}{./includes/source/framework/tests/engines/test\string_in\string_common.py}
+\end{codebox}
+\begin{codebox}[framework/tests/engines/test\string_item\string_similarity.py]
+\inputminted{py}{./includes/source/framework/tests/engines/test\string_item\string_similarity.py}
+\end{codebox}
+\begin{codebox}[framework/worker/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/worker/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/worker/event.py]
+\inputminted{py}{./includes/source/framework/worker/event.py}
+\end{codebox}
+\begin{codebox}[framework/worker/recommend.py]
+\inputminted{py}{./includes/source/framework/worker/recommend.py}
+\end{codebox}

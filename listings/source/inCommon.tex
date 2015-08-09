@@ -1,0 +1,129 @@
+\begin{codebox}[Directory structure]
+\begin{minted}{text}
+└─ engines
+   └─ inCommon
+      ├─ Gomfile
+      ├─ api
+      │  ├─ handlers.go
+      │  ├─ handlers_test.go
+      │  ├─ logger.go
+      │  ├─ logger_test.go
+      │  ├─ router.go
+      │  ├─ router_test.go
+      │  ├─ routes.go
+      │  └─ routes_test.go
+      ├─ engine
+      │  ├─ event.go
+      │  ├─ event_test.go
+      │  ├─ recommend.go
+      │  └─ recommend_test.go
+      ├─ graph
+      │  ├─ db.go
+      │  ├─ db_test.go
+      │  ├─ event.go
+      │  ├─ event_test.go
+      │  ├─ recommend.go
+      │  └─ recommend_test.go
+      ├─ main.go
+      ├─ model
+      │  ├─ recommendation.go
+      │  ├─ recommendationRequest.go
+      │  ├─ recommendationRequest_test.go
+      │  ├─ recommendation_test.go
+      │  ├─ relationship.go
+      │  └─ relationship_test.go
+      ├─ run.sh
+      └─ util
+         ├─ string.go
+         └─ string_test.go
+
+\end{minted}
+\end{codebox}
+
+\begin{codebox}[engines/inCommon/Gomfile]
+\inputminted{ruby}{./includes/source/engines/inCommon/Gomfile}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/handlers.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/handlers.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/handlers\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/handlers\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/logger.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/logger.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/logger\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/logger\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/router.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/router.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/router\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/router\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/routes.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/routes.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/api/routes\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/api/routes\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/engine/event.go]
+\inputminted{go}{./includes/source/engines/inCommon/engine/event.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/engine/event\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/engine/event\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/engine/recommend.go]
+\inputminted{go}{./includes/source/engines/inCommon/engine/recommend.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/engine/recommend\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/engine/recommend\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/graph/db.go]
+\inputminted{go}{./includes/source/engines/inCommon/graph/db.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/graph/db\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/graph/db\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/graph/event.go]
+\inputminted{go}{./includes/source/engines/inCommon/graph/event.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/graph/event\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/graph/event\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/graph/recommend.go]
+\inputminted{go}{./includes/source/engines/inCommon/graph/recommend.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/graph/recommend\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/graph/recommend\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/main.go]
+\inputminted{go}{./includes/source/engines/inCommon/main.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/model/recommendation.go]
+\inputminted{go}{./includes/source/engines/inCommon/model/recommendation.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/model/recommendationRequest.go]
+\inputminted{go}{./includes/source/engines/inCommon/model/recommendationRequest.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/model/recommendationRequest\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/model/recommendationRequest\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/model/recommendation\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/model/recommendation\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/model/relationship.go]
+\inputminted{go}{./includes/source/engines/inCommon/model/relationship.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/model/relationship\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/model/relationship\string_test.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/run.sh]
+\inputminted{sh}{./includes/source/engines/inCommon/run.sh}
+\end{codebox}
+\begin{codebox}[engines/inCommon/util/string.go]
+\inputminted{go}{./includes/source/engines/inCommon/util/string.go}
+\end{codebox}
+\begin{codebox}[engines/inCommon/util/string\string_test.go]
+\inputminted{go}{./includes/source/engines/inCommon/util/string\string_test.go}
+\end{codebox}

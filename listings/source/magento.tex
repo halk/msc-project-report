@@ -1,0 +1,372 @@
+\begin{codebox}[Directory structure]
+\begin{minted}{text}
+└─ demos
+   └─ magento
+      ├─ app
+      │  ├─ code
+      │  │  └─ Koklu
+      │  │     ├─ Event
+      │  │     │  ├─ Helper
+      │  │     │  │  └─ User.php
+      │  │     │  ├─ Model
+      │  │     │  │  ├─ Event.php
+      │  │     │  │  └─ Observer
+      │  │     │  │     ├─ Catalog
+      │  │     │  │     │  └─ Product
+      │  │     │  │     │     ├─ Base.php
+      │  │     │  │     │     └─ View.php
+      │  │     │  │     ├─ Checkout
+      │  │     │  │     │  └─ Cart
+      │  │     │  │     │     └─ Item.php
+      │  │     │  │     ├─ Customer
+      │  │     │  │     │  └─ Wishlist
+      │  │     │  │     │     ├─ Add.php
+      │  │     │  │     │     └─ Delete.php
+      │  │     │  │     ├─ CustomerAbstract.php
+      │  │     │  │     └─ ObserverAbstract.php
+      │  │     │  └─ etc
+      │  │     │     ├─ frontend
+      │  │     │     │  └─ events.xml
+      │  │     │     └─ module.xml
+      │  │     ├─ MasterData
+      │  │     │  ├─ App
+      │  │     │  │  └─ Shell.php
+      │  │     │  ├─ Block
+      │  │     │  │  └─ Adminhtml
+      │  │     │  │     └─ Catalog
+      │  │     │  │        └─ Product
+      │  │     │  │           └─ Attribute
+      │  │     │  │              └─ Grid.php
+      │  │     │  ├─ Helper
+      │  │     │  │  ├─ Data.php
+      │  │     │  │  └─ SampleData
+      │  │     │  │     └─ Fixture.php
+      │  │     │  ├─ Model
+      │  │     │  │  ├─ Adminhtml
+      │  │     │  │  │  └─ Observer.php
+      │  │     │  │  ├─ Catalog
+      │  │     │  │  │  ├─ Config.php
+      │  │     │  │  │  └─ Product
+      │  │     │  │  │     └─ Builder.php
+      │  │     │  │  ├─ Observer
+      │  │     │  │  │  └─ Catalog
+      │  │     │  │  │     └─ Product
+      │  │     │  │  │        ├─ Delete.php
+      │  │     │  │  │        └─ Save.php
+      │  │     │  │  ├─ Resource
+      │  │     │  │  │  └─ Catalog
+      │  │     │  │  │     ├─ Config.php
+      │  │     │  │  │     ├─ ConfigFactory.php
+      │  │     │  │  │     └─ Product.php
+      │  │     │  │  ├─ Shell
+      │  │     │  │  │  ├─ Command
+      │  │     │  │  │  │  ├─ Export.php
+      │  │     │  │  │  │  └─ Factory.php
+      │  │     │  │  │  ├─ CommandInterface.php
+      │  │     │  │  │  └─ Factory.php
+      │  │     │  │  └─ Shell.php
+      │  │     │  ├─ Setup
+      │  │     │  │  ├─ InstallData.php
+      │  │     │  │  └─ InstallSchema.php
+      │  │     │  ├─ etc
+      │  │     │  │  ├─ adminhtml
+      │  │     │  │  │  ├─ di.xml
+      │  │     │  │  │  └─ events.xml
+      │  │     │  │  ├─ config.xml
+      │  │     │  │  ├─ di.xml
+      │  │     │  │  ├─ events.xml
+      │  │     │  │  └─ module.xml
+      │  │     │  └─ fixtures
+      │  │     │     ├─ Catalog
+      │  │     │     │  └─ attributes.csv
+      │  │     │     ├─ Cms
+      │  │     │     │  └─ Block
+      │  │     │     │     └─ categories_static_blocks.csv
+      │  │     │     ├─ ConfigurableProduct
+      │  │     │     │  └─ attributes.csv
+      │  │     │     └─ Downloadable
+      │  │     │        └─ attributes.csv
+      │  │     └─ Recommender
+      │  │        ├─ Block
+      │  │        │  ├─ Catalog
+      │  │        │  │  └─ Product
+      │  │        │  │     └─ ListAbstract.php
+      │  │        │  ├─ Checkout
+      │  │        │  │  └─ Cart
+      │  │        │  │     └─ Similar.php
+      │  │        │  ├─ Cms
+      │  │        │  │  └─ Homepage
+      │  │        │  │     └─ InCommon.php
+      │  │        │  └─ Customer
+      │  │        │     ├─ Account
+      │  │        │     │  └─ Interesting.php
+      │  │        │     └─ Wishlist
+      │  │        │        └─ InCommon.php
+      │  │        ├─ Helper
+      │  │        │  └─ Data.php
+      │  │        ├─ Logger
+      │  │        │  ├─ Base.php
+      │  │        │  ├─ Event.php
+      │  │        │  ├─ Handler
+      │  │        │  │  ├─ Base.php
+      │  │        │  │  ├─ Event.php
+      │  │        │  │  └─ Recommender.php
+      │  │        │  └─ Recommender.php
+      │  │        ├─ Model
+      │  │        │  ├─ Client.php
+      │  │        │  ├─ Recommender
+      │  │        │  │  ├─ Checkout
+      │  │        │  │  │  └─ Cart
+      │  │        │  │  │     └─ Similar.php
+      │  │        │  │  ├─ Cms
+      │  │        │  │  │  └─ Homepage
+      │  │        │  │  │     └─ InCommon.php
+      │  │        │  │  └─ Customer
+      │  │        │  │     ├─ Account
+      │  │        │  │     │  └─ Interesting.php
+      │  │        │  │     └─ Wishlist
+      │  │        │  │        └─ InCommon.php
+      │  │        │  ├─ RecommenderAbstract.php
+      │  │        │  └─ RecommenderInterface.php
+      │  │        ├─ etc
+      │  │        │  ├─ acl.xml
+      │  │        │  ├─ adminhtml
+      │  │        │  │  └─ system.xml
+      │  │        │  ├─ config.xml
+      │  │        │  ├─ di.xml
+      │  │        │  ├─ module.xml
+      │  │        │  └─ widget.xml
+      │  │        └─ view
+      │  │           └─ frontend
+      │  │              └─ layout
+      │  │                 ├─ checkout_cart_index.xml
+      │  │                 ├─ customer_account_index.xml
+      │  │                 └─ wishlist_index_index.xml
+      │  └─ design
+      │     └─ frontend
+      │        └─ Magento
+      │           └─ luma
+      │              └─ Koklu_Recommender
+      │                 └─ web
+      │                    └─ css
+      │                       └─ source
+      │                          └─ _module.less
+      ├─ composer.json
+      ├─ composer.lock
+      ├─ dev
+      │  └─ shell
+      │     └─ masterdata.php
+      └─ lib
+         └─ internal
+            └─ Koklu
+               └─ Rest
+                  └─ Json
+                     └─ Client.php
+
+\end{minted}
+\end{codebox}
+
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Helper/User.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Helper/User.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Event.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Event.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Observer/Catalog/Product/Base.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Observer/Catalog/Product/Base.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Observer/Catalog/Product/View.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Observer/Catalog/Product/View.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Observer/Checkout/Cart/Item.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Observer/Checkout/Cart/Item.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Observer/Customer/Wishlist/Add.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Observer/Customer/Wishlist/Add.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Observer/Customer/Wishlist/Delete.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Observer/Customer/Wishlist/Delete.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Observer/CustomerAbstract.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Observer/CustomerAbstract.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/Model/Observer/ObserverAbstract.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Event/Model/Observer/ObserverAbstract.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/etc/frontend/events.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Event/etc/frontend/events.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Event/etc/module.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Event/etc/module.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/App/Shell.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/App/Shell.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Block/Adminhtml/Catalog/Product/Attribute/Grid.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Block/Adminhtml/Catalog/Product/Attribute/Grid.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Helper/Data.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Helper/Data.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Helper/SampleData/Fixture.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Helper/SampleData/Fixture.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Adminhtml/Observer.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Adminhtml/Observer.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Catalog/Config.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Catalog/Config.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Catalog/Product/Builder.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Catalog/Product/Builder.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Observer/Catalog/Product/Delete.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Observer/Catalog/Product/Delete.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Observer/Catalog/Product/Save.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Observer/Catalog/Product/Save.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Resource/Catalog/Config.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Resource/Catalog/Config.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Resource/Catalog/ConfigFactory.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Resource/Catalog/ConfigFactory.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Resource/Catalog/Product.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Resource/Catalog/Product.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Shell/Command/Export.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Shell/Command/Export.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Shell/Command/Factory.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Shell/Command/Factory.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Shell/CommandInterface.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Shell/CommandInterface.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Shell/Factory.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Shell/Factory.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Model/Shell.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Model/Shell.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Setup/InstallData.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Setup/InstallData.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/Setup/InstallSchema.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/MasterData/Setup/InstallSchema.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/etc/adminhtml/di.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/MasterData/etc/adminhtml/di.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/etc/adminhtml/events.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/MasterData/etc/adminhtml/events.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/etc/config.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/MasterData/etc/config.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/etc/di.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/MasterData/etc/di.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/etc/events.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/MasterData/etc/events.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/MasterData/etc/module.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/MasterData/etc/module.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Block/Catalog/Product/ListAbstract.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Block/Catalog/Product/ListAbstract.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Block/Checkout/Cart/Similar.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Block/Checkout/Cart/Similar.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Block/Cms/Homepage/InCommon.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Block/Cms/Homepage/InCommon.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Block/Customer/Account/Interesting.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Block/Customer/Account/Interesting.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Block/Customer/Wishlist/InCommon.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Block/Customer/Wishlist/InCommon.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Helper/Data.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Helper/Data.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Logger/Base.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Logger/Base.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Logger/Event.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Logger/Event.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Logger/Handler/Base.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Logger/Handler/Base.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Logger/Handler/Event.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Logger/Handler/Event.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Logger/Handler/Recommender.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Logger/Handler/Recommender.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Logger/Recommender.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Logger/Recommender.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Model/Client.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Model/Client.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Model/Recommender/Checkout/Cart/Similar.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Model/Recommender/Checkout/Cart/Similar.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Model/Recommender/Cms/Homepage/InCommon.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Model/Recommender/Cms/Homepage/InCommon.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Model/Recommender/Customer/Account/Interesting.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Model/Recommender/Customer/Account/Interesting.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Model/Recommender/Customer/Wishlist/InCommon.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Model/Recommender/Customer/Wishlist/InCommon.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Model/RecommenderAbstract.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Model/RecommenderAbstract.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/Model/RecommenderInterface.php]
+\inputminted{php}{./includes/source/demos/magento/app/code/Koklu/Recommender/Model/RecommenderInterface.php}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/etc/acl.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/etc/acl.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/etc/adminhtml/system.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/etc/adminhtml/system.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/etc/config.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/etc/config.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/etc/di.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/etc/di.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/etc/module.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/etc/module.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/etc/widget.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/etc/widget.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/view/frontend/layout/checkout\string_cart\string_index.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/view/frontend/layout/checkout\string_cart\string_index.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/view/frontend/layout/customer\string_account\string_index.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/view/frontend/layout/customer\string_account\string_index.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/code/Koklu/Recommender/view/frontend/layout/wishlist\string_index\string_index.xml]
+\inputminted{xml}{./includes/source/demos/magento/app/code/Koklu/Recommender/view/frontend/layout/wishlist\string_index\string_index.xml}
+\end{codebox}
+\begin{codebox}[demos/magento/app/design/frontend/Magento/luma/Koklu\string_Recommender/web/css/source/\string_module.less]
+\inputminted{css}{./includes/source/demos/magento/app/design/frontend/Magento/luma/Koklu\string_Recommender/web/css/source/\string_module.less}
+\end{codebox}
+\begin{codebox}[demos/magento/composer.json]
+\inputminted{json}{./includes/source/demos/magento/composer.json}
+\end{codebox}
+\begin{codebox}[demos/magento/dev/shell/masterdata.php]
+\inputminted{php}{./includes/source/demos/magento/dev/shell/masterdata.php}
+\end{codebox}
+\begin{codebox}[demos/magento/lib/internal/Koklu/Rest/Json/Client.php]
+\inputminted{php}{./includes/source/demos/magento/lib/internal/Koklu/Rest/Json/Client.php}
+\end{codebox}

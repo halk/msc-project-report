@@ -9,6 +9,7 @@
 \usepackage{float}
 \usepackage{fontspec}
 \usepackage{minted}
+\usepackage{tcolorbox}
 \usepackage{multirow}
 \usepackage{tabularx}
 \usepackage{rotating}
@@ -30,12 +31,14 @@
 \graphicspath{{media/}}
 
 % code listing
-\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\usemintedstyle{tango}
+\setmonofont{Consolas}
 
-\newmintedfile{js}{bgcolor=codebg, fontsize=\small, numbersep=6pt}
-\newmintedfile{json}{bgcolor=codebg, fontsize=\small, numbersep=6pt}
-\newminted[python]{python}{bgcolor=codebg, fontsize=\small, numbersep=6pt}
-\newmintedfile{xml}{bgcolor=codebg, fontsize=\small, numbersep=6pt}
+\tcbuselibrary{breakable}
+\tcbset{colback=gray!5!white,colframe=gray!75!black,fonttitle=\ttfamily\scriptsize,breakable,pad at break*=0mm,toptitle=1mm,bottomtitle=0.5mm,left skip=0mm,width=\linewidth+8mm}
+\newtcolorbox{codebox}[1][]{title=#1}
+
+\setminted{fontsize=\tiny,numbersep=6pt,baselinestretch=1,breaklines=true}
 
 \setlength\partopsep{-\topsep}
 \addtolength\partopsep{-\parskip}
