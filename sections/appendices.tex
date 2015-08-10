@@ -1,7 +1,3 @@
-\chapter*{Appendices}
-\addcontentsline{toc}{chapter}{Appendices}
-\renewcommand{\thesection}{\Alph{section}}
-
 \section{User Manuals}
 
 \subsection{Installation \& Provisioning}
@@ -47,6 +43,13 @@ For \emph{VMWare} Users:
 \begin{minted}{bash}
     $ cd project
     $ vagrant up --provider=vmware_fusion
+\end{minted}
+
+In some cases the provisioning can have issues which can be usually resolved by re-running the provision command:
+
+\begin{minted}{bash}
+    $ cd project
+    $ vagrant provision
 \end{minted}
 
 \subsubsection{Useful Commands}

@@ -27,8 +27,11 @@
 \input{./sections/evaluation.tex}
 \input{./sections/conclusion.tex}
 
-\input{./meta/bibl.tex}
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
+\renewcommand{\thesection}{\Alph{section}}
 
+\input{./meta/bibl.tex}
 \input{./sections/appendices.tex}
 
 \end{document}
