@@ -17,6 +17,7 @@
 \usepackage{setspace}
 \usepackage{colortbl}
 \usepackage{hhline}
+\usepackage{hyperref}
 \usepackage[export]{adjustbox}
 \usepackage[top=1in, bottom=1in, left=1.5in, right=1in]{geometry}
 \usepackage[font=small]{caption}
@@ -30,16 +31,16 @@
 % images
 \graphicspath{{media/}}
 
+% links
+\hypersetup{colorlinks=true,urlcolor=cyan}
+
 % code listing
 \usemintedstyle{tango}
-\setmonofont{Consolas}
 
 \tcbuselibrary{breakable}
 \tcbset{colback=gray!5!white,colframe=gray!75!black,fonttitle=\ttfamily\scriptsize,breakable,pad at break*=0mm,toptitle=1mm,bottomtitle=0.5mm,left skip=0mm,width=\linewidth+8mm}
 \newtcolorbox{codebox}[1][]{title=#1}
 
-\setminted{fontsize=\tiny,numbersep=6pt,baselinestretch=1,breaklines=true}
-
-\setlength\partopsep{-\topsep}
-\addtolength\partopsep{-\parskip}
-\addtolength\partopsep{0.5cm}
+\definecolor{greybg}{rgb}{0.95,0.95,0.95}
+\setminted{fontsize=\scriptsize,bgcolor=greybg,numbersep=6pt,baselinestretch=1.2,breaklines=true}
+\AfterEndEnvironment{minted}{\vspace{3mm}}

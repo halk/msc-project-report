@@ -6,147 +6,235 @@
 
 \subsection{Installation \& Provisioning}
 
-\emph{Status: Not Started}
+\subsubsection{System Requirements}
 
-\subsubsection{Install Source Code}
+\emph{Status: Draft. Updated 9/8}
 
-\emph{Status: Not Started}
+In order to run the implemented software the following system resources are required:
+
+\begin{itemize}
+\item \emph{x86} hardware with at least 4GB \emph{RAM} and 3GB free disk space
+\item \emph{Windows} (\emph{XP} and later), \emph{Mac OS X} and most \emph{Linux} distributions
+\item \href{https://www.virtualbox.org/wiki/Downloads}{VirtualBox} or \href{http://www.vmware.com/products/fusion/}{VMWare} (commercial)
+\item \href{http://www.vagrantup.com/downloads.html}{Vagrant}. If \emph{VMWare} is used, the commercial \href{https://www.vagrantup.com/vmware}{Vagrant VMWare plugin} will be required as well.
+\item a \href{https://git-scm.com/}{git} client
+\item An \emph{SSH client} (e.g. \emph{PuTTY} for \emph{Windows} users, built-in for \emph{Mac OS X} and \emph{Linux} users)
+\end{itemize}
+
+\subsubsection{Install Project Software}
+
+\emph{Status: Draft. Public Git URL missing. Updated 9/8}
+
+Choose a directory on your system for the software (e.g. \texttt{~/src/}). Run the following commands in a terminal (e.g. \emph{PowerShell} on \emph{Windows}):
+
+\begin{minted}{bash}
+    $ git clone --recursive https://URL_TO_REPOSITORY project
+\end{minted}
 
 \subsubsection{Install Virtual Machine}
 
-\emph{Status: Not Started}
+\emph{Status: Draft. Updated 9/8}
+
+For \emph{VirtualBox} Users:
+
+\begin{minted}{bash}
+    $ cd project
+    $ vagrant up --provider=virtualbox
+\end{minted}
+
+For \emph{VMWare} Users:
+
+\begin{minted}{bash}
+    $ cd project
+    $ vagrant up --provider=vmware_fusion
+\end{minted}
 
 \subsubsection{Useful Commands}
 
-\emph{Status: Not Started}
+\emph{Status: Draft. Updated 9/8}
+
+Stop virtual machine:
+
+\begin{minted}{bash}
+    $ cd project
+    $ vagrant halt
+\end{minted}
+
+Start virtual machine:
+
+\begin{minted}{bash}
+    $ vagrant up
+\end{minted}
+
+Restart virtual machine:
+
+\begin{minted}{bash}
+    $ vagrant reload
+\end{minted}
+
+Destroy virtual machine to install from scratch:
+
+\begin{minted}{bash}
+    $ vagrant destroy
+\end{minted}
+
+Connect to virtual machine:
+
+\begin{minted}{bash}
+    $ vagrant ssh
+\end{minted}
+
 
 \subsection{Framework}
 
-\emph{Status: Not Started}
+\emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
-\item URL
-\item Path to code
-\item Path to logs
+\item Path to code: \texttt{/vagrant/framework}
+\item Path to log files: \texttt{/vagrant/demos/framework/log}
+\item API Endpoint: \url{http://api.msc.koklu.me/}
+\item \emph{Flower} (\emph{Celery} UI): \url{http://flower.msc.koklu.me/}
 \end{itemize}
 
 \subsubsection{Run Tests}
 
-\subsubsection{Testing}
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ cd /vagrant/framework
+    $ nosetests
+\end{minted}
 
 \subsubsection{Useful Commands}
+
+Restart event worker:
+
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ sudo supervisorctl restart celery.event
+\end{minted}
+
+Restart recommend worker:
+
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ sudo supervisorctl restart celery.recommend
+\end{minted}
 
 
 \subsection{Recommendation Engine: In-Common}
 
-\emph{Status: Not Started}
+\emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
-\item URL
-\item Path to code
-\item Path to logs
+\item Path to code: \texttt{/vagrant/engines/inCommon}
+\item Path to log files: \texttt{/vagrant/engines/inCommon/log}
+\item API Endpoint: \url{http://msc.koklu.me:8080/}
 \end{itemize}
 
 \subsubsection{Neo4j Browser}
 
-\emph{Status: Not Started}
-
 \begin{itemize}
-\item Browse msc.koklu.me:7474
+\item \emph{Neo4j} Browser: \url{http://msc.koklu.me:7474/}
+\item Username: \texttt{neo4j}
+\item Password: \texttt{vagrant}
 \end{itemize}
 
 \subsubsection{Run Tests}
 
-\emph{Status: Not Started}
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ cd /vagrant/engines/inCommon
+    $ go test ./...
+\end{minted}
 
-\subsubsection{Restart engine}
+\subsubsection{Restart \& Re-compile Engine}
 
-\emph{Status: Not Started}
-
-\begin{itemize}
-\item Connect to vagrant SSH
-\item Run sudo supervisorctl restart inCommon
-\end{itemize}
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ sudo supervisorctl restart inCommon
+\end{minted}
 
 
 \subsection{Recommendation Engine: Item-Similarity}
 
-\emph{Status: Not Started}
+\emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
-\item URL
-\item Path to code
-\item Path to logs
+\item Path to code: \texttt{/vagrant/engines/itemSimilarity}
+\item Path to log files: \texttt{/vagrant/engines/itemSimilarity/log}
+\item API Endpoint: \url{http://itemsimilarity.msc.koklu.me/}
 \end{itemize}
 
 \subsubsection{Run Tests}
 
-\emph{Status: Not Started}
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ cd /vagrant/engines/itemSimilarity
+    $ php vendor/bin/phpunit
+\end{minted}
 
 \subsubsection{Connect to MongoDB}
 
-\emph{Status: Not Started}
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ mongo
+    $ use ITEM_SIMILARITY
+\end{minted}
 
 
 
 \subsection{Demo Application: Magento}
 
-\emph{Status: Not Started}
+\emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
-\item URL
-\item Admin URL
-\item Path to code
-\item Path to logs
+\item Path to code: \texttt{/vagrant/demos/magento}
+\item Path to log files: \texttt{/vagrant/demos/magento/var/log}
+\item Front end: \url{http://magento.msc.koklu.me/}
+\item Back end: \url{http://magento.msc.koklu.me/admin/}
 \end{itemize}
 
-\subsubsection{Get recommendations}
-
-\emph{Status: Not Started}
+\subsubsection{Login to the Back End}
 
 \begin{itemize}
-\item Open two browsers
-\item Login with both into two accounts
-\item View the same product with both
-\item View different products with both
-\item See homepage
-\item Add the same product to wishlist with both
-\item Add different products to wishlist with both
-\item See Account > My Wishlist
-\item See Account for hybrid
-\item Add items to basket with any browser
-\item See similar items
+\item URL: \url{http://magento.msc.koklu.me/admin/}
+\item Username: \texttt{default}
+\item Password: \texttt{default}
 \end{itemize}
 
 \subsubsection{Run Master Data Export}
 
-\emph{Status: Not Started}
-
-\begin{itemize}
-\item Login into vagrant SSH
-\item Change directory
-\item Run php command
-\end{itemize}
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ cd /vagrant/demos/magento
+    $ php dev/shell/masterdata.php export
+\end{minted}
 
 \subsubsection{Manage Master Data Attributes to Export}
 
-\emph{Status: Not Started}
-
-\begin{itemize}
-\item Login to Admin
-\item Go to Catalogue > Attributes
-\item Choose attribute to edit
-\item Set ``Use in Recommender'' to Yes
+\begin{enumerate}
+\item Login to the back end (see above)
+\item Browse \emph{Catalogue} > \emph{Attributes}
+\item Search for attribute to be changed and click \emph{Edit}
+\item Change \emph{Use in Recommender} to \emph{Yes} respectively \emph{No}
 \item Save
-\item Run MasterData export
-\end{itemize}
+\item Run master data export (see above)
+\end{enumerate}
 
 \subsubsection{Clear Cache}
 
-\emph{Status: Not Started}
+\begin{minted}{bash}
+    $ vagrant ssh
+    $ cd /vagrant/demos/magento
+    $ php dev/shell/cache.php --clean
+\end{minted}
 
 
 \section{Source Code}
+
+\setmonofont{Consolas}
+\setminted{fontsize=\tiny,baselinestretch=1,bgcolor=}
+\AfterEndEnvironment{minted}{}
 
 \subsection{Framework}
 
