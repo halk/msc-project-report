@@ -14,3 +14,5 @@ index.fdb_latexmk
 .sublime-project.sublime-workspace
 _minted-index
 texput.log
+
+.DS_Store
