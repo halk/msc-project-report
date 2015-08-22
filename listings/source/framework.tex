@@ -1,13 +1,16 @@
 \begin{codebox}[Directory structure]
 \begin{minted}{text}
 └─ framework
+   ├─ .coveragerc
+   ├─ .scrutinizer.yml
+   ├─ .travis.yml
    ├─ api
    │  ├─ __init__.py
    │  ├─ event.py
    │  └─ recommend.py
    ├─ api.wsgi
    ├─ config
-   │  ├─ config.xml
+   │  ├─ config.xml.dist
    │  └─ config.xsd
    ├─ config.py
    ├─ core
@@ -46,13 +49,17 @@
    │  │  │  └─ test_init.py
    │  │  ├─ test_config.py
    │  │  └─ test_taxonomy.py
-   │  └─ engines
+   │  ├─ engines
+   │  │  ├─ __init__.py
+   │  │  ├─ hybrid
+   │  │  │  ├─ __init__.py
+   │  │  │  └─ test_weighted.py
+   │  │  ├─ test_in_common.py
+   │  │  └─ test_item_similarity.py
+   │  └─ worker
    │     ├─ __init__.py
-   │     ├─ hybrid
-   │     │  ├─ __init__.py
-   │     │  └─ test_weighted.py
-   │     ├─ test_in_common.py
-   │     └─ test_item_similarity.py
+   │     ├─ test_event.py
+   │     └─ test_recommend.py
    └─ worker
       ├─ __init__.py
       ├─ event.py
@@ -61,6 +68,15 @@
 \end{minted}
 \end{codebox}
 
+\begin{codebox}[framework/.coveragerc]
+\inputminted{text}{./includes/source/framework/.coveragerc}
+\end{codebox}
+\begin{codebox}[framework/.scrutinizer.yml]
+\inputminted{yaml}{./includes/source/framework/.scrutinizer.yml}
+\end{codebox}
+\begin{codebox}[framework/.travis.yml]
+\inputminted{yaml}{./includes/source/framework/.travis.yml}
+\end{codebox}
 \begin{codebox}[framework/api/\string_\string_init\string_\string_.py]
 \inputminted{py}{./includes/source/framework/api/\string_\string_init\string_\string_.py}
 \end{codebox}
@@ -73,8 +89,8 @@
 \begin{codebox}[framework/api.wsgi]
 \inputminted{py}{./includes/source/framework/api.wsgi}
 \end{codebox}
-\begin{codebox}[framework/config/config.xml]
-\inputminted{xml}{./includes/source/framework/config/config.xml}
+\begin{codebox}[framework/config/config.xml.dist]
+\inputminted{s}{./includes/source/framework/config/config.xml.dist}
 \end{codebox}
 \begin{codebox}[framework/config/config.xsd]
 \inputminted{xml}{./includes/source/framework/config/config.xsd}
@@ -153,6 +169,15 @@
 \end{codebox}
 \begin{codebox}[framework/tests/engines/test\string_item\string_similarity.py]
 \inputminted{py}{./includes/source/framework/tests/engines/test\string_item\string_similarity.py}
+\end{codebox}
+\begin{codebox}[framework/tests/worker/\string_\string_init\string_\string_.py]
+\inputminted{py}{./includes/source/framework/tests/worker/\string_\string_init\string_\string_.py}
+\end{codebox}
+\begin{codebox}[framework/tests/worker/test\string_event.py]
+\inputminted{py}{./includes/source/framework/tests/worker/test\string_event.py}
+\end{codebox}
+\begin{codebox}[framework/tests/worker/test\string_recommend.py]
+\inputminted{py}{./includes/source/framework/tests/worker/test\string_recommend.py}
 \end{codebox}
 \begin{codebox}[framework/worker/\string_\string_init\string_\string_.py]
 \inputminted{py}{./includes/source/framework/worker/\string_\string_init\string_\string_.py}

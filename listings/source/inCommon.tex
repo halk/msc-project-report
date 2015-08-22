@@ -2,6 +2,7 @@
 \begin{minted}{text}
 └─ engines
    └─ inCommon
+      ├─ .travis.yml
       ├─ Gomfile
       ├─ api
       │  ├─ handlers.go
@@ -24,6 +25,7 @@
       │  ├─ event_test.go
       │  ├─ recommend.go
       │  └─ recommend_test.go
+      ├─ log
       ├─ main.go
       ├─ model
       │  ├─ recommendation.go
@@ -40,6 +42,9 @@
 \end{minted}
 \end{codebox}
 
+\begin{codebox}[engines/inCommon/.travis.yml]
+\inputminted{yaml}{./includes/source/engines/inCommon/.travis.yml}
+\end{codebox}
 \begin{codebox}[engines/inCommon/Gomfile]
 \inputminted{ruby}{./includes/source/engines/inCommon/Gomfile}
 \end{codebox}

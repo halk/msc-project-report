@@ -2,10 +2,13 @@
 \begin{minted}{text}
 └─ engines
    └─ itemSimilarity
+      ├─ .scrutinizer.yml
+      ├─ .travis.yml
       ├─ composer.json
-      ├─ composer.lock
+      ├─ config
+      │  └─ config.php.dist
       ├─ log
-      ├─ phpunit.xml
+      ├─ phpunit.xml.dist
       ├─ src
       │  ├─ Koklu
       │  │  ├─ Entity
@@ -35,11 +38,20 @@
 \end{minted}
 \end{codebox}
 
+\begin{codebox}[engines/itemSimilarity/.scrutinizer.yml]
+\inputminted{yaml}{./includes/source/engines/itemSimilarity/.scrutinizer.yml}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/.travis.yml]
+\inputminted{yaml}{./includes/source/engines/itemSimilarity/.travis.yml}
+\end{codebox}
 \begin{codebox}[engines/itemSimilarity/composer.json]
 \inputminted{json}{./includes/source/engines/itemSimilarity/composer.json}
 \end{codebox}
-\begin{codebox}[engines/itemSimilarity/phpunit.xml]
-\inputminted{xml}{./includes/source/engines/itemSimilarity/phpunit.xml}
+\begin{codebox}[engines/itemSimilarity/config/config.php.dist]
+\inputminted{s}{./includes/source/engines/itemSimilarity/config/config.php.dist}
+\end{codebox}
+\begin{codebox}[engines/itemSimilarity/phpunit.xml.dist]
+\inputminted{s}{./includes/source/engines/itemSimilarity/phpunit.xml.dist}
 \end{codebox}
 \begin{codebox}[engines/itemSimilarity/src/Koklu/Entity/Item.php]
 \inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Entity/Item.php}

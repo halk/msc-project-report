@@ -18,22 +18,22 @@ LAST_TAB_PREFIX = '   '
 
 CONF = {
     'magento': {
-        'locations': ['demos/magento/'],
-        'exclude': ['.gitkeep', 'pub'],
+        'locations': ['demo'],
+        'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md', 'pub'],
         'softExclude': ['composer.lock', '.csv']
     },
     'framework': {
         'locations': ['framework'],
-        'exclude': ['.gitkeep'],
+        'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md'],
         'softExclude': ['monitor.py', 'core/__init__.py', 'tests/__init__.py', 'tests/config/__init__.py', 'tests/core/engine/__init__.py', 'tests/engines/hybrid/__init__.py']
     },
     'inCommon': {
         'locations': ['engines/inCommon'],
-        'exclude': ['.gitkeep']
+        'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md']
     },
     'itemSimilarity': {
         'locations': ['engines/itemSimilarity'],
-        'exclude': ['.gitkeep'],
+        'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md'],
         'softExclude': ['composer.lock']
     },
     'provision': {
@@ -52,6 +52,8 @@ EXT2LANG = {
     'Vagrantfile': 'ruby',
     'pp': 'puppet',
     'gitmodules': 'text',
+    'coveragerc': 'text',
+    'yml': 'yaml'
 }
 
 def get_file_dict(locations, exclude):
@@ -149,6 +151,8 @@ for moduleName, module in CONF.iteritems():
     for f in files:
         lang = f.rsplit('.')
         lang = lang[len(lang)-1]
+        if lang == 'dist':
+            lang = lang[len(lang) - 2]
 
         if lang.find('/') != -1:
             lang = f.rsplit('/')

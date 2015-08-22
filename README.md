@@ -13,11 +13,30 @@ Supervised by Nigel Martin
 
 ## Build
 
-1. Install MacTeX
-2. Clone this repository and browse to the created directory in a terminal
-3. Run `xelatex -shell-escape index.tex`
-4. You may want to run this two or three times (so that e.g. table of content are loaded after the first compilation)
+1. Install [MacTeX](https://tug.org/mactex/mactex-download.html).
+2. Clone this repository and browse to the created directory in a terminal.
+3. Run `xelatex -shell-escape index.tex`.
+4. You may want to run this two or three times (so that e.g. table of content are loaded after the first compilation).
 5. To re-compile bibliography, run `bibtex index.aux`. Repeat 3.
+
+Built with source code listing
+
+6. Uncomment `\input` tags in `sections/appendices.tex`.
+7. Run
+
+```bash
+$ git submodule update --init
+$ cd includes/source
+$ git submodule init
+$ git submodule update demo
+$ git submodule update engines/inCommon
+$ git submodule update engines/itemSimilarity
+$ git submodule update framework
+$ cd ../../scripts/parse_source
+$ python parse.py
+```
+
+9. Repeat step 3.
 
 ## License
 
