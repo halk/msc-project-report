@@ -4,9 +4,9 @@
 
 A \emph{recommender system} is a software which suggests useful items to a user usually on a website. A user is typically assisted in their search process on the website to find the right item. Recommender systems are able to personalise so that they try to suggest only items relevant for the given user. In order to do this recommender systems rely on multiple techniques, notably \emph{collaborative filtering} and \emph{content-based filtering}.
 
-Recommender systems are usually tightly coupled to the domain and system architecture. Bespoke recommender systems may be very dependent on the system's database structure as well as technical constraints such as programming languages. This project aimed to develop and evaluate a framework for various recommenders which hides the complexity from external systems and ultimately makes it easy to integrate.
+Recommender systems are usually tightly coupled to the domain and system architecture. Bespoke recommender systems may be very dependent on the system's data model as well as technical constraints such as programming languages. The adaption of recommender systems require knowledge and expertise in both domain and recommender systems. The effort would add more complexity and dependencies to systems, which are probably complex themselves, making change very expensive and time consuming. Being tightly coupled, a recommender implementation is very likely to be incompatible for another use case.
 
-I have covered the topics \emph{background research} and \emph{objectives} in-depth in the project proposal. Nonetheless, the following two sections offer a brief summary of those with \emph{background research} illustrating the concepts and terminology for this report, and \emph{objectives} providing the framework for architecture and evaluation.
+This project aimed to develop and evaluate approaches to unscramble this complexity by abstraction so that domain and recommender systems are independent and insular from each other. Second, the integration of both is to be simplified and eased. Third, the re-usability and interoperability of various recommender systems is to be empowered. Finally, this project is to allow the unconstrained utilisation of the most appropriate technologies for the individual use case.
 
 \section{Background Research}
 
@@ -60,28 +60,9 @@ Content-based recommendation methods make use of item features to find similar i
 
 Hybrid recommender systems make use of two or more individual recommender systems -- hereinafter referred to as components -- to combine aforementioned techniques. One possible motivation of using hybrid systems may be to overcome weaknesses of one approach by combining it with another. However it is also possible to combine systems implementing the same technique but e.g. using different data sources.
 
-There are many possible ways of combining techniques which I have illustrated in the proposal. In this project, a \emph{weighted} hybrid recommender was implemented which combines the scores of recommender components using a linear formula. A score is a numerical rank attached to items.
+There are many possible ways of combining techniques which are outlined in the proposal. In this project, a \emph{weighted} hybrid recommender was implemented which combines the scores of recommender components using a linear formula. A score is a numerical rank attached to items.
 
 \section{Objectives}
-
-\emph{Status: Draft. 10/8}
-
-As mentioned in the introduction, this project aimed to develop a framework for recommenders which fulfills the following objectives:
-
-\subsection{Multi-Purpose \& Interoperability}
-\label{intro-objectives-multipurpose}
-
-\emph{Status: Draft. Last Updated 10/8}
-
-A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques. Ideally this system is extendable for possible forthcoming, yet unknown requirements.
-
-This multi-purposefulness can be also described in the interoperability between recommender systems. \citet{manouselis07} differentiate between three criteria:
-
-\begin{description}
-    \item[Interoperability of the recommendation queries] which allows the same query to be reused. This can be achieved by variable parameters in the query.
-    \item[Interoperability of the user and the domain models] which allows the exchange of models and other data among different recommender systems.
-    \item[Interoperability of the recommendation results] which empowers recommender systems to reuse the results. This is in particular useful for hybrid recommender systems. Although I wrote in the proposal that there is no use case for this in the project, I came to the conclusion that the implemented solution is actually a perfect basis to achieve this. So after all, the evaluation of the project will include this criterion.
-\end{description}
 
 \subsection{Abstraction}
 \label{intro-objectives-abstraction}
@@ -103,13 +84,28 @@ This objective aims a separation of a system into smaller, loose coupled compone
 
 \emph{Status: Draft. Last Updated 10/8}
 
-The complexity and cost of integration of new systems into existing applications is a major constraint for many projects. This objective covers the ease of integration of applications as well as new recommender techniques. It is measured by the complexity, code footprint, interactions and data volumes of the interfaces.
+The complexity and cost of integration of new systems into existing applications is a major constraint for many projects. This objective covers the ease of integration of applications as well as new recommender techniques. It is measured by the complexity, code footprint, interactions and data volumes of the communication interfaces.
+
+\subsection{Multi-Purpose \& Interoperability}
+\label{intro-objectives-multipurpose}
+
+\emph{Status: Draft. Last Updated 22/8}
+
+A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques. Ideally this system is extendable for possible forthcoming, yet unknown requirements.
+
+This multi-purposefulness can be also described in the interoperability between recommender systems. \citet{manouselis07} differentiate between three criteria:
+
+\begin{description}
+    \item[Interoperability of the recommendation queries] which allows the same query to be reused. This can be achieved by variable parameters in the query.
+    \item[Interoperability of the user and the domain models] which allows the exchange of models and other data among different recommender systems.
+    \item[Interoperability of the recommendation results] which empowers recommender systems to reuse the results. This is in particular useful for hybrid recommender systems.
+\end{description}
 
 \subsection{Technological Unbiasedness}
 
-\emph{Status: Draft. Last Updated 10/8}
+\emph{Status: Draft. Last Updated 22/8}
 
-In my proposal I stated another objective to build a mechanism which allows the integration of various recommender techniques to \emph{coexist} and \emph{cooperate}. This was certainly a vague and confusing statement. With \emph{coexistence} I meant that this project should support various recommender techniques and solutions regardless of technology, language, storage technology and operating system. Furthermore, \emph{cooperation} emphasises the aforementioned interoperability between those recommenders.
+The proposal inarticulately stated another objective to build a mechanism which allows the integration of various recommender techniques to \emph{coexist} and \emph{cooperate}. \emph{Coexistence} refers to supporting various recommender techniques and solutions regardless of technology, language, storage technology and operating system. Furthermore, \emph{cooperation} emphasises the aforementioned interoperability between those recommenders.
 
 \section{Structure of the Report}
 
