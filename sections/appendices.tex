@@ -1,48 +1,62 @@
 \section{User Manuals}
 
+\subsection{Content of the enclosed DVD}
+
+\emph{Status: Draft. Updated 22/8}
+
+A DVD is enclosed in the report which has the following directories:
+
+\begin{description}
+    \item[Prerequisites] Software installers for \emph{Windows} and \emph{Mac OS X}.
+    \item[Report] Digital copy of this report and the proposal.
+    \item[Source Code] Two variations are included: \emph{source} (only self-implemented) and \emph{build} (includes external dependencies and media files)
+    \item[Virtual Machines] Ready-to-run virtual machines for \emph{VirtualBox} and \emph{VMWare}
+\end{description}
+
 \subsection{Installation \& Provisioning}
 
 \subsubsection{System Requirements}
 
-\emph{Status: Draft. Updated 9/8}
+\emph{Status: Draft. Updated 22/8}
 
 In order to run the implemented software the following system resources are required:
 
 \begin{itemize}
-\item \emph{x86} hardware with at least 4GB \emph{RAM} and 3GB free disk space
+\item \emph{x86} hardware with 3GB available \emph{RAM} and 3GB free disk space
 \item \emph{Windows} (\emph{XP} and later), \emph{Mac OS X} and most \emph{Linux} distributions
 \item \href{https://www.virtualbox.org/wiki/Downloads}{VirtualBox} or \href{http://www.vmware.com/products/fusion/}{VMWare} (commercial)
 \item \href{http://www.vagrantup.com/downloads.html}{Vagrant}. If \emph{VMWare} is used, the commercial \href{https://www.vagrantup.com/vmware}{Vagrant VMWare plugin} will be required as well.
-\item a \href{https://git-scm.com/}{git} client
-\item An \emph{SSH client} (e.g. \emph{PuTTY} for \emph{Windows} users, built-in for \emph{Mac OS X} and \emph{Linux} users)
+\item \href{https://git-scm.com/}{Git}
+\item Terminal
 \end{itemize}
 
-\subsubsection{Install Project Software}
+\subsubsection{Install Project Software From DVD}
 
-\emph{Status: Draft. Public Git URL missing. Updated 9/8}
+\emph{Status: Draft. Updated 22/8}
 
-Choose a directory on your system for the software (e.g. \texttt{~/src/}). Run the following commands in a terminal (e.g. \emph{PowerShell} on \emph{Windows}):
+\begin{itemize}
+\item Choose and open a directory on your system for the software (e.g. \texttt{\$HOME/src/}).
+\item Copy the folder \texttt{Source Code/Build} from the DVD and rename to \texttt{project}.
+\item Copy the folder \texttt{Virtual Machines} from the DVD
+\end{itemize}
+
+\subsubsection{Install Project Software With Git}
+
+\emph{Status: Draft. Updated 22/8}
+
+Choose a directory on your system for the software (e.g. \texttt{\$HOME/src/}) and run the following commands in a terminal (e.g. \emph{PowerShell} on \emph{Windows}):
 
 \begin{minted}{bash}
-    $ git clone --recursive https://URL_TO_REPOSITORY project
+    $ git clone --recursive https://github.com/halk/recowise-vagrant project
 \end{minted}
 
-\subsubsection{Install Virtual Machine}
+\subsubsection{Boot Virtual Machine}
 
-\emph{Status: Draft. Updated 9/8}
-
-For \emph{VirtualBox} Users:
+\emph{Status: Draft. Updated 22/8}
 
 \begin{minted}{bash}
     $ cd project
-    $ vagrant up --provider=virtualbox
-\end{minted}
-
-For \emph{VMWare} Users:
-
-\begin{minted}{bash}
-    $ cd project
-    $ vagrant up --provider=vmware_fusion
+    $ vagrant up
 \end{minted}
 
 In some cases the provisioning can have issues which can be usually resolved by re-running the provision command:
@@ -93,6 +107,7 @@ Connect to virtual machine:
 \emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
+\item Project Home: \url{https://github.com/halk/recowise}
 \item Path to code: \texttt{/vagrant/framework}
 \item Path to log files: \texttt{/vagrant/demos/framework/log}
 \item API Endpoint: \url{http://api.msc.koklu.me/}
@@ -129,6 +144,7 @@ Restart recommend worker:
 \emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
+\item Project Home: \url{https://github.com/halk/in-common}
 \item Path to code: \texttt{/vagrant/engines/inCommon}
 \item Path to log files: \texttt{/vagrant/engines/inCommon/log}
 \item API Endpoint: \url{http://msc.koklu.me:8080/}
@@ -163,6 +179,7 @@ Restart recommend worker:
 \emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
+\item Project Home: \url{https://github.com/halk/item-similarity}
 \item Path to code: \texttt{/vagrant/engines/itemSimilarity}
 \item Path to log files: \texttt{/vagrant/engines/itemSimilarity/log}
 \item API Endpoint: \url{http://itemsimilarity.msc.koklu.me/}
@@ -191,6 +208,7 @@ Restart recommend worker:
 \emph{Status: Draft. Updated 9/8}
 
 \begin{itemize}
+\item Project Home: \url{https://github.com/halk/recowise-magento2-demo}
 \item Path to code: \texttt{/vagrant/demos/magento}
 \item Path to log files: \texttt{/vagrant/demos/magento/var/log}
 \item Front end: \url{http://magento.msc.koklu.me/}
