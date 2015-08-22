@@ -8,8 +8,8 @@ Supervised by Nigel Martin
 
 ## Links
 
-- Respective [project proposal](https://github.com/msc-project-proposal)
-- Resulting [projects](https://github.com/recowise-vagrant)
+- Respective [project proposal](https://github.com/halk/msc-project-proposal)
+- Resulting [projects](https://github.com/halk/recowise-vagrant)
 
 ## Build
 
