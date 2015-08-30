@@ -92,50 +92,62 @@
 
 \section{Demo Domain System: Magento}
 
-\emph{Status: Not Started}
+Section \ref{architecture-domain-systems} discussed the definition and characteristics of \emph{domain systems} as systems founded on extensive domain knowledge. Although the focus of the project is on the framework and recommendation engines, it was clear from the beginning that they needed to be trialed and demonstrated on a complex domain system. Since e-commerce websites are amongst the major users of recommender systems, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 percent in 2014.
 
-\begin{itemize}
-\item Technical curiosity as a professional Magento1 developer
-\item In contrary to Magento1, custom code is not mixed into several locations and committed all together
-\item Magento2 is loaded via package management and modules are self-sufficient
-\item Using first public beta version, newer versions out but those were not stable enough to demo
-\item Setup script known to change in one of these versions, which makes it incompatible to the provisioning code
-\end{itemize}
+\begin{figure}[!ht]
+    \includegraphics[width=\textwidth,center]{screens/basket.png}
+    \caption{Content-based recommendations on shopping basket}
+    \label{fig:implementation-magento-basket}
+\end{figure}
+
+The authors of Magento are working on a full rewrite of their platform called Magento2 to be released late 2015. This project uses the first release candidate published in March 2015. Albeit Magento2 comes with fundamental technical changes, they do not necessarily make a difference to the purposes of demonstration. Nonetheless the support of the dependency manager \emph{Composer} was principally important to distinct between custom and core code. Secondly, the sample data generator was useful to demo with realistic data.
 
 \subsection{Events}
+\label{implementation-magento-events}
 
-\emph{Status: Not Started}
+Magento comes with an event subsystem in which observers can subscribe to various events -- from very low-level to very specific functions. This helped to keep the required code clean and short.
+
+The following cases are recorded and posted to the framework as events:
 
 \begin{itemize}
-\item Explain user and visitor ID
-\item Explain event subsystem of Magento2
-\item Explain all implemented events for recommender
+\item \emph{Customer views a product}
+\item \emph{Customer adds or removes a product to their wishlist}
+\item \emph{Customer adds a product to their basket}
 \end{itemize}
+
+There are more cases which are interesting in an e-commerce context such as the actual purchase of items. The aforementioned cases have been symbolicly chosen as they do not require too many steps to reproduce. In contrary, a checkout on Magento is a longer process which requires documentation and can be time-consuming on slow development environments. Above all, the \emph{In-Common} recommender requires three occurances of a case to produce a recommendation: the first customer performing a behaviour with another customer doing the same as well as one which the first customer has not experienced yet.
+
+Finally, the customer identification is most of the times part of the event data. A customer who has not logged in yet gets a \emph{visitor ID} assigned to by Magento. This allows behavioural analysis and production of recommendations even for logged out users. Once they log in, the \emph{customer ID} can be used so that the recommendations can source from historic sessions. In order to troubleshoot any issues, all requests and responses to the event API of the framework are logged in a file.
 
 \subsection{Master Data}
 
-\emph{Status: Not Started}
+The master data is exceptionally important for content-based recommenders as they source their recommendations from similarities between item features. In the Magento context, master data refers to the product catalogue and is sent to the framework as regular events. Again, the event subsystem allows to observer product catalogue changes and notify the framework in real-time. On first run or if explicitly wished, the catalogue data can be exported as a whole with a command-line script. This is known as full export and the data is transmitted in batches.
 
-\begin{itemize}
-\item Translates into events
-\item Product save event
-\item Full export via shell script (show performance)
-\item Give numbers
-\item Explain attribute model in Magento
-\item Explain ``Used in recommender'' setting
-\item Explain sample data and fixtures overridden
-\item Explain system attributes
-\end{itemize}
+Magento implements an \emph{entity-attribute-value (EAV)} model. \emph{Entities} are a type of product such as books and phones and are called \emph{attribute sets} in Magento. \emph{Attributes} are fields within a product catalogue and have a value type such as text or numeric amounts. The \emph{values} can be entered freely or chosen from an editable list. The EAV model basically describes that although the number of attributes in a catalogue is vast, only a subset of those are relevant and applicable to an entity -- in practice it means that the attribute \emph{number of pages} is relevant for a book but not for a phone.
+
+\begin{figure}[h]
+    \includegraphics[width=\textwidth,center]{screens/masterdata.png}
+    \caption{Manage Master Data in the Back Office of Magento}
+    \label{fig:implementation-magento-master-data}
+\end{figure}
+
+Magento provides a user interface in the back office to manage these attributes and attribute sets; thus means that the master data can vary extensively between Magento instances. There are so called \emph{system attributes} which remain the same on any Magento instance but the majority of the relevant data would be merchant-specific. In accomodate this, the demo project implements a way for the merchant to mark attributes as \emph{Used in Recommender} which are to be exported to the framework, as shown in figure \ref{fig:implementation-magento-master-data}. However, as the demo project relies on the samle data generator of Magento which creates attributes, setting that mark had to happen dynamically. The sample data generator and its static source data known as \emph{fixtures} have been extended so that a fixture can be replaced by a customised version.
 
 \subsection{Recommendations}
 
-\emph{Status: Not Started}
+The integration of recommendations has been implemented in three parts:
 
-\begin{itemize}
-\item Explain client
-\item Explain recommender models
-\item Explain recommender blocks/widgets
-\end{itemize}
+First, a thin \emph{client} has been written which performs the request and processes the responses to the recommendation API of the framework. All requests and responses are logged in a file for troubleshooting.
+
+Second, a \emph{recommendation model} is implemented for each recommendation configured in the framework such as \emph{viewed products} and \emph{similar items in basket}. The purpose of these model classes is to provide the IDs the recommendation should be based on -- e.g. current user ID for the \emph{viewed products} and product IDs in the basket for \emph{similar items in the basket}. This is based on the requirement that each recommendation is in relation to something. They do not know internals of how the recommendations work. They are derived from an abstract class which reduces the code size of the individual model classes to a minimum. They return a product collection filtered by the product IDs from the recommendation response.
+
+Third, a \emph{recommendation widget} is provided which handles the display of recommendations to the user. Magento widgets are re-usable, configurable blocks which can be placed on the website. The demo project makes use of a universal product listing widget and feeds it with the product collection provided by the recommendation class. Magento enables developers and merchants to customise the layout of their website in a flexible way. The demo project was able to place these widgets on existing page by supplying short XML files. An exception is the widget on the homepage (seen in figure \ref{fig:implementation-magento-homepage}) as that page is managed by the \emph{content management (sub)system (CMS)} of Magento. Since the homepage is part of the sample data, a customised fixture has been provided, as discussed in the previous section.
+
+\begin{figure}[!ht]
+    \includegraphics[width=\textwidth,center]{screens/homepage.png}
+    \caption{Recommendations on the homepage}
+    \label{fig:implementation-magento-homepage}
+\end{figure}
 
 \section{Provisioning}
 
