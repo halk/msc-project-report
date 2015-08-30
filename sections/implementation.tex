@@ -90,7 +90,7 @@
 \item No specific implementation, assisting methods to access components, rest job of the adapter
 \end{itemize}
 
-\section{Demo Application: Magento}
+\section{Demo Domain System: Magento}
 
 \emph{Status: Not Started}
 
@@ -139,29 +139,32 @@
 
 \section{Provisioning}
 
-\emph{Status: Not Started}
+Provisioning refers to the process of preparing an environment which fulfills the requirements to run systems and applications. It involves the installation of languages and libraries as well as proper configuration.
 
-\begin{itemize}
-\item Set up system, vendors and configurations
-\item Not ready for production
-\end{itemize}
+This project relies on the \emph{Linux} operating system and comes with provisioning instructions which are outlined in the next sections.
 
 \subsection{Virtualisation with Vagrant}
 
-\emph{Status: Not Started}
+\emph{Vagrant} is a software that manages virtual environments -- emulated computer systems also known as \emph{virtual machines} -- for development purposes. It enables a development team to standardise their development environments. This is in particular useful when the computer systems of developers vary from the computer system of the development environment -- e.g. a developer on \emph{Windows} working on a software running on Linux -- or among each other -- i.e. developers using different computer systems which would require provisioning instructions for all computer systems used. In order to run Vagrant, a single configuration file called \emph{Vagrantfile} written in \emph{Ruby} is added to the project's \emph{version control system} such as \emph{Git} and therefore shared with the team.
 
-\begin{itemize}
-\item Explain vagrant and Virtualbox/VMWare support
-\item Explain VagrantCloud and reasoning behind this (why not just build directly?)
-\end{itemize}
+Vagrant does not do the virtualisation itself but relies on established virtualisation software such as \emph{VirtualBox} and \emph{VMWare}. It also relies on so called \emph{boxes} -- a barebone installation of a computer system minimally configured for Vagrant -- to bootstrap the virtual machine. Although the project works on any Linux distribution, due to the box requirement of Vagrant the Linux distribution \emph{Ubuntu} (version 14.04) has been used.
+
+Another challenge was the fact that the provisioning instruction calling the sample data generation of \emph{Magento} took so long to an extent that it was unbearable for the project demonstration. It was then decided to package a fully provisioned version of the development environment to a ready-to-go box. \emph{HashiCorp} -- the authors of Vagrant -- provide a service called \emph{Atlas} which allows such boxes to be uploaded and available publicly. Boxes for VirtualBox and VMWare have been uploaded to Atlas since Vagrant boxes are specific to the virtualisation software used. It is rather important to notice that VMWare as well as its Vagrant provider -- the middleware between Vagrant and VMWare -- are both commercial whereas VirtualBox is open-source and free.
+
+Vagrant also provides native support for configuration management software as discussed in the next section.
 
 \subsection{Configuration Management with Puppet}
 
-\emph{Status: Not Started}
+\emph{Puppet} is an open-source software which manages the configuration of \emph{Microsoft Windows}, Linux and other \emph{Unix}-like systems such as \emph{Mac OS X}. This is achieved by describing the expected system configuration in so called \emph{manifest} files written in a custom declarative language derived from \emph{Ruby}. Upon execution, Puppet interprets these manifests into a configuration catalog and compares it against the configuration of one or more new or existing systems. Differences noticed during that step are corrected by Puppet. This ensures the expected configuration on those systems and can be called repetitively.
 
-\begin{itemize}
-\item Infrastructure as code
-\item Puppet/Ruby (mention alternatives Chef, Saltstack and Ansible)
-\item Explain the usage of external modules
-\item In detail explain own modules
-\end{itemize}
+Puppet supports writing manifests for more than one target environment. In fact, most companies are using Puppet to ensure the same configuration (with some variables) on multiple environments such as production, staging and development. In the Vagrant context the Puppet provisioning is called by default when a new virtual machine is created. However, it can also be called explicitly. Since this project utilises Puppet to provision a development environment only, the manifests are not ready for production. Ensuring that essential security measures amongst others changing default passwords were go beyond the scope of this project.
+
+Manifests can be grouped into so called Puppet \emph{modules}. \emph{PuppetLabs} -- the authors of Puppet - operate a community called \emph{PuppetForge} where modules are shared. This project utilised \emph{PuppetForge} modules e.g. for \emph{Apache} and \emph{PHP} where possible. In reality, most such modules are officially authored by PuppetLabs. Nonetheless, not all modules covered all the configuration needs of this project and were thus custom written inter alia for \emph{Magento}, \emph{Neo4j} as well as the \emph{framework} and \emph{recommendation engines}. The Magento module builds dependencies, creates an Apache virtual host and a MySQL database and runs the Magento installer. The Neo4j module installs and configures the Neo4j server. The recommender module configures both framework and two recommendation engines. It creates Apache virtual hosts, installs dependencies, creates \emph{supervisord} programs to manage background processes and sets up \emph{Celery} and \emph{Flower}. External modules are integrated as Git \emph{submodules}. The provisioning source code in \ref{appendix-soure-code-provisioning} only lists manifests written by the project author.
+
+Puppet can be understood as part of the \emph{infrastructure as code} or \emph{programmable infrastructure} initiatives in organisations. It enables version controlling and automation of provisioning infrastructure. Especially infrastructure based on \emph{cloud computing} and \emph{platform as a service (PaaS)} which involve many but constantly changing (e.g. auto-scaling) systems benefit from this. Alternatives to Puppet are \emph{Chef}, \emph{SaltStack} and \emph{Ansible}.
+
+\subsection{Dependency Management}
+
+Dependency management supports the declaration and installation of libraries a software depends on. Whereas system package managers like \emph{Yum} and \emph{Apt} provide a system-wide solution for packages, dependency managers support versioned solution on a per-project basis. Latter is important as two pieces of software may depend on different versions of a dependency. Furthermore, dependency managers are usually tailored for a programming language and allow the distribution of libraries which may not be available as a Yum or Apt package.
+
+As mentioned in the abstract, this work relies on many open-source projects. It was since particularly important to separate own work from those third-party projects. For this, dependency managers were very essential. The \emph{framework} relies on the Python dependency manager \emph{pip}. The \emph{item-similarity} engine as well as the demo application \emph{Magento} use the PHP dependency manager \emph{Composer}. Finally, the \emph{in-common} engine utilises \emph{gom} which adds per-project capabilities to the overall self-sufficient \emph{Go} dependency manager.
