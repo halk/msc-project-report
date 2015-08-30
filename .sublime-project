@@ -1,0 +1,29 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+            "file_exclude_patterns": ["*.pdf", "*.log", "*.blg", "*.out", "*.aux", "*.bbl", "*.lof", "*.toc"]
+		}
+	],
+    "settings": {
+        "word_wrap": true
+    },
+    "build_systems": [
+        {
+            "name": "XeLaTeX",
+            "shell_cmd": "xelatex -shell-escape index.tex && open index.pdf",
+            "working_dir": "${project_path}"
+        },
+        {
+            "name": "BibTeX",
+            "shell_cmd": "bibtex index.aux",
+            "working_dir": "${project_path}"
+        },
+        {
+            "name": "TeX Count",
+            "shell_cmd": "texcount -inc -incbib -sum index.tex",
+            "working_dir": "${project_path}"
+        }
+    ]
+}
