@@ -1,7 +1,5 @@
 \chapter{Introduction}
 
-\emph{Status: Draft. Last Updated 10/8}
-
 A \emph{recommender system} is a software which suggests useful items to a user usually on a website. A user is typically assisted in their search process on the website to find the right item. Recommender systems are able to personalise so that they try to suggest only items relevant for the given user. In order to do this recommender systems rely on multiple techniques, notably \emph{collaborative filtering} and \emph{content-based filtering}.
 
 Recommender systems are usually tightly coupled to the domain and system architecture. Bespoke recommender systems may be very dependent on the system's data model as well as technical constraints such as programming languages. The adaption of recommender systems require knowledge and expertise in both domain and recommender systems. The effort would add more complexity and dependencies to systems, which are probably complex themselves, making change very expensive and time consuming. Being tightly coupled, a recommender implementation is very likely to be incompatible for another use case.
@@ -9,8 +7,6 @@ Recommender systems are usually tightly coupled to the domain and system archite
 This project aimed to develop and evaluate approaches to unscramble this complexity by abstraction so that domain and recommender systems are independent and insular from each other. Second, the integration of both is to be simplified and eased. Third, the re-usability and interoperability of various recommender systems is to be empowered. Finally, this project is to allow the unconstrained utilisation of the most appropriate technologies for the individual use case.
 
 \section{Background Research}
-
-\emph{Status: Draft. Last Updated 10/8}
 
 \citet{ricci11} write that traditional recommendations can be observed in various scenarios, such as a peer's recommendation when buying a book or reviews when choosing a movie. The authority of the recommender has an important role in the acceptance of the recommendation. A renowned film critic may appear more credible than a random colleague. When it comes to car parts, a mechanist may be a good candidate to ask.
 
@@ -20,14 +16,10 @@ Another approach are recommender systems which basically provide a bespoke colle
 
 \subsection{Techniques}
 
-\emph{Status: Draft. Last Updated 10/8}
-
 In the course of development different techniques to compute recommendations emerged. Fundamentally, techniques are classified by the information sources they use. The sources of personalised recommendations are typically user-item interactions (\emph{collaborative filtering}), item features (\emph{content-based filtering}), user features (\emph{demographic filtering}) as well as knowledge about the user and item (\emph{knowledge-based filtering}). Amongst those, the following were implemented in this project:
 
 \subsubsection{Collaborative Filtering}
 \label{intro-bg-tech-collaborative}
-
-\emph{Status: Draft. Last Updated 10/8}
 
 \begin{figure}[ht]
     \includegraphics[width=0.7\textwidth,center]{intro/background/collaborative.pdf}
@@ -43,8 +35,6 @@ Figure \ref{fig:collaborative} illustrates a scenario where the active customer 
 
 \subsubsection{Content-Based Filtering}
 
-\emph{Status: Draft. Last Updated 10/8}
-
 \begin{figure}[ht]
     \includegraphics[width=0.7\textwidth,center]{intro/background/contentbased.pdf}
     \caption{Content-Based Filtering}
@@ -56,18 +46,15 @@ Content-based recommendation methods make use of item features to find similar i
 \subsubsection{Hybrids}
 \label{intro-bg-tech-hybrid}
 
-\emph{Status: Draft. Last Updated 10/8}
-
 Hybrid recommender systems make use of two or more individual recommender systems -- hereinafter referred to as components -- to combine aforementioned techniques. One possible motivation of using hybrid systems may be to overcome weaknesses of one approach by combining it with another. However it is also possible to combine systems implementing the same technique but e.g. using different data sources.
 
 There are many possible ways of combining techniques which are outlined in the proposal. In this project, a \emph{weighted} hybrid recommender was implemented which combines the scores of recommender components using a linear formula. A score is a numerical rank attached to items.
 
 \section{Objectives}
+\label{intro-objectives}
 
 \subsection{Abstraction}
 \label{intro-objectives-abstraction}
-
-\emph{Status: Draft. Last Updated 10/8}
 
 This objective aims a separation of a system into smaller, loose coupled components and suggests the following criteria:
 
@@ -82,14 +69,10 @@ This objective aims a separation of a system into smaller, loose coupled compone
 \subsection{Ease of integration}
 \label{intro-objectives-easeofintegration}
 
-\emph{Status: Draft. Last Updated 10/8}
-
 The complexity and cost of integration of new systems into existing applications is a major constraint for many projects. This objective covers the ease of integration of applications as well as new recommender techniques. It is measured by the complexity, code footprint, interactions and data volumes of the communication interfaces.
 
 \subsection{Multi-Purpose \& Interoperability}
 \label{intro-objectives-multipurpose}
-
-\emph{Status: Draft. Last Updated 22/8}
 
 A \emph{multi-purpose} recommender system is able to cope with different data sources and techniques. Ideally this system is extendable for possible forthcoming, yet unknown requirements.
 
@@ -103,13 +86,9 @@ This multi-purposefulness can be also described in the interoperability between 
 
 \subsection{Technological Unbiasedness}
 
-\emph{Status: Draft. Last Updated 22/8}
-
 The proposal inarticulately stated another objective to build a mechanism which allows the integration of various recommender techniques to \emph{coexist} and \emph{cooperate}. \emph{Coexistence} refers to supporting various recommender techniques and solutions regardless of technology, language, storage technology and operating system. Furthermore, \emph{cooperation} emphasises the aforementioned interoperability between those recommenders.
 
 \section{Structure of the Report}
-
-\emph{Status: Draft. Last Updated 10/8}
 
 \begin{description}
     \item[Section 3] illustrates the architecture and concepts of various systems of the project.
