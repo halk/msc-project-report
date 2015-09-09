@@ -69,11 +69,11 @@ A \emph{recommender} is an instance or in other words use case of a recommender 
 \begin{figure}[ht]
     \begin{minted}{xml}
     <recommenders>
-        <recommender name=``common_products_wishlisted'' engine=``in_common''>
-            <on event=``added_to_wishlist'' do=``post'' />
-            <on event=``removed_from_wishlist'' do=``delete'' />
-            <taxonomy inherit=``user_product''>
-                <taxon name=``relationship''>WISHLISTED</taxon>
+        <recommender name="common_products_wishlisted" engine="in_common">
+            <on event="added_to_wishlist" do="post" />
+            <on event="removed_from_wishlist" do="delete" />
+            <taxonomy inherit="user_product">
+                <taxon name="relationship">WISHLISTED</taxon>
             </taxonomy>
         </recommender>
     </recommenders>
@@ -90,10 +90,10 @@ This project implemented a \emph{weighted} hybrid recommender, which queries all
 
 \begin{figure}[ht]
     \begin{minted}{xml}
-        <hybrid_recommender name=``interesting_products'' engine=``weighted''>
+        <hybrid_recommender name="interesting_products" engine="weighted">
             <components>
-                <component name=``views'' recommender=``common_products_viewed'' />
-                <component name=``wishlists'' recommender=``common_products_wishlisted'' />
+                <component name="views" recommender="common_products_viewed" />
+                <component name="wishlists" recommender="common_products_wishlisted" />
             </components>
         </hybrid_recommender>
     \end{minted}
@@ -108,13 +108,13 @@ A \emph{taxonomy} is a mapping concept between domain and recommender terminolog
 \begin{figure}[ht]
     \begin{minted}{xml}
         <taxonomies>
-            <taxonomy name=``base''>
-                <taxon name=``limit''>limit</taxon>
+            <taxonomy name="base">
+                <taxon name="limit">limit</taxon>
             </taxonomy>
-            <taxonomy name=``user'' inherit=``base''>
-                <taxon name=``subject''>user</taxon>
-                <taxon name=``subject_id''>user_id</taxon>
-                <taxon name=``relationship''>VIEWED</taxon>
+            <taxonomy name="user" inherit="base">
+                <taxon name="subject">user</taxon>
+                <taxon name="subject_id">user_id</taxon>
+                <taxon name="relationship">VIEWED</taxon>
             </taxonomy>
         </taxonomies>
     \end{minted}
