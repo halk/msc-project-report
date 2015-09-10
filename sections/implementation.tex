@@ -160,6 +160,7 @@ Figure \ref{fig:implementation-framework-configuration} shows a shortened config
 The project also provides an \emph{XML schema definition (XSD)} which can be used to validate a framework configuration.
 
 \subsection{Engine Adapters}
+\label{implementation-framework-engine-adapter}
 
 \emph{Engine adapters} are thin clients to recommender engines. The formal requirement is that they implement a \texttt{recommend} method as well as methods used in event subscriptions. Other than that it is completely flexible in how the engine is called. For convenience, the abstract base class provides a RESTful skeleton which is used by the engine adapters implemented in this project such as the \emph{item-similarity} adapter (see Figure \ref{fig:implementation-framework-engine-adapter}). Engine adapters have access to engine settings defined in the configuration file such as a \emph{uniform resource locator (URL)}.
 
@@ -233,12 +234,23 @@ The project utilises \emph{nosetests} to run the tests. Furthermore, the \emph{S
 
 \subsection{Hybrid Recommender: Weighted}
 
-\emph{Status: Not Started}
+Returning to the hybrid recommender engine \emph{weighted} which has already been touched on in section \ref{implementation-framework-engine-adapter} and illustrated in Figure \ref{fig:implementation-framework-hybrid-engine-adapter}, this section provides a brief explanation on how the scores are combined by weighting. Weighting in this scenario relate to preferring the results of a  component over the others.
 
-\begin{itemize}
-\item Weight
-\item No specific implementation, assisting methods to access components, rest job of the adapter
-\end{itemize}
+This particular weighted implementation first fetches recommendations from each component recommender engine. The recommendations come with a score attached to it -- a numeric value indicating a level of preference over the other recommendations. The engine has a weight configured as a setting which is preferably a value between 0 and 1 so that the sum of all weights is 1. While looping through each component's recommendations, the score of the recommendation is multiplied with the respective weight for the component (see Figure \ref{fig:implementation-weighted}). This has a dampening effect on the scores. Then, the sets of recommendations are merged into one set. If a recommendation exists in more than one set, then the scores added together. Finally, this merged set is sorted by score in descending order.
+
+\begin{figure}[!ht]
+    \begin{tabular}{|
+    >{\columncolor[HTML]{ECF4FF}}l |
+    >{\columncolor[HTML]{ECF4FF}}r |r|r|r|r|}
+    \hline
+    \cellcolor[HTML]{BBDAFF}{\color[HTML]{000000} {\bf recommender}} & \multicolumn{1}{c|}{\cellcolor[HTML]{BBDAFF}{\color[HTML]{000000} {\bf weight}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{BBDAFF}{\color[HTML]{000000} {\bf item A}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{BBDAFF}{\color[HTML]{000000} {\bf item B}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{BBDAFF}{\color[HTML]{000000} {\bf item C}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{BBDAFF}{\color[HTML]{000000} {\bf item D}}} \\ \hline
+    viewed\_products                                                 & 0.25                                                                             & 1                                                                                & 0.75                                                                             & 0.5                                                                              & 1                                                                                \\ \hline
+    wishlisted\_products                                             & 0.75                                                                             & 0.5                                                                              & 0.95                                                                             & 0.3                                                                              & 1                                                                                \\ \hline
+    {\bf \it interesting\_products (weighted)}                       & {\bf \it 1}                                                                      & {\bf \it 0.625}                                                                  & {\bf \it 0.9}                                                                    & {\bf \it 0.35}                                                                   & {\bf \it 1}                                                                      \\ \hline
+    \end{tabular}
+    \caption{Weighted Hybrid Engine: Apply Weight}
+    \label{fig:implementation-weighted}
+\end{figure}
 
 \section{Demo Domain System: Magento}
 
