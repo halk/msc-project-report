@@ -1,55 +1,205 @@
-\chapter{Implementation}
+\chapter{Implementation \& Testing}
+
+This chapter not only discusses the technological details of this project but also introduces concrete implementations of two recommender systems as well as one domain system.
+
+From the very start of this project, it was planned to use free and open-source technologies -- from database management systems to re-usable software libraries. Beside being a well-established best practice in the software programming, the main motivation for this is to avoid software code which is trivial and not contributing to the objectives of the project. It would have gone beyond the scope of this project to build everything from scratch. In fact, by using open-source technology the resulting software code has become very compact and readable.
 
 \section{Framework}
 
-\emph{Status: Not Started}
+The framework has been written in \emph{Python} and is entirely object-oriented. The source code is grouped into modules. The directory structure is as follows:
 
-\begin{itemize}
-\item Entirely based on Python
-\item Explain dropping of Nodejs in favor of Python (due to Celery)
-\end{itemize}
+\begin{description}
+    \item[api] implements the \emph{application programming interface (API)}
+    \item[config] holds the configuration file as well as the XML schema definition.
+    \item[core] provides classes processing the configuration file as well as taxonomies. Furthermore, the engine submodule implements abstract base classes for engine adapters.
+    \item[engines] contains engine adapter classes. In this case, it has adapters for the engines \emph{in-common}, \emph{item-similarity} and the hybrid engine \emph{weighted}.
+    \item[log] has log files which are useful to troubleshoot problems.
+    \item[tests] defines a unit test suite.
+    \item[worker] implements the workers for Event and Recommend
+    \item[api.wsgi] is the WSGI server loaded by Apache and runs the API.
+    \item[config.py] loads the configuration and makes it available for other classes in the source code.
+    \item[monitor.py] reloads the WSGI server when local changes to Python files were detected. The author of this particular file has been acknowledged in the source code.
+    \item[requirements.txt] holds the name and versions of Python libraries the framework is depending on. It is used by the Python dependency manager \emph{pip}.
+\end{description}
+
+The framework has no persistence at all and thus does not utilise a database management system. As mentioned in the section \ref{architecture-framework}, it operates as middleware between domain and recommender systems, therefore relying on those to handle their persistence requirements. as far as the framework is concerned, there is no need or purpose to persist data.
 
 \subsection{API}
 
-\emph{Status: Not Started}
+The \emph{application programming interface (API)} of the framework is based on the popular, so-called micro web application framework \emph{Flask}. The notation of micro refers to the fact, that Flask is very minimal and has almost no constraints on other technologies such as database management systems.
 
-\begin{itemize}
-\item POST, DELETE and GET methods
-\end{itemize}
+Although Flask is RESTful compliant by default, the Flask extension \emph{Flask-RESTful} was used in this project. Where Flask associates a call back to a route such as \texttt{/event}, Flask-RESTful associates a resource class and method e.g. Event and \emph{post} to the route (Figure \ref{fig:implementation-framework-api-event}).
 
-\subsection{Task Queue \& Celery}
+\begin{figure}[ht]
+    \inputminted{py}{./includes/source/framework/api/event.py}
+    \caption{Framework: Event API}
+    \label{fig:implementation-framework-api-event}
+\end{figure}
 
-\emph{Status: Not Started}
+Additionally, the API makes use of the \emph{Blueprint} feature of Flask which allows the implementation of independent APIs and its subscription to the main API with a prefix (Figure \ref{fig:implementation-framework-api}).
 
-\begin{itemize}
-\item Celery for Task Queue
-\item Flower utility app
-\item Based RabbitMQ
-\end{itemize}
+\begin{figure}[ht!]
+    \begin{minted}{python}
+from flask import Flask
+from config import config
+
+# setting up flask
+app = Flask(__name__)
+celery = config.get_celery('worker')
+
+# setting up logging
+# [...]
+
+# registering submodules
+from api.event import event
+from api.recommend import recommend
+
+app.register_blueprint(event, url_prefix='/event')
+app.register_blueprint(recommend, url_prefix='/recommend')
+
+# default route
+
+@app.route("/")
+def hello():
+    return "Welcome to the Multi-Purpose Recommender Framework!"
+    \end{minted}
+    \caption{Framework: API}
+    \label{fig:implementation-framework-api}
+\end{figure}
+
+The API uses the \emph{JavaScript Object Notation (JSON)} format data and is served by the open-source web server \emph{Apache} as a virtual host through the \emph{web server gateway interface (WSGI)} and listens to requests at \texttt{api.msc.koklu.me}.
+
+It was originally proposed to use \emph{NodeJS} and \emph{express} for the API. However it was chosen to use Python for the following reasons. First, the rest of the framework was going to be in Python and the task queue management software \emph{Celery}, which is going to be introduced in the next section, is working most elegantly with Python. Second, there was no exclusive benefit by implementing the API in NodeJS. Third, Flask provides the same minimalistic approach to defining routes as express.
+
+\subsection{Worker \& Task Queue}
+
+The project relies on the task queue \emph{Celery} to establish an asynchronous and selectively synchronous communication between the API and workers. Celery is written in Python and supports multiple brokers such as \emph{RabbitMQ} and \emph{Beanstalk}. Former is used as broker in this project. The Event API is calling its worker asynchronously -- thus not waiting for a response (queue \& forget) -- whereas the Recommend API is doing that synchronously. Figure \ref{fig:implementation-framework-worker} lists the source code of the event worker which is upon request going through all observers subscribed to the given event and calls the configured event method on the engine adapter.
+
+\begin{figure}[ht]
+    \inputminted{py}{./includes/source/framework/worker/event.py}
+    \caption{Framework: Event Worker}
+    \label{fig:implementation-framework-worker}
+\end{figure}
+
+It was initially intended to use RabbitMQ natively as a message bus implementing the \emph{advanced message queuing protocol (AMQP)}. However, while looking for RabbitMQ client libraries and elegant ways to manage the overhad of using message buses for distributing tasks, Celery came up which abstracts that complexity completely. Tasks can be run as if they are a regular method in the source code (see Figure \ref{fig:implementation-framework-api-event}).
+
+Flower is an administrative interface for Celery providing a real-time monitor and can be accessed at \texttt{http://flower.msc.koklu.me} (Figure \ref{fig:implementation-framework-flower}).
+
+\begin{figure}[ht]
+    \includegraphics[width=\textwidth,center]{screens/flower.png}
+    \caption{Administrative Interface Flower for Celery}
+    \label{fig:implementation-framework-flower}
+\end{figure}
 
 \subsection{Configuration}
 
-\emph{Status: Not Started}
+\begin{figure}[ht!]
+    \begin{minted}{xml}
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./config.xsd">
+    <recommenders>
+        <!-- [...] -->
+        <recommender name="similar_products_in_basket" engine="item_similarity">
+            <on event="saved_product" do="post" />
+            <on event="deleted_product" do="delete" />
+            <taxonomy inherit="base">
+                <taxon name="item_id">sku</taxon>
+                <taxon name="itemIds">sku</taxon>
+                <taxon name="attributes">data</taxon>
+            </taxonomy>
+        </recommender>
+        <hybrid_recommender name="interesting_products" engine="weighted">
+            <components>
+                <component name="views" recommender="common_products_viewed" />
+                <component name="wishlists" recommender="common_products_wishlisted" />
+            </components>
+            <settings>
+                <weight>
+                    <views>0.25</views>
+                    <wishlists>0.75</wishlists>
+                </weight>
+            </settings>
+        </hybrid_recommender>
+    </recommenders>
+    <taxonomies>
+        <taxonomy name="base">
+            <taxon name="limit">limit</taxon>
+        </taxonomy>
+        <!-- [...] -->
+    </taxonomies>
+    <engines>
+        <engine name="in_common">
+            <settings>
+                <base_url>http://localhost:8080/</base_url>
+            </settings>
+        </engine>
+        <!-- [...] -->
+    </engines>
+    <settings>
+        <celery>
+            <broker>amqp://framework:framework@localhost:5672/framework</broker>
+            <backend>redis://localhost</backend>
+        </celery>
+    </settings>
+</config>
+    \end{minted}
+    \caption{Framework: Shortened XML configuration}
+    \label{fig:implementation-framework-configuration}
+\end{figure}
 
-\begin{itemize}
-\item Config.xml
-\item XSD schema
-\end{itemize}
+Figure \ref{fig:implementation-framework-configuration} shows a shortened configuration file of the framework and is explained as follows:
+
+\begin{description}
+    \item[recommenders/recommender] defines a recommender by name and the engine to be used. Furthermore it has a list of events it subscribes to (\texttt{on}) where the \texttt{do} attribute refers to the method of the engine adapter to be called when the event occurs. A recommender also defines a taxonomy which usually inherits from a global taxonomy.
+    \item[recommenders/hybrid_recommender] defines a hybrid recommender which consists of two or more components. It may also have some settings which can be accessed by the engine adapter.
+    \item[taxonomies/taxonomoy] defines a global taxonomy which is a terminology mapper between domain and recommender systems. It may inherit from another taxonomy. A taxonomy consists of taxon elements which describe a single mapping.
+    \item[engines/engine] holds settings for engines.
+    \item[settings] hold global settings of the framework such as connection details for Celery.
+\end{description}
+
+The project also provides an \emph{XML schema definition (XSD)} which can be used to validate a framework configuration.
 
 \subsection{Engine Adapters}
 
-\emph{Status: Not Started}
+\emph{Engine adapters} are thin clients to recommender engines. The formal requirement is that they implement a \texttt{recommend} method as well as methods used in event subscriptions. Other than that it is completely flexible in how the engine is called. For convenience, the abstract base class provides a RESTful skeleton which is used by the engine adapters implemented in this project such as the \emph{item-similarity} adapter (see Figure \ref{fig:implementation-framework-engine-adapter}). Engine adapters have access to engine settings defined in the configuration file such as a \emph{uniform resource locator (URL)}.
 
-\begin{itemize}
-\item Thin clients for engines
-\item Hybrid
-\end{itemize}
+\begin{figure}[!ht]
+    \inputminted{py}{./includes/source/framework/engines/item\string_similarity.py}
+    \caption{Framework: Item-Similarity Engine Adapter}
+    \label{fig:implementation-framework-engine-adapter}
+\end{figure}
 
-\emph{Status: Not Started}
+Engine adapters for hybrid engines are more than just thin clients. Their formal requirement is to implement a \texttt{recommend} method without any event methods. In this method they have full flexibility on how to make use of the components. Figure \ref{fig:implementation-framework-hybrid-engine-adapter} shows the implementation of the \emph{weighted} hybrid engine adapter.
 
-\begin{itemize}
-\item Functional testing and unit testing
-\end{itemize}
+\begin{figure}[!ht]
+    \begin{minted}{py}
+from collections import OrderedDict
+from core.engine.hybrid import HybridEngine as ParentHybridEngine
+
+class HybridEngine(ParentHybridEngine):
+    def recommend(self, body):
+        return self.merge(self.apply_weight(self.get_results(body)))
+
+    def get_results(self, body):
+        results = {}
+        for name, component in self.components.iteritems():
+            result = component.recommend(body, True)
+            if result:
+                results[name] = result
+
+        return results
+
+    # [...] implementations of merge and apply_weight
+    \end{minted}
+    \caption{Framework: Weighted Hybrid Engine Adapter}
+    \label{fig:implementation-framework-hybrid-engine-adapter}
+\end{figure}
+
+\subsection{Testing}
+
+The implementation of the framework makes extensive use of automated \emph{unit tests}. Unit testing is a software testing method which validates the correctness and executability pieces of software code (\emph{units}) such as functions, methods and classes. In fact, the 39 unit tests provided have a code coverage of one hundred per cent which means that every line of code is passed during one or more unit tests. These unit tests are testing the API, the validity of the XML configuration, core classes, engine adapters as well as workers. A separate XML configuration file is also included which makes sure that some rarer edge cases are tested as well.
+
+The project utilises \emph{nosetests} to run the tests. Furthermore, the \emph{Software as a Service (SaaS)} platform \emph{Travis CI} is used to build a virtual environment and call nosetests everytime the framework code has been changed (pushed into the \emph{GitHub} repository). This is also known as \emph{continuous integration (CI)}. Finally, the SaaS Scrutinizer is integrated to process the code coverage reports generated by Travis CI.
 
 \section{Engines}
 
@@ -102,6 +252,16 @@ Section \ref{architecture-domain-systems} discussed the definition and character
 
 The authors of Magento are working on a full rewrite of their platform called Magento2 to be released late 2015. This project uses the first release candidate published in March 2015. Albeit Magento2 comes with fundamental technical changes, they do not necessarily make a difference to the purposes of demonstration. Nonetheless the support of the dependency manager \emph{Composer} was principally important to distinct between custom and core code. Secondly, the sample data generator was useful to demo with realistic data.
 
+The source code written for this project is structured as follows:
+
+\begin{description}
+    \item[app/code/Koklu/Event] module handles observing and processing of events.
+    \item[app/code/Koklu/MasterData] module complements the Event module by handling master data related events and full exports.
+    \item[app/code/Koklu/Recommender] modules queries and display recommendations as well as providing a client for the recommendation framework.
+    \item[dev/shell/masterdata.php] script runs a full export of master data to the framework.
+    \item[lib/internal/Koklu/Rest/Json] fixes a bug in the Zend library which sometimes omits setting the HTTP header \emph{Accept-Encoding} to \emph{JSON}.
+\end{description}
+
 \subsection{Events}
 \label{implementation-magento-events}
 
@@ -125,7 +285,7 @@ The master data is exceptionally important for content-based recommenders as the
 
 Magento implements an \emph{entity-attribute-value (EAV)} model. \emph{Entities} are a type of product such as books and phones and are called \emph{attribute sets} in Magento. \emph{Attributes} are fields within a product catalogue and have a value type such as text or numeric amounts. The \emph{values} can be entered freely or chosen from an editable list. The EAV model basically describes that although the number of attributes in a catalogue is vast, only a subset of those are relevant and applicable to an entity -- in practice it means that the attribute \emph{number of pages} is relevant for a book but not for a phone.
 
-\begin{figure}[h]
+\begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{screens/masterdata.png}
     \caption{Manage Master Data in the Back Office of Magento}
     \label{fig:implementation-magento-master-data}

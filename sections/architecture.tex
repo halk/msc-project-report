@@ -6,7 +6,7 @@
     \label{fig:architecture}
 \end{figure}
 
-This section explicates the architecture and core concepts of the solution. Figure \ref{fig:architecture} provides an architectural overview. Although domain and recommender systems have an essential part of this project, the actual targeted solution is the framework. For that reason, this section first sets the boundaries of domain and recommender systems and, finally, discusses the framework.
+This chapter explicates the architecture and core concepts of the solution. Figure \ref{fig:architecture} provides an architectural overview. Although domain and recommender systems have an essential part of this project, the actual targeted solution is the framework. For that reason, this chapter first sets the boundaries of domain and recommender systems and, finally, discusses the framework.
 
 \section{Domain Systems}
 \label{architecture-domain-systems}
@@ -25,6 +25,7 @@ As was mentioned in the previous section, the technology stack of domain systems
 Concludingly, it was decided to design recommenders as individual systems which allows the utilisation of not only the most suitable technology stack such as database management systems and programming languages but also existing, third-party recommendation systems e.g. \emph{LensKit} or \emph{Apache Mahout}.
 
 \section{Framework}
+\label{architecture-framework}
 
 \begin{figure}[ht]
     \includegraphics[width=\textwidth,center]{architecture/framework.pdf}
@@ -128,7 +129,7 @@ The \emph{application programming interface (API)} is the endpoint (\emph{server
 
 An essential property of REST is \emph{statelessness} and says that the server should not remember any state of the client. \citet{fielding00} further states that statelessness improves \emph{visibility}, \emph{reliability} and \emph{scalability}. Visibility is improved by the fact that a  request by a client has all information necessary to understand. Reliability is improved because a request is not affecting others and makes recovery of partial failures easier. Finally, better scalability can be observed as the server does not need to manage state data between requests.
 
-The framework has two APIs: \emph{Event} handles event notifications as \emph{POST} requests whereas \emph{Recommend} handles recommendation queries as \emph{GET} requests. As far as the framework is concerned, its API bears no business logic at all and hands requests over to the workers via a task queue which is going to be covered in the next section.
+The framework has two APIs: Event handles event notifications as \emph{POST} requests whereas Recommend handles recommendation queries as \emph{GET} requests. As far as the framework is concerned, its API bears no business logic at all and hands requests over to the workers via a task queue which is going to be covered in the next section.
 
 \subsection{Task Queue}
 
