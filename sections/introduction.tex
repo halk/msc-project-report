@@ -4,7 +4,7 @@ A \emph{recommender engine}, or just \emph{recommender}, is a system which sugge
 
 Recommender engines are usually tightly coupled to the application they are used in. Bespoke  engines may be very dependent on the data model as well as technical constraints of those applications such as programming languages and database management systems. The adaptation of recommender engines requires knowledge and expertise in both the application and recommender engines. That effort would also add more complexity and dependencies to those applications, which are probably complex themselves, making change very expensive and time consuming. Being tightly coupled, a recommender engine is very likely to be incompatible for another application.
 
-This project aims to develop and evaluate a framework for integrating recommender engines into applications in a way which promotes amongst others reusability and is easy to integrate. In order to demonstrate those capabilities, two recommender engines -- each implementing a fundamentally different recommendation technique -- are implemented. Moreover, the framework and these recommender engines are then integrated into a complex e-commerce web application.
+This project aims to develop and evaluate a framework for integrating recommender engines into applications in a loose-coupled approach which promotes amongst others reusability and is easy to integrate. In order to demonstrate those capabilities, two recommender engines -- each implementing a fundamentally different recommendation technique -- are implemented. Moreover, the framework and these recommender engines are then integrated into a complex e-commerce web application.
 
 \section{Background Research}
 
@@ -14,7 +14,17 @@ With the growth of the Internet, the amount of information available on the Web 
 
 Another approach is recommender engines, which basically provide a bespoke, personalised collection of items with the intention to highlight only relevant items to a user. Depending on the recommendation technique used, various data sources are taken into account such as the user's context or previous interactions. Most recommender engines concentrate on guiding the user towards novel, unexperienced items \cite{herlocker04}.
 
-\subsection{Techniques}
+\subsection{Problems of a Tightly Coupled Architecture}
+\label{intro-bg-problems}
+
+Throughout this report, \emph{domain applications} refer to existing software systems primarily developed for a specific organisation or application, secondarily planning to make use of recommendations and integrate recommender engines. The definition highlights the fact that these applications are usually built on extensive domain knowledge. Efforts to use recommendations either require domain savvy engineers to gain a recommendation background or recommendation savvy engineers to grasp the domain knowledge. This makes changes very difficult, time consuming and expensive. If recommender engines are tightly coupled to the same database as the domain application, changes to the data and schema may affect both applications regardless of which system applied that change.
+
+The technology stack -- the collection of all technologies used within a software system -- is mostly tailored to the requirements of those applications and may not be the first choice for recommendation requirements. Furthermore, the best suitable technology stack may differ substantially among recommender engines themselves.
+
+Tightly coupled software is also difficult to reuse. If an additional domain application needs to access and contribute to recommendations, a significant amount of work would be required to refactor the main application to accommodate that. Another possible case is that an organisation wants to use the recommender in another, unrelated domain.
+
+\subsection{Recommender Techniques}
+\label{intro-bg-tech}
 
 In the course of research in this field different techniques to compute recommendations emerged. Fundamentally, techniques are classified by the information sources they rely on. The sources of personalised recommendations are typically user-item interactions (\emph{collaborative filtering}), item features (\emph{content-based filtering}), user features (\emph{demographic filtering}) as well as specialised knowledge about the user and item (\emph{knowledge-based filtering}).  Amongst those, the techniques collaborative and content-based filtering are explained as they are used by the recommender engines implemented as part of this project:
 
@@ -55,49 +65,35 @@ There are many possible ways of combining techniques, which are outlined in the 
 \section{Objectives}
 \label{intro-objectives}
 
+The primary objective of this project is to develop an integration framework for recommender engines whereas the secondary objectives are the development of a collaborative and a content-based recommender engine as well as the exemplified integration of framework and recommender engines into an existing, complex web application. These secondary objectives are important to provide concrete findings for the evaluation of the primary objective.
+
 \subsection{Development of an Integration Framework}
 \label{intro-objectives-framework}
 
-\subsection{Development of Collaborative and Content-Based Recommender Engines}
+As mentioned, the primary objective of this project is the development of an framework for integrating recommender engines into any domain application. The framework should have the following properties:
+
+\begin{description}
+    \item[Multi-purpose] The framework should cope with different kind of data as well as recommendation techniques.
+    \item[Easy to integrate] First, the integration into a domain application should be as easy and compact as possible. Second, setting up and integration of recommender engines should be simple as well.
+    \item[Non-restrictive] The usage of the framework should not restrict the capabilities of a recommender engine.
+    \item[Encapsulated] Internals of domain applications and recommender engines should not be visible to each other.
+    \item[Reusable] Recommender engines should be reusable. A domain application should be able to switch to another recommendation engine with minimal effort. Other recommenders shall be able to use recommendations from another recommender engine \cite{manouselis07}.
+    \item[Technologically unbiased] The framework should work with any technology.
+\end{description}
+
+\subsection{Development of Two Distinct Recommender Engines}
 \label{intro-objectives-engines}
 
-\subsection{Integration into a Demo Application}
+In order to validate that the framework implements the aforementioned properties, two recommender engines, fundamentally different in their approaches, are to be developed -- namely a collaborative recommender (as described in \ref{intro-bg-tech-collaborative}) and a content-based recommender (as specified in \ref{fig:intro-techniques-contentbased}).
+
+Although they are going to be used with the framework, they should be designed to be fully functional, standalone recommender engine. Their algorithmic correctness and practicality shall be reviewed in the evaluation. At the same time, the focus of this project is on the development of the framework. This means that these recommender engines may be somewhat simplified.
+
+\subsection{Integration Into a Demo Application}
 \label{intro-objectives-demo}
 
-\subsection{Abstraction}
-\label{intro-objectives-abstraction}
+This objective is in particular relevant as it is a practical application of the rather theoretical framework and recommender engines. Whereas the recommender engines may be somewhat simple, it is important that the demo application is complex enough to be a good example for an integration. Henceforth, an existing, open-source e-commerce application shall be used as demo application.
 
-This objective aims a separation of a system into smaller, loose coupled components and suggests the following criteria:
-
-\begin{description}
-    \item[Complexity] Applications such as recommender engines tend to be complex. If not separated, every component adds to the overall complexity making change very difficult, time consuming and expensive. Any change requires knowledge, testing and probably modifications of the whole system.
-    \item[Dependency] If a system needs to be modified or even replaced, tightly coupled components become a dependency leading to expensive and tiresome rework.
-    \item[Encapsulation] Information hiding is the main motivation behind encapsulation. The more information and implementation is hidden, the looser the coupling becomes. The benefit is that internal changes do not affect other components at all as long as the interfaces remain the same.
-    \item[Database Abstraction] Recommender engines with direct access to databases of integrating applications are problematic as these systems are affected by any change of these databases.
-    \item[Reusability] Tightly coupled components are difficult to reuse. Reusability is the main driver for multi-purposefulness of this project.
-\end{description}
-
-\subsection{Ease of integration}
-\label{intro-objectives-easeofintegration}
-
-The complexity and cost of integration of new systems into existing applications is a major constraint for many projects. This objective covers the ease of integration of applications as well as new recommender techniques. The code footprint, interactions and data volumes of the communication interfaces are typical measures of complexity.
-
-\subsection{Multi-Purpose \& Interoperability}
-\label{intro-objectives-multipurpose}
-
-A \emph{multi-purpose} recommender engine is able to cope with different data sources and techniques. Ideally this system is extendable for possible forthcoming, yet unknown requirements.
-
-This multi-purposefulness can be also described in the interoperability between recommender engines. \citet{manouselis07} differentiate between three criteria:
-
-\begin{description}
-    \item[Interoperability of the recommendation queries] which allows the same query to be reused. This can be achieved by variable parameters in the query.
-    \item[Interoperability of the user and the domain models] which allows the exchange of models and other data among different recommender engines.
-    \item[Interoperability of the recommendation results] which empowers recommender engines to reuse the results. This is in particular useful for hybrid recommender engines.
-\end{description}
-
-\subsection{Technological Unbiasedness}
-
-The proposal noted another objective to build a mechanism, which allows the integration of various recommender techniques to \emph{coexist} and \emph{cooperate}. \emph{Coexistence} refers to supporting various recommender techniques and solutions regardless of technology, language, storage technology and operating system. Furthermore, \emph{cooperation} emphasises the aforementioned interoperability between those recommenders.
+This objective is going to contribute significantly to the evaluation of the ease of integration property of the framework. The size and complexity of the integration source code are a good indicator in this case.
 
 \section{Structure of the Report}
 
