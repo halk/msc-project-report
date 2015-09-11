@@ -28,62 +28,31 @@ The framework has no persistence at all and thus does not utilise a database man
 
 The \emph{application programming interface (API)} of the framework is based on the popular, so-called micro web application framework \emph{Flask}. The notation of micro refers to the fact, that Flask is very minimal and has almost no constraints on other technologies such as database management systems.
 
-Although Flask is RESTful compliant by default, the Flask extension \emph{Flask-RESTful} was used in this project. Where Flask associates a call back to a route such as \texttt{/event}, Flask-RESTful associates a resource class and method e.g. Event and \emph{post} to the route (Figure \ref{fig:implementation-framework-api-event}).
-
 \begin{figure}[ht]
     \inputminted{py}{./includes/source/framework/api/event.py}
-    \caption{Event API Code Listing}
+    \caption{Event API (Code Listing)}
     \label{fig:implementation-framework-api-event}
 \end{figure}
 
-Additionally, the API makes use of the \emph{Blueprint} feature of Flask which allows the implementation of independent APIs and its subscription to the main API with a prefix (Figure \ref{fig:implementation-framework-api}).
-
-\begin{figure}[ht!]
-    \begin{minted}{python}
-from flask import Flask
-from config import config
-
-# setting up flask
-app = Flask(__name__)
-celery = config.get_celery('worker')
-
-# setting up logging
-# [...]
-
-# registering submodules
-from api.event import event
-from api.recommend import recommend
-
-app.register_blueprint(event, url_prefix='/event')
-app.register_blueprint(recommend, url_prefix='/recommend')
-
-# default route
-
-@app.route("/")
-def hello():
-    return "Welcome to the Multi-Purpose Recommender Framework!"
-    \end{minted}
-    \caption{API Code Listing}
-    \label{fig:implementation-framework-api}
-\end{figure}
-
-The API uses the \emph{JavaScript Object Notation (JSON)} format data and is served by the open-source web server \emph{Apache} as a virtual host through the \emph{web server gateway interface (WSGI)} and listens to requests at \href{http://api.msc.koklu.me}{\texttt{api.msc.koklu.me}}.
+The API uses the \emph{JavaScript Object Notation (JSON)} format data and is served by the open-source web server \emph{Apache} as a virtual host through the \emph{web server gateway interface (WSGI)} and listens to requests at \url{http://api.msc.koklu.me}.
 
 It was originally proposed to use \emph{NodeJS} and \emph{express} for the API. However it was chosen to use Python for the following reasons. First, the rest of the framework was going to be in Python and the task queue management software \emph{Celery}, which is going to be introduced in the next section, is working most elegantly with Python. Second, there was no exclusive benefit by implementing the API in NodeJS. Third, Flask provides the same minimalistic approach to defining routes as express.
 
 \subsection{Worker \& Task Queue}
 
-The project relies on the task queue \emph{Celery} to establish an asynchronous and selectively synchronous communication between the API and workers. Celery is written in Python and supports multiple brokers such as \emph{RabbitMQ} and \emph{Beanstalk}. Former is used as broker in this project. The Event API is calling its worker asynchronously -- thus not waiting for a response (queue \& forget) -- whereas the Recommend API is doing that synchronously. Figure \ref{fig:implementation-framework-worker} lists the source code of the event worker which is upon request going through all observers subscribed to the given event and calls the configured event method on the engine adapter.
+The project relies on the task queue system \emph{Celery} to establish an asynchronous and selectively synchronous communication between API and workers. Celery is written in Python and supports multiple brokers such as \emph{RabbitMQ} and \emph{Beanstalk}. The former is used as broker in this project.
+
+The Event API is calling its worker asynchronously -- thus not waiting for a response (queue \& forget) -- whereas the Recommend API is doing that synchronously. Figure \ref{fig:implementation-framework-worker} lists the source code of the event worker which is upon request going through all recommenders subscribed to the given event and calls the configured event method on the engine adapter.
 
 \begin{figure}[ht]
     \inputminted{py}{./includes/source/framework/worker/event.py}
-    \caption{Event Worker Code Listing}
+    \caption{Event Worker (Code Listing)}
     \label{fig:implementation-framework-worker}
 \end{figure}
 
-It was initially intended to use RabbitMQ natively as a message bus implementing the \emph{advanced message queuing protocol (AMQP)}. However, while looking for RabbitMQ client libraries and elegant ways to manage the overhead of using message buses for distributing tasks, Celery was discovered which abstracts that complexity completely. Tasks can be run as if they are a regular method in the source code (see Figure \ref{fig:implementation-framework-api-event}).
+It was initially intended to use RabbitMQ natively as a message queue implementing the \emph{advanced message queuing protocol (AMQP)}. However, while looking for RabbitMQ client libraries and elegant ways to manage the overhead of using message queues for distributing tasks, Celery was discovered which abstracts that complexity completely. Tasks can be run as if they are regular methods in the source code (see Figure \ref{fig:implementation-framework-api-event}).
 
-Flower is an administrative interface for Celery providing a real-time monitor and can be accessed at \href{http://flower.msc.koklu.me}{\texttt{flower.msc.koklu.me}} (Figure \ref{fig:implementation-framework-flower}).
+Flower is an administrative interface for Celery providing a real-time monitor and can be accessed at \url{http://flower.msc.koklu.me} (Figure \ref{fig:implementation-framework-flower}).
 
 \begin{figure}[ht]
     \includegraphics[width=\textwidth,center]{screens/flower.png}
@@ -143,7 +112,7 @@ Flower is an administrative interface for Celery providing a real-time monitor a
     </settings>
 </config>
     \end{minted}
-    \caption{Shortened XML Configuration Code Listing}
+    \caption{Shortened XML Configuration (Code Listing)}
     \label{fig:implementation-framework-configuration}
 \end{figure}
 
@@ -152,7 +121,7 @@ Figure \ref{fig:implementation-framework-configuration} shows a shortened config
 \begin{description}
     \item[recommenders/recommender] defines a recommender by name and the engine to be used. Furthermore it has a list of events it subscribes to (\texttt{on}) where the \texttt{do} attribute refers to the method of the engine adapter to be called when the event occurs. A recommender also defines a taxonomy which usually inherits from a global taxonomy.
     \item[recommenders/hybrid_recommender] defines a hybrid recommender which consists of two or more components. It may also have some settings which can be accessed by the engine adapter.
-    \item[taxonomies/taxonomoy] defines a global taxonomy which is a terminology mapper between domain and recommender engines. It may inherit from another taxonomy. A taxonomy consists of taxon elements which describe a single mapping.
+    \item[taxonomies/taxonomy] defines a global taxonomy which is a terminology mapper between domain and recommender engines. It may inherit from another taxonomy. A taxonomy consists of \texttt{taxon} elements which describe a single mapping.
     \item[engines/engine] holds settings for engines.
     \item[settings] hold global settings of the framework such as connection details for Celery.
 \end{description}
@@ -162,15 +131,15 @@ The project also provides an \emph{XML schema definition (XSD)} which can be use
 \subsection{Engine Adapters}
 \label{implementation-framework-engine-adapter}
 
-\emph{Engine adapters} are thin clients to recommender engines. The formal requirement is that they implement a \texttt{recommend} method as well as methods used in event subscriptions. Other than that it is completely flexible in how the engine is called. For convenience, the abstract base class provides a RESTful skeleton which is used by the engine adapters implemented in this project such as the \emph{item-similarity} adapter (see Figure \ref{fig:implementation-framework-engine-adapter}). Engine adapters have access to engine settings defined in the configuration file such as a \emph{uniform resource locator (URL)}.
+\emph{Engine adapters} are thin clients to recommender engines. The formal requirement is that they implement a \texttt{recommend} method as well as methods used in event subscriptions. Other than that it is completely flexible in how the interaction with engine happens. For convenience, the abstract base class provides a RESTful skeleton which is used by the engine adapters implemented in this project such as the \emph{item-similarity} adapter (see Figure \ref{fig:implementation-framework-engine-adapter}). Engine adapters have access to engine settings defined in the configuration file such as a \emph{uniform resource locator (URL)} for the engine.
 
 \begin{figure}[!ht]
     \inputminted{py}{./includes/source/framework/engines/item\string_similarity.py}
-    \caption{Item-Similarity Engine Adapter Code Listing}
+    \caption{Item-Similarity Engine Adapter (Code Listing)}
     \label{fig:implementation-framework-engine-adapter}
 \end{figure}
 
-Engine adapters for hybrid engines are more than just thin clients. Their formal requirement is to implement a \texttt{recommend} method without any event methods. In this method they have full flexibility on how to make use of the components. Figure \ref{fig:implementation-framework-hybrid-engine-adapter} shows the implementation of the \emph{weighted} hybrid engine adapter.
+Engine adapters for hybrid engines are more than just thin clients. Their formal requirement is to implement a \texttt{recommend} method but has no event methods. In this method they have full flexibility on how to make use of the components. Figure \ref{fig:implementation-framework-hybrid-engine-adapter} shows the implementation of the \emph{weighted} hybrid engine adapter.
 
 \begin{figure}[!ht]
     \begin{minted}{py}
@@ -192,27 +161,29 @@ class HybridEngine(ParentHybridEngine):
 
     # [...] implementations of merge and apply_weight
     \end{minted}
-    \caption{Weighted Hybrid Engine Adapter Code Listing}
+    \caption{Weighted Hybrid Engine Adapter (Code Listing)}
     \label{fig:implementation-framework-hybrid-engine-adapter}
 \end{figure}
 
 \subsection{Testing}
 
-The implementation of the framework makes extensive use of automated \emph{unit tests}. Unit testing is a software testing method which validates the correctness and executability pieces of software code (\emph{units}) such as functions, methods and classes. In fact, the 39 unit tests provided have a code coverage of one hundred per cent which means that every line of code is passed during one or more unit tests. These unit tests are testing the API, the validity of the XML configuration, core classes, engine adapters as well as workers. A separate XML configuration file is also included which makes sure that some rarer edge cases are tested as well.
+The implementation of the framework makes extensive use of automated \emph{unit tests}. Unit testing is a software testing method which validates the correctness and executability pieces of software code (\emph{units}) such as functions, methods and classes. In fact, the 39 unit tests provided have a code coverage of 100 per cent which means that every line of code is passed during one or more unit tests. These unit tests are testing the API, the validity of the XML configuration, core classes, engine adapters as well as workers. A separate XML configuration file is also included which makes sure that some rarer edge cases are tested as well.
 
-The project utilises \emph{nosetests} to run the tests. Furthermore, the \emph{Software as a Service (SaaS)} platform \emph{Travis CI} is used to build a virtual environment and call nosetests everytime the framework code has been changed (pushed into the \emph{GitHub} repository). This is also known as \emph{continuous integration (CI)}. Finally, the SaaS Scrutinizer is integrated to process the code coverage reports generated by Travis CI. The Travis CI reports can be found here: \href{https://travis-ci.org/halk/recowise}{\texttt{travis-ci.org/halk/recowise}}.
+The project utilises \emph{nosetests} to run the tests. Furthermore, the \emph{Software as a Service (SaaS)} platform \emph{Travis CI} is used to build a virtual environment and call nosetests everytime the framework code has been changed (pushed into the \emph{GitHub} repository). This is also known as \emph{continuous integration (CI)}. Finally, the SaaS Scrutinizer is integrated to process the code coverage reports generated by Travis CI. The Travis CI reports can be found here: \url{https://travis-ci.org/halk/recowise}.
 
 \section{Engines}
 
-\subsection{Collaborative Recommender: In-Common}
+\subsection{Collaborative Recommender Engine: In-Common}
 
-This recommendation engine has a collaborative filtering approach and basically performs recommendations as shown in Figure \ref{fig:intro-techniques-collaborative}: \emph{recommending items which other users, who have experienced the same items as the reference user, have experienced but the reference user has not yet}. The engine is processing events and recommendation requests real-time. Although it persists data, it is data-agnostic -- in other words knows how the data is structured but does not require knowledge about the data content.
+This recommender engine has a collaborative filtering approach and basically performs recommendations as shown in Figure \ref{fig:intro-techniques-collaborative}: \texttt{recommend items which other users, who have experienced the same items as the given user, have experienced but the given user has not yet}. The fundamental idea behind this engine is to parametise the aforementioned query. There are four parameters in this query: \emph{subject} such as a user or customer, \emph{object} such as a product or even basketball player, \emph{relationship} such as viewed or favourited and \emph{subject ID} such as the current user. After putting the parameters in place the query is now: \texttt{recommend \{OBJECT\} wich other \{SUBJECT\}, wo have \{RELATIONSHIP\} the same \{OBJECT\} as the \{SUBJECT ID\}, have \{RELATIONSHIP\} but the \{SUBJECT ID\} has not yet}.
 
-The fundamental idea behind this engine is to parametise the aforementioned query. There are four parameters in this query: \emph{subject} such as a user or customer, \emph{object} such as a product or even basketball player, \emph{relationship} such as viewed or favourited and \emph{subject ID} such as the current or reference user. After putting the parameters in place the query is now: \emph{recommending OBJECT wich other SUBJECT, wo have RELATIONSHIP the same OBJECT as the SUBJECT ID, have RELATIONSHIP but the SUBJECT ID has not yet}.
+The engine is processing events and recommendation requests in real-time. Although it persists data, it is data-agnostic -- in other words, it knows how the data is structured but does not require knowledge about the data itself.
 
 This engine has been written in \emph{Go} -- a statically typed language developed at \emph{Google} in 2007. \citet{pike12} explains the motivation behind building Go:
 
-\say{\emph{The goals of the Go project were to eliminate the slowness and clumsiness of software development at Google, and thereby to make the process more productive and scalable. The language was designed by and for people who write -- and read and debug and maintain -- large software systems.}}
+\begin{adjustwidth}{1cm}{}
+\emph{``The goals of the Go project were to eliminate the slowness and clumsiness of software development at Google, and thereby to make the process more productive and scalable. The language was designed by and for people who write -- and read and debug and maintain -- large software systems.''}
+\end{adjustwidth}
 
 As far as this project is concerned, there was much interest in using a statically typed, compiled language in one of its subprojects. The code is organised in packages as follows:
 
@@ -225,27 +196,29 @@ As far as this project is concerned, there was much interest in using a statical
     \item[util] offers a few utility functions.
 \end{description}
 
-Go has out-of-the-box support for building a API documentation for Go source code. The documentation for the In-Common recommender engine can be found here: \href{http://godoc.org/github.com/halk/in-common}{\texttt{godoc.org/github.com/halk/in-common}}.
+Go has out-of-the-box support for building a API documentation for Go source code. The documentation for the In-Common recommender engine can be found here: \url{http://godoc.org/github.com/halk/in-common}.
 
 \subsubsection{API}
 
 The API of this engine is built based on the \texttt{http} package of Go as well as the \texttt{gorilla} packages. The following services are available:
 
 \begin{description}
-    \item[POST /event] processes a new event and expects a JSON-encoded payload consisting of \emph{subject}, \emph{subject_id}, \emph{object}, \emph{object_id} and \emph{relationship}.
+    \item[POST /event] processes a new event and expects a JSON-encoded payload consisting of \texttt{subject}, \texttt{subject_id}, \texttt{object}, \texttt{object_id} and \texttt{relationship}.
     \item[DELETE /event] deletes an event and expects the same JSON-encoded above.
-    \item[GET /recommend] receives a recommendation request with \emph{subject}, \emph{subject_id}, \emph{object}, \emph{relationship} and \emph{limit} GET parameters but returns a JSON-encoded list of recommended \emph{object IDs}. The parameter \emph{limit} specifies how many recommendations should be queried and returned.
+    \item[GET /recommend] receives a recommendation request with \texttt{subject}, \texttt{subject_id}, \texttt{object}, \texttt{relationship} and \texttt{limit} \emph{GET} parameters but returns a JSON-encoded list of recommended \texttt{object IDs}. The parameter \texttt{limit} specifies how many recommendations should be queried and returned.
 \end{description}
 
 \subsubsection{Data Representation}
 
 \begin{figure}[ht]
     \includegraphics[width=250pt,center]{implementation/incommon\string_nodes.pdf}
-    \caption{In-Common Data Representation}
+    \caption{In-Common Data Representation (Diagram)}
     \label{fig:implementation-incommon-nodes}
 \end{figure}
 
-The data representation is the heart of this engine. As proposed in the project proposal, the graphical database \emph{Neo4j} has been used as database management system. The graphical representation is ideal for events since they can be perceived as a relationship between two nodes -- subject and object (Figure \ref{fig:implementation-incommon-nodes}). Hence, the recommendation request is just a query against this graph (Figure \ref{fig:implementation-incommon-recommendation-query}).
+The data representation is the heart of this engine. As proposed in the project proposal, the graphical database management system \emph{Neo4j} has been used as database management system. The graphical representation is ideal for events since they can be perceived as a relationship between two nodes -- subject and object (Figure \ref{fig:implementation-incommon-nodes}). Hence, the recommendation request is just a query against this graph (Figure \ref{fig:implementation-incommon-recommendation-query}).
+
+All nodes and relationships are stored in the same database, even if the recommenders and their data defined in the framework are different. This is in that sense not an issue, since as long as the recommenders are not using the same subject and object labels, there is no collaboration happening between those.
 
 \begin{figure}[!ht]
     \begin{minted}{go}
@@ -265,26 +238,52 @@ cq := neoism.CypherQuery{
     Result:     &res,
 }
     \end{minted}
-    \caption{In-Common Recommendation Query Code Listing}
+    \caption{In-Common Recommendation Query (Code Listing)}
     \label{fig:implementation-incommon-recommendation-query}
 \end{figure}
 
 \subsubsection{Testing}
 
-This engine has been tested with unit tests covering about 93 per cent of the source code. Similar to the framework, Travis CI is used to continuously run tests when changes to the source code are pushed to the repository. The Travis CI reports can be found here: \href{https://travis-ci.org/halk/in-common}{travis-ci.org/halk/in-common}.
+This engine has been tested with unit tests covering about 93 per cent of the source code. A subset of unit tests ensure that the algorithm is working as expected.
 
-\subsection{Content-Based Recommender: Item Similarity}
+Similar to the framework, Travis CI is used to continuously run tests when changes to the source code are pushed to the repository. The Travis CI reports can be found here: \url{https://travis-ci.org/halk/in-common}.
 
-\emph{Status: Not Started}
+\subsection{Content-Based Recommender Engine: Item-Similarity}
 
-\begin{itemize}
-\item Content-based filtering
-\item Silex, MongoDB, Doctrine ODM
-\item Requires master data
-\item Show diagram for adding, deleting and reading
-\item How similarity is calculated
-\item Unit testing
-\end{itemize}
+The \emph{Item-Similarity} recommender engine adopts the content-based filtering approach which computes the similarity of items by comparing their features.
+
+This engine has been written in \emph{PHP: Hypertext Preprocessor (PHP)} following the \emph{object-oriented programming (OOP)} paradigm and is based on the micro web framework \emph{Silex} -- similar to \emph{Flask} used by the framework. The source code structure is as follows:
+
+\begin{description}
+    \item[config] contains very minimal configuration such as the \emph{data source name (DSN)} -- the connection details -- to the database.
+    \item[log] has some log files for troubleshooting.
+    \item[src/Koklu/Entity] defines entity model classes such as an \texttt{Item}.
+    \item[src/Koklu/Model] holds classes to manage and recommend items as well as the similarity algorithm \texttt{TanimotoCoefficient} which was discussed in the project proposal.
+    \item[src/Koklu/Repository] interacts with the database.
+    \item[src/Koklu/Service] implements a service which is a proxy for the classes above and is made available to the API.
+    \item[src/app.php] defines the application and API services.
+    \item[src/bootstrap.php] initialises essential resources and is also used to initialise the unit tests.
+    \item[tests] contains the unit tests.
+    \item[web] provides a front controller which loads the application and makes it publicly accessible.
+\end{description}
+
+\subsubsection{API}
+
+In contrast to the API of the \emph{In-Common} recommender engine, this engine introduces the concept of collections to separate data of different recommenders using this engine. This is due to the fact that this engine computes recommendations relying on all available data. Collections limit that spectrum to the data of that recommender.
+
+\begin{description}
+    \item[POST /\{collection\}] processes a new event and expects a JSON-encoded payload consisting of \texttt{item_id} and \texttt{attributes}. The latter is an arbitrary JSON object containing any data to be considered while calculating the similarity.
+    \item[DELETE /\{collection\}/\{itemId\}] deletes the event specified in the route.
+    \item[GET /\{collection\}] receives a recommendation request with \texttt{itemIds} and \texttt{limit} \emph{GET} parameters but returns a JSON-encoded list of identifiers of recommended items. The GET parameter \texttt{itemIds} can contain more than one item ID. The parameter \texttt{limit} specifies how many recommendations should be queried and returned.
+\end{description}
+
+\subsubsection{Data Representation}
+
+\subsubsection{Testing}
+
+The implementation of this recommender engine makes use of automated unit tests. In fact, there are 4 unit tests with 56 assertions provided with a code coverage of 94 per cent. These unit tests are testing the API as well as the similarity algorithm.
+
+The project utilises \emph{PHPUnit} to run the tests. Furthermore, \emph{Travis CI} is used to run the tests everytime a code change has been pushed the source code version control repository. Scrutinizer is integrated to process the code coverage reports generated by Travis CI. The Travis CI reports can be found here: \url{https://travis-ci.org/halk/item-similarity}.
 
 \subsection{Hybrid Recommender: Weighted}
 
@@ -303,17 +302,19 @@ This particular weighted implementation first fetches recommendations from each 
     wishlisted\_products & 0.75 & 0.5 & 0.95 & 0.3 & 1 \\ \hline
     {\textbf{\emph{weighted recommender}}} & {\textbf{\emph{1}}} & {\textbf{\emph{0.625}}} & {\textbf{\emph{0.9}}} & {\textbf{\emph{0.35}}} & {\textbf{\emph{1}}} \\ \hline
     \end{tabular}
-    \caption{Sample Calculation Table of Weighted Hybrid Recommender Engine}
+    \caption{Sample Calculation of Weighted Hybrid Recommender Engine (Table)}
     \label{fig:implementation-weighted}
 \end{figure}
 
+This recommender has been tested with unit tests as part of the framework tests.
+
 \section{Demo Domain System: Magento}
 
-Section \ref{architecture-domain-applications} discussed the definition and characteristics of \emph{domain systems} as systems founded on extensive domain knowledge. Although the focus of the project is on the framework and recommendation engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain system. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014.
+Section \ref{architecture-domain-applications} discussed the definition and characteristics of \emph{domain systems} as systems founded on extensive domain knowledge. Although the focus of the project is on the framework and recommender engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain system. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014.
 
 \begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{screens/basket.png}
-    \caption{Content-Based Recommendation Screenshot}
+    \caption{Content-Based Recommendation (Screenshot)}
     \label{fig:implementation-magento-basket}
 \end{figure}
 
@@ -354,7 +355,7 @@ Magento implements an \emph{entity-attribute-value (EAV)} model. \emph{Entities}
 
 \begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{screens/masterdata.png}
-    \caption{Master Data Management Screenshot}
+    \caption{Master Data Management (Screenshot)}
     \label{fig:implementation-magento-master-data}
 \end{figure}
 
@@ -366,15 +367,23 @@ The integration of recommendations has been implemented in three parts:
 
 First, a thin \emph{client} has been written which performs the request and processes the responses to the recommendation API of the framework. All requests and responses are logged in a file for troubleshooting.
 
-Second, a \emph{recommendation model} is implemented for each recommendation configured in the framework such as \emph{viewed products} and \emph{similar items in basket}. The purpose of these model classes is to provide the IDs the recommendation should be based on -- e.g. current user ID for the \emph{viewed products} and product IDs in the basket for \emph{similar items in the basket}. This is based on the requirement that each recommendation is in relation to something. They do not know internals of how the recommendations work. They are derived from an abstract class, which reduces the code size of the individual model classes to a minimum. They return a product collection filtered by the product IDs from the recommendation response.
+Second, a \emph{recommendation model} is implemented for each recommender configured in the framework such as \emph{viewed products} and \emph{similar items in basket}. The purpose of these model classes is to provide the IDs the recommendation should be based on -- e.g. current user ID for the \emph{viewed products} and product IDs in the basket for \emph{similar items in the basket}. This is based on the requirement that each recommendation is in relation to something. They do not know internals of how the recommendations work. They are derived from an abstract class, which reduces the code size of the individual model classes to a minimum. They return a product collection filtered by the product IDs from the recommendation response.
 
-Third, a \emph{recommendation widget} is provided which handles the display of recommendations to the user. Magento widgets are re-usable, configurable blocks which can be placed on the website. The demo project makes use of a universal product listing widget and feeds it with the product collection provided by the recommendation class. Magento enables developers and merchants to customise the layout of their website in a flexible way. The demo project was able to place these widgets on existing page by supplying short XML files. An exception is the widget on the homepage (seen in figure \ref{fig:implementation-magento-homepage}) as that page is managed by the \emph{content management (sub)system (CMS)} of Magento. Since the homepage is part of the sample data, a customised fixture has been provided, as discussed in the previous section.
+Third, a \emph{recommendation widget} is provided which handles the display of recommendations to the user. Magento widgets are re-usable, configurable blocks which can be placed on the website. The demo project makes use of a universal product listing widget and feeds it with the product collection provided by the recommendation class. Magento enables developers and merchants to customise the layout of their website in a flexible way. The demo project was able to place these widgets on existing page by supplying short XML files. An exception is the widget on the homepage (seen in figure \ref{fig:implementation-magento-homepage}) as that page is managed by the \emph{content management (sub)system (CMS)} of Magento. Since the homepage is part of the sample data, a customised fixture has been provided, similar to those discussed in the previous section.
 
 \begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{screens/homepage.png}
-    \caption{Homepage Recommendations Screenshot}
+    \caption{Homepage Recommendations (Screenshot)}
     \label{fig:implementation-magento-homepage}
 \end{figure}
+
+\subsection{Testing}
+
+Although it was planned to have automated tests similar to the framework and recommendation engines. In fact, it was also planned to write functional tests which ensure that the functionality is also working as expected from a user experience perspective.
+
+However, due to the complexity and novelty of Magento2, there was a lack of documentation on how to run and extend automated tests. Having left this to the end of the project, there was no time left to complete it.
+
+Nonetheless, manual functional tests have been carried out throughout the project lifetime. For the In-Common recommender engine, recommendations were observed by performing user behaviour in two independent browser windows, simulating two customers with similar behaviour pattern. Then, the data on the user interface of the graph database management system Neo4j. The log files were reviewed. For the Item-Similarity recommender engine, a full export has been performed and the MongoDB database reviewed. Changes to the product data have been simulated and observed that the recommender engine is processing those properly. Finally, the recommendation quality on the basket page has been reviewed.
 
 \section{Provisioning}
 
@@ -398,7 +407,7 @@ Vagrant also provides native support for configuration management software as di
 
 Puppet supports writing manifests for more than one target environment. In fact, most companies are using Puppet to ensure the same configuration (with some variables) on multiple environments such as production, staging and development. In the Vagrant context the Puppet provisioning is called by default when a new virtual machine is created. However, it can also be called explicitly. Since this project utilises Puppet to provision a development environment only, the manifests are not ready for production. Ensuring that essential security measures amongst others changing default passwords were beyond the scope of this project.
 
-Manifests can be grouped into so called Puppet \emph{modules}. \emph{PuppetLabs} -- the authors of Puppet - operate a community called \emph{PuppetForge} where modules are shared. This project utilised \emph{PuppetForge} modules e.g. for \emph{Apache} and \emph{PHP} where possible. In reality, most such modules are officially authored by PuppetLabs. Nonetheless, not all modules covered all the configuration needs of this project and were thus custom written inter alia for \emph{Magento}, \emph{Neo4j} as well as the \emph{framework} and \emph{recommendation engines}. The Magento module builds dependencies, creates an Apache virtual host and a MySQL database and runs the Magento installer. The Neo4j module installs and configures the Neo4j server. The recommender module configures both framework and two recommendation engines. It creates Apache virtual hosts, installs dependencies, creates \emph{supervisord} programs to manage background processes and sets up \emph{Celery} and \emph{Flower}. External modules are integrated as Git \emph{submodules}. The provisioning source code in \ref{appendix-soure-code-provisioning} only lists manifests written by the project author.
+Manifests can be grouped into so called Puppet \emph{modules}. \emph{PuppetLabs} -- the authors of Puppet - operate a community called \emph{PuppetForge} where modules are shared. This project utilised \emph{PuppetForge} modules e.g. for \emph{Apache} and \emph{PHP} where possible. In reality, most such modules are officially authored by PuppetLabs. Nonetheless, not all modules covered all the configuration needs of this project and were thus custom written inter alia for \emph{Magento}, \emph{Neo4j} as well as the \emph{framework} and \emph{recommender engines}. The Magento module builds dependencies, creates an Apache virtual host and a MySQL database and runs the Magento installer. The Neo4j module installs and configures the Neo4j server. The recommender module configures both framework and two recommender engines. It creates Apache virtual hosts, installs dependencies, creates \emph{supervisord} programs to manage background processes and sets up \emph{Celery} and \emph{Flower}. External modules are integrated as Git \emph{submodules}. The provisioning source code in \ref{appendix-soure-code-provisioning} only lists manifests written by the project author.
 
 Puppet can be understood as part of the \emph{infrastructure as code} or \emph{programmable infrastructure} initiatives in organisations. It enables version controlling and automation of provisioning infrastructure. Especially infrastructure based on \emph{cloud computing} and \emph{platform as a service (PaaS)} which involve many but constantly changing (e.g. auto-scaling) systems benefit from this. Alternatives to Puppet are \emph{Chef}, \emph{SaltStack} and \emph{Ansible}.
 

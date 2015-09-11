@@ -4,7 +4,7 @@ This chapter introduces essential concepts and discusses the architecture of the
 
 \begin{figure}[ht]
     \includegraphics[width=\textwidth,center]{architecture/overview.pdf}
-    \caption{Architectural Overview Diagram}
+    \caption{Architectural Overview (Diagram)}
     \label{fig:architecture-overview}
 \end{figure}
 
@@ -16,7 +16,7 @@ In order to comprehend the architecture entirely, this section explains some ess
 
 \item[\textnormal{The} framework] or \textbf{integration framework} refers to the middleware implemented in the scope of this project.
 
-\item[\textnormal{A} domain application] is an existing application primarily developed for a specific organisation or use-case, secondarily planning to make use of recommendations and integrate recommendation engines. The definition highlights the fact that these systems are usually built on extensive domain knowledge. A typical application is e.g. in e-commerce which is demoed in this project.
+\item[\textnormal{A} domain application] is an existing application primarily developed for a specific organisation or use-case, secondarily planning to make use of recommendations and integrate recommender engines. The definition highlights the fact that these systems are usually built on extensive domain knowledge. A typical application is e.g. in e-commerce which is demoed in this project.
 
 \item[\textnormal{A} recommender engine] or \textbf{engine} is a system which suggests useful items to a user -- usually on a website. A user is typically assisted in their search process to find the right items. Recommender engines are able to personalise this process so that they try to suggest only items relevant for the given user.
 
@@ -53,11 +53,11 @@ Therefore it was decided to design recommenders as individual engines which allo
 
 \begin{figure}[ht]
     \includegraphics[width=\textwidth,center]{architecture/framework.pdf}
-    \caption{Framework Design Diagram}
+    \caption{Framework Design (Diagram)}
     \label{fig:architecture-framework}
 \end{figure}
 
-In the present report, framework relates to an integration tool to glue domain applications and recommendation engines in a way which is \emph{multi-purpose}, \emph{easy to integrate}, \emph{non-restrictive}, \emph{encapsulated}, \emph{reusable} and \emph{technologically unbiased}. Since it is operating between two systems and not holding any actual logic, it can also be classified as a \emph{middleware}.
+In the present report, framework relates to an integration tool to glue domain applications and recommender engines in a way which is \emph{multi-purpose}, \emph{easy to integrate}, \emph{non-restrictive}, \emph{encapsulated}, \emph{reusable} and \emph{technologically unbiased}. Since it is operating between two systems and not holding any actual logic, it can also be classified as a \emph{middleware}.
 
 Figure \ref{fig:architecture-framework} shows a detailed diagram of the framework and makes two characteristics immediately visible: First, \emph{Event} and \emph{Recommend} are distinguished throughout the design of the framework. This reflects the \emph{service-oriented architecture (SOA)} as discussed in the project proposal. SOA suggests expressing features as services. Second, the framework is horizontally separated into layers which reflects the \emph{multi-layered} or \emph{multi-tier architecture} from the proposal. However, the project proposal suggested four layers: \emph{interface}, \emph{configuration}, \emph{recommendation} and \emph{persistence}. The final solution differs slightly. The API covers the interface layer whereas the configuration layer is more or less the workers. The layers recommendation and persistence are now regarded by the individual recommender engines.
 
