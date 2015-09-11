@@ -22,7 +22,7 @@ The framework has been written in \emph{Python} and is entirely object-oriented.
     \item[requirements.txt] holds the name and versions of Python libraries the framework is depending on. It is used by the Python dependency manager \emph{pip}.
 \end{description}
 
-The framework has no persistence at all and thus does not utilise a database management system. As mentioned in the section \ref{architecture-framework}, it operates as middleware between domain and recommender engines, therefore relying on those to handle their persistence requirements. as far as the framework is concerned, there is no need or purpose to persist data.
+The framework has no persistence at all and thus does not utilise a database management system. As mentioned in the section \ref{architecture-integration-framework}, it operates as middleware between domain and recommender engines, therefore relying on those to handle their persistence requirements. as far as the framework is concerned, there is no need or purpose to persist data.
 
 \subsection{API}
 
@@ -206,7 +206,7 @@ The project utilises \emph{nosetests} to run the tests. Furthermore, the \emph{S
 
 \subsection{Collaborative Recommender: In-Common}
 
-This recommendation engine has a collaborative filtering approach and basically performs recommendations as shown in Figure \ref{fig:collaborative}: \emph{recommending items which other users, who have experienced the same items as the reference user, have experienced but the reference user has not yet}. The engine is processing events and recommendation requests real-time. Although it persists data, it is data-agnostic -- in other words knows how the data is structured but does not require knowledge about the data content.
+This recommendation engine has a collaborative filtering approach and basically performs recommendations as shown in Figure \ref{fig:intro-techniques-collaborative}: \emph{recommending items which other users, who have experienced the same items as the reference user, have experienced but the reference user has not yet}. The engine is processing events and recommendation requests real-time. Although it persists data, it is data-agnostic -- in other words knows how the data is structured but does not require knowledge about the data content.
 
 The fundamental idea behind this engine is to parametise the aforementioned query. There are four parameters in this query: \emph{subject} such as a user or customer, \emph{object} such as a product or even basketball player, \emph{relationship} such as viewed or favourited and \emph{subject ID} such as the current or reference user. After putting the parameters in place the query is now: \emph{recommending OBJECT wich other SUBJECT, wo have RELATIONSHIP the same OBJECT as the SUBJECT ID, have RELATIONSHIP but the SUBJECT ID has not yet}.
 
@@ -309,7 +309,7 @@ This particular weighted implementation first fetches recommendations from each 
 
 \section{Demo Domain System: Magento}
 
-Section \ref{architecture-domain-systems} discussed the definition and characteristics of \emph{domain systems} as systems founded on extensive domain knowledge. Although the focus of the project is on the framework and recommendation engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain system. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014.
+Section \ref{architecture-domain-applications} discussed the definition and characteristics of \emph{domain systems} as systems founded on extensive domain knowledge. Although the focus of the project is on the framework and recommendation engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain system. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014.
 
 \begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{screens/basket.png}
