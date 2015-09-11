@@ -6,23 +6,23 @@
     \label{fig:architecture}
 \end{figure}
 
-This chapter explicates the architecture and core concepts of the solution. Figure \ref{fig:architecture} provides an architectural overview. Although domain and recommender systems have an essential part of this project, the actual targeted solution is the framework. For that reason, this chapter first sets the boundaries of domain and recommender systems and, finally, discusses the framework.
+This chapter explains the architecture and core concepts of the solution. Figure \ref{fig:architecture} provides an architectural overview. Although domain and recommender engines have an essential part of this project, the actual targeted solution is the framework. For that reason, this chapter first sets the boundaries of domain and recommender engines and, finally, discusses the framework.
 
 \section{Domain Systems}
 \label{architecture-domain-systems}
 
 Throughout this report, \emph{domain systems} refer to existing systems primarily developed for a specific organisation or application, secondarily planning to make use of recommendations and integrate recommendation engines. The definition highlights the fact that these systems are usually built on extensive domain knowledge. Efforts to use recommendations either require domain savvy engineers to gain a recommendation background or recommendation savvy engineers to grasp the domain knowledge. The technology stack -- the collection of all technologies used within a system -- is mostly tailored to the requirements of those systems and may not be the first choice for recommendation requirements. A solution is therefore to develop these requirements as a separate system, which is then integrated into the domain system. As explained in the introduction, this project was about developing an integration framework to support this. Figure \ref{fig:architecture} illustrates that this project supports the integration of as many domain systems as required in a single set-up.
 
-Regarding knowledge, the proposed solution abstracts the internals of both domain and recommender systems. In order for the domain system to provide the requirements for the integration, knowledge about the internals of recommender systems is not required. In fact, to achieve interoperability -- as discussed in section \ref{intro-objectives-abstraction} -- recommender-specific approaches are not wished. For this reason, the emphasis of the integration on the domain systems side lies in the extraction of the data of interest for recommendations. Furthermore the terminology in this data can remain the same as used in the domain systems.
+Regarding knowledge, the proposed solution abstracts the internals of both domain and recommender engines. In order for the domain system to provide the requirements for the integration, knowledge about the internals of recommender engines is not required. In fact, to achieve interoperability -- as discussed in section \ref{intro-objectives-abstraction} -- recommender-specific approaches are not wished. For this reason, the emphasis of the integration on the domain systems side lies in the extraction of the data of interest for recommendations. Furthermore the terminology in this data can remain the same as used in the domain systems.
 
 As far as the domain systems are concerned, keeping the integration effort and impact as minimal as possible was of much importance in this project. A typical negative impact of integrating systems is on performance; hence, the integration has been designed to minimise blocking on the domain systems. As a matter of fact, the number of required components, which will be discussed in the next section, has been decreased from proposed three -- \emph{Events}, \emph{Master Data} and \emph{Recommendation} -- to two with \emph{Master Data} being incorporated into \emph{Events}.
 
 \section{Recommender Systems}
 \label{architecture-recommender-systems}
 
-As was mentioned in the previous section, the technology stack of domain systems may not be the best fit for recommendation requirements and that a framework was developed to separate them. Originally, it was proposed to implement recommender systems against a uniform database within this framework. Yet while working on the project, it became obvious that the same technological fitness concern applied to the framework as well; in the sense that the technology stack of the framework may not be the best suited for recommender systems. Furthermore, the best suitable technology stack may differ substantially among recommender systems themselves.
+As was mentioned in the previous section, the technology stack of domain systems may not be the best fit for recommendation requirements and that a framework was developed to separate them. Originally, it was proposed to implement recommender engines against a uniform database within this framework. Yet while working on the project, it became obvious that the same technological fitness concern applied to the framework as well; in the sense that the technology stack of the framework may not be the best suited for recommender engines. Furthermore, the best suitable technology stack may differ substantially among recommender engines themselves.
 
-Concludingly, it was decided to design recommenders as individual systems which allows the utilisation of not only the most suitable technology stack such as database management systems and programming languages but also existing, third-party recommendation systems e.g. \emph{LensKit} or \emph{Apache Mahout}.
+Therefore it was decided to design recommenders as individual systems which allows the utilisation of not only the most suitable technology stack such as database management systems and programming languages but also existing, third-party recommender engines e.g. \emph{LensKit} or \emph{Apache Mahout}.
 
 \section{Framework}
 \label{architecture-framework}
@@ -33,21 +33,21 @@ Concludingly, it was decided to design recommenders as individual systems which 
     \label{fig:architecture-framework}
 \end{figure}
 
-In the present report, the framework relates to the centre piece of this project while the domain systems and recommendation systems primarily serve to demonstrate its capabilities. Above all, the framework is an integration tool to glue domain systems and recommendation engines in a way which allows interoperability, abstraction as well as easy integration, and is technologically unbiased -- those being the ultimate objectives of this project as outlined in section \ref{intro-objectives}. In that sense, it can be also seen as a middleware.
+In the present report, the framework relates to the centre piece of this project while the domain systems and recommender engines primarily serve to demonstrate its capabilities. Above all, the framework is an integration tool to glue domain systems and recommendation engines in a way which allows interoperability, abstraction as well as easy integration, and is technologically unbiased -- those being the ultimate objectives of this project as outlined in section \ref{intro-objectives}. In that sense, it can be also seen as a middleware.
 
 Figure \ref{fig:architecture-framework} shows a more detailed diagram of the framework and makes two characteristics immediately visible:
 
-First, \emph{Event} and \emph{Recommend} are distinguished throughout the design of the framework. This reflects the \emph{service-oriented architecture (SOA)} as discussed in the project proposal. SOA suggest to express features as services and comes with principles such as \emph{loose coupling}, \emph{abstraction} and \emph{reusability} -- matching the objectives of the project which were already outlined in detail.
+First, \emph{Event} and \emph{Recommend} are distinguished throughout the design of the framework. This reflects the \emph{service-oriented architecture (SOA)} as discussed in the project proposal. SOA suggests expressing features as services and comes with principles such as \emph{loose coupling}, \emph{abstraction} and \emph{reusability} -- matching the objectives of the project which were already outlined in detail.
 
-Second, the framework is horizontally separated into layers which reflects the proposed \emph{multi-layered architecture}. However, the project proposal suggested four layers which differ from the final solution: \emph{interface}, \emph{configuration}, \emph{recommendation} and \emph{persistence}. The API covers the interface layer whereas the configuration layer is more or less the workers. The layers recommendation and persistence are now regarded by the individual recommender systems.
+Second, the framework is horizontally separated into layers which reflects the proposed \emph{multi-layered architecture}. However, the project proposal suggested four layers which differ from the final solution: \emph{interface}, \emph{configuration}, \emph{recommendation} and \emph{persistence}. The API covers the interface layer whereas the configuration layer is more or less the workers. The layers recommendation and persistence are now regarded by the individual recommender engines.
 
 \subsection{Concepts}
 
-This section describes concepts and terminology used in the framework. Those also referred to throughout the report.
+This section describes concepts and terminology used in the framework. Those are also referred to throughout the report.
 
 \subsubsection{Engine}
 
-An \emph{engine} or \emph{recommender engine} basically refers to a recommender system to be used in the framework. An engine is primarily described by the algorithmic approach rather than its practical use case. As an illustration, the \emph{In-Common} engine -- implemented as part of this project -- finds \emph{items other users who have experienced the same items as the current user have experienced but the current user has not yet}. One of the use cases in practice is based on customers viewing products, so a concrete case of the previous.
+An \emph{engine} basically refers to a recommender engine to be used in the framework. An engine is primarily described by the algorithmic approach rather than its practical use case. As an illustration, the \emph{In-Common} engine -- implemented as part of this project -- finds \emph{items other users who have experienced the same items as the current user have experienced but the current user has not yet}. One of the use cases in practice is based on customers viewing products, so a concrete case of the previous.
 
 \subsubsection{Engine Adapter}
 
@@ -133,7 +133,7 @@ The framework has two APIs: Event handles event notifications as \emph{POST} req
 
 \subsection{Task Queue}
 
-A \emph{task queue} is a software concept for managing tasks via \emph{message queue} systems. Latter store messages sent by publisher into a queue and enable one or more consumers to read messages from the queue. Amongst other benefits, message queues allow communication between independent systems and can help scaling by distributing messages to more than one consumer. Similarly, task queue systems offer a mechanism to run tasks on independent systems and distribute them to a group of processes. It hides the internals such serialisation of task contexts into messages as well as handling errors and responses.
+A \emph{task queue} is a software system for managing tasks via \emph{message queue} systems. The latter store messages sent by a publisher into a queue and enable one or more consumers to read messages from the queue. Amongst other benefits, message queues allow communication between independent systems and can help scaling by distributing messages to more than one consumer. Similarly, task queue systems offer a mechanism to run tasks on independent systems and distribute them to a group of processes. It hides the internals such serialisation of task contexts into messages as well as handling errors and responses.
 
 Figure \ref{fig:architecture-framework} illustrates the task queue system \emph{Celery} and the following queues used: \emph{Event} and \emph{Recommend}. Albeit task queue systems can manage different tasks via a single queue, it was decided to use designated queues to give prioritisation of recommendations over event tasks. Practically, it means that a recommendation query of a customer has to be processed sooner than eventual events which can be a lot. The Event API runs tasks asynchronously and does not wait for a result (\emph{queue \& forget}) whereas the Recommend API waits for the result -- namely a list of recommended items.
 
