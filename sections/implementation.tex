@@ -279,7 +279,7 @@ In contrast to the API of the \emph{In-Common} recommender engine, this engine i
 
 \subsubsection{Data Representation}
 
-The \emph{Item-Similarity} engine uses the document-oriented, \emph{NoSQL} database management system \emph{MongoDB}. NoSQL refers to a variety of data modelling and retrieval methods which differ from traditional, relational database management systems such as \emph{MySQL}. MongoDB stores data as schemaless, JSON documents in collections which is ideal for this use-case as the engine has no knowledge about the schema of the item features -- henceforth referred to as \emph{attributes}.
+The \emph{Item-Similarity} engine uses the document-oriented, \emph{NoSQL} database management system \emph{MongoDB}. NoSQL refers to a variety of data modelling and retrieval methods which differ from traditional, relational database management systems such as \emph{MySQL}. MongoDB stores data as schemaless, JSON documents in collections which is ideal for this use-case as the engine has no knowledge about the schema of the item features -- henceforth referred to as \emph{attributes}. The engine makes use of \emph{Doctrine MongoDB Object Document Mapper (ODM)} to interact with the MongoDB database in an object-oriented way.
 
 \begin{figure}[!ht]
     \def\arraystretch{1.5}
@@ -319,6 +319,49 @@ An item is created by instantiating an \emph{Item} entity and iterating through 
     \end{tabular}
     \caption{Similarity Matrix (Table)}
     \label{fig:implementation-itemsimilarity-similarity}
+\end{figure}
+
+As the similarity of items is computed at the time of change rather than request, the recommendation query is very straightforward and fetches items referenced by the \emph{Similar} entities sorted by score in a descending order. As the recommendation request can be based on more than one item, a simple \texttt{find} query is not sufficient and an \texttt{aggregate} query was required. Doctrine ODM does not provide an interface for that yet, thus the engine queries MongoDB directly (Figure \ref{fig:implementation-itemsimilarity-recommendation-query}).
+
+\begin{figure}[!ht]
+    \begin{minted}{php}
+<?php
+namespace Koklu\Repository;
+
+use Doctrine\ODM\MongoDB\DocumentRepository;
+use Koklu\Entity\Item;
+
+class ItemRepository extends DocumentRepository
+{
+    // [...]
+
+    /**
+     * @param string   $collection
+     * @param array    $forItems
+     * @param int|bool $limit
+     * @return array
+     */
+    public function findSimilarItems($collection, array $forItems, $limit)
+    {
+        $pipeline = [
+            ['$match' => ['_id' => ['$in' => $forItems]]],
+            ['$unwind' => '$similar'],
+            ['$group' => ['_id' => '$similar.item', 'score' => ['$max' => '$similar.score']]],
+            ['$sort' => ['score' => -1]]
+        ];
+
+        if ($limit !== false) {
+            $pipeline[] = ['$limit' => (int) $limit];
+        }
+
+        return $this->getDocumentManager()->getDocumentDatabase($this->getClassName())->getMongoDB()
+            ->selectCollection($collection)
+            ->aggregate($pipeline);
+    }
+}
+    \end{minted}
+    \caption{Item-Similarity Recommendation Query (Code Listing)}
+    \label{fig:implementation-itemsimilarity-recommendation-query}
 \end{figure}
 
 \subsubsection{Tanimoto Coefficient}
@@ -372,7 +415,7 @@ This recommender engine has been tested with unit tests as part of the framework
 
 \section{Demo Domain System: Magento}
 
-Section \ref{architecture-domain-applications} discussed the definition and characteristics of domain applications founded on extensive domain knowledge. Although the focus of the project is on the framework and recommender engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain application. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014. Magento is written in \emph{PHP: Hypertext Preprocessor (PHP)} and relies on the relational database management system \emph{MySQL}.
+Section \ref{architecture-domain-applications} discussed the definition and characteristics of domain applications founded on extensive domain knowledge. Although the focus of the project is on the framework and recommender engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain application. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014. Magento is written in \emph{PHP: Hypertext Preprocessor (PHP)} and relies on the relational database management system \emph{MySQL}. In fact, this project uses \emph{Percona Server} as an enhanced, drop-in replacement for MySQL to improve performance.
 
 \begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{screens/basket.png}
@@ -469,7 +512,7 @@ Vagrant also provides native support for configuration management software as di
 
 Puppet supports writing manifests for more than one target environment. In fact, most companies are using Puppet to ensure the same configuration (with some variables) on multiple environments such as production, staging and development. In the Vagrant context the Puppet provisioning is called by default when a new virtual machine is created. However, it can also be called explicitly. Since this project utilises Puppet to provision a development environment only, the manifests are not ready for production. Ensuring that essential security measures amongst others changing default passwords were beyond the scope of this project.
 
-Manifests can be grouped into so called Puppet \emph{modules}. \emph{PuppetLabs} -- the authors of Puppet - operate a community called \emph{PuppetForge} where modules are shared. This project utilised \emph{PuppetForge} modules e.g. for \emph{Apache} and \emph{PHP} where possible. In reality, most such modules are officially authored by PuppetLabs. Nonetheless, not all modules covered all the configuration needs of this project and were thus custom written inter alia for \emph{Magento}, \emph{Neo4j} as well as the \emph{framework} and \emph{recommender engines}. The Magento module builds dependencies, creates an Apache virtual host and a MySQL database and runs the Magento installer. The Neo4j module installs and configures the Neo4j server. The recommender module configures both framework and two recommender engines. It creates Apache virtual hosts, installs dependencies, creates \emph{supervisord} programs to manage background processes and sets up \emph{Celery} and \emph{Flower}. External modules are integrated as Git \emph{submodules}. The provisioning source code in \ref{appendix-soure-code-provisioning} only lists manifests written by the project author.
+Manifests can be grouped into so called Puppet \emph{modules}. \emph{PuppetLabs} -- the authors of Puppet - operate a community called \emph{PuppetForge} where modules are shared. This project utilised \emph{PuppetForge} modules e.g. for \emph{Apache} and \emph{PHP} where possible. In reality, most such modules are officially authored by PuppetLabs. Nonetheless, not all modules covered all the configuration needs of this project and were thus custom written inter alia for \emph{Magento}, \emph{Neo4j} as well as the \emph{framework} and \emph{recommender engines}. The Magento module builds dependencies, creates an Apache virtual host and a MySQL database and runs the Magento installer. The Neo4j module installs and configures the Neo4j server. The recommender module configures both framework and two recommender engines. It creates Apache virtual hosts, installs dependencies, creates \emph{Supervisor} programs to manage background processes and sets up \emph{Celery} and \emph{Flower}. External modules are integrated as Git \emph{submodules}. The provisioning source code in \ref{appendix-soure-code-provisioning} only lists manifests written by the project author.
 
 Puppet can be understood as part of the \emph{infrastructure as code} or \emph{programmable infrastructure} initiatives in organisations. It enables version controlling and automation of provisioning infrastructure. Especially infrastructure based on \emph{cloud computing} and \emph{platform as a service (PaaS)} which involve many but constantly changing (e.g. auto-scaling) systems benefit from this. Alternatives to Puppet are \emph{Chef}, \emph{SaltStack} and \emph{Ansible}.
 
