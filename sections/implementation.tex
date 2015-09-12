@@ -269,15 +269,77 @@ This engine has been written in \emph{PHP: Hypertext Preprocessor (PHP)} followi
 
 \subsubsection{API}
 
-In contrast to the API of the \emph{In-Common} recommender engine, this engine introduces the concept of collections to separate data of different recommenders using this engine. This is due to the fact that this engine computes recommendations relying on all available data. Collections limit that spectrum to the data of that recommender.
+In contrast to the API of the \emph{In-Common} recommender engine, this engine introduces the concept of collections to separate data of different recommenders using this engine. This is due to the fact that this engine computes recommendations relying on all available data. Collections limit that spectrum to the data of one recommender e.g. \texttt{similar_products_in_basket}.
 
 \begin{description}
-    \item[POST /\{collection\}] processes a new event and expects a JSON-encoded payload consisting of \texttt{item_id} and \texttt{attributes}. The latter is an arbitrary JSON object containing any data to be considered while calculating the similarity.
-    \item[DELETE /\{collection\}/\{itemId\}] deletes the event specified in the route.
+    \item[POST /\{collection\}] creates or updates an item and expects a JSON-encoded payload consisting of \texttt{item_id} and \texttt{attributes}. The latter is an arbitrary JSON object containing any data to be considered while calculating the similarity.
+    \item[DELETE /\{collection\}/\{itemId\}] deletes an item.
     \item[GET /\{collection\}] receives a recommendation request with \texttt{itemIds} and \texttt{limit} \emph{GET} parameters but returns a JSON-encoded list of identifiers of recommended items. The GET parameter \texttt{itemIds} can contain more than one item ID. The parameter \texttt{limit} specifies how many recommendations should be queried and returned.
 \end{description}
 
 \subsubsection{Data Representation}
+
+The \emph{Item-Similarity} engine uses the document-oriented, \emph{NoSQL} database management system \emph{MongoDB}. NoSQL refers to a variety of data modelling and retrieval methods which differ from traditional, relational database management systems such as \emph{MySQL}. MongoDB stores data as schemaless, JSON documents in collections which is ideal for this use-case as the engine has no knowledge about the schema of the item features -- henceforth referred to as \emph{attributes}.
+
+\begin{figure}[!ht]
+    \def\arraystretch{1.5}
+    \centering
+    \begin{tabular}{|
+    >{\columncolor[HTML]{CBCEFB}}l |l|l|l|}
+    \hline
+    {\textbf{id}}                                                   & \multicolumn{3}{l|}{3}                                                                               \\ \hline
+    \cellcolor[HTML]{CBCEFB}                                   & \cellcolor[HTML]{ECF4FF}{\emph{weight}}                  & \multicolumn{2}{l|}{3}                       \\ \cline{2-4} 
+    \cellcolor[HTML]{CBCEFB}                                   & \cellcolor[HTML]{ECF4FF}{\emph{height}}                  & \multicolumn{2}{l|}{2}                       \\ \cline{2-4} 
+    \multirow{-3}{*}{\cellcolor[HTML]{CBCEFB}{\textbf{attributes}}} & \cellcolor[HTML]{ECF4FF}{\emph{color}}                   & \multicolumn{2}{l|}{red}                     \\ \hline
+    \cellcolor[HTML]{CBCEFB}                                   & \cellcolor[HTML]{BBDAFF}                              & \cellcolor[HTML]{ECF4FF}{\emph{item}}  & Ref(1) \\ \cline{3-4} 
+    \cellcolor[HTML]{CBCEFB}                                   & \multirow{-2}{*}{\cellcolor[HTML]{BBDAFF}{\textbf{\emph{0}}}} & \cellcolor[HTML]{ECF4FF}{\emph{score}} & 2.5    \\ \cline{2-4} 
+    \cellcolor[HTML]{CBCEFB}                                   & \cellcolor[HTML]{BBDAFF}                              & \cellcolor[HTML]{ECF4FF}{\emph{item}}  & Ref(2) \\ \cline{3-4} 
+    \multirow{-4}{*}{\cellcolor[HTML]{CBCEFB}{\textbf{similar}}}    & \multirow{-2}{*}{\cellcolor[HTML]{BBDAFF}{\textbf{\emph{1}}}} & \cellcolor[HTML]{ECF4FF}{\emph{score}} & 0.4    \\ \hline
+    \end{tabular}
+    \caption{Item Entity Model (Table)}
+    \label{fig:implementation-itemsimilarity-entity}
+\end{figure}
+
+Another benefit is the support for subdocuments which allows nested data. Figure \ref{fig:implementation-itemsimilarity-entity} shows the following document structure for the \emph{Item} entity: \texttt{id} is a unique identifier of the item, usually the identifier passed through from the domain application, \texttt{attributes} holds a \emph{key-value} representation of the item features whereas \texttt{similar} contains \emph{Similar} entities which consists of a reference to another item and a similarity score.
+
+An item is created by instantiating an \emph{Item} entity and iterating through all other items in the collection; for each item the similarity is calculated and a \emph{Similar} entity referencing this item added to the created item as well as a \emph{Similar} entity referencing the created item to the compared item. An item is updated by removing and recreating. An item is removed by deleting the \emph{Item} entity and all \emph{Similar} entities referencing to it, which are subdocuments of other items. Figure \ref{fig:implementation-itemsimilarity-similarity} illustrates this as a matrix with the red column and row relating to data added or removed.
+
+\begin{figure}[!ht]
+    \def\arraystretch{1.5}
+    \centering
+    \begin{tabular}{|
+    >{\columncolor[HTML]{BBDAFF}}c |c|c|c|
+    >{\columncolor[HTML]{FD6864}}c |}
+    \hline
+    {\textbf{\emph{items}}} & \cellcolor[HTML]{BBDAFF}{\textbf{1}} & \cellcolor[HTML]{BBDAFF}{\textbf{2}} & \cellcolor[HTML]{BBDAFF}{\textbf{3}} & \cellcolor[HTML]{BBDAFF}{\textbf{4}} \\ \hline
+    {\textbf{1}} & \diagbox[width=0.8cm, height=0.8cm]{}{} & 0.3 & 1.2 & 0.7\\ \hline
+    {\textbf{2}} & 0.3 & \diagbox[width=0.8cm, height=0.8cm]{}{} & 0.8 & 0.2\\ \hline
+    {\textbf{3}} & 1.2 & 0.8 & \diagbox[width=0.8cm, height=0.8cm]{}{} & 0.5\\ \hline
+    {\textbf{4}} & \cellcolor[HTML]{FD6864}0.7 & \cellcolor[HTML]{FD6864}0.2 & \cellcolor[HTML]{FD6864}0.5 & \diagbox[width=0.8cm, height=0.8cm]{}{}\\ \hline
+    \end{tabular}
+    \caption{Similarity Matrix (Table)}
+    \label{fig:implementation-itemsimilarity-similarity}
+\end{figure}
+
+\subsubsection{Tanimoto Coefficient}
+
+\begin{figure}[ht]
+    \[T = \frac{N_{ab}}{(N_a + N_b - N_{ab})}\]
+    \caption[Tanimoto Coefficient]{Tanimoto Coefficient where \(N_a\) respectively \(N_b\) is the count of properties of \(a\) respectively \(b\) and \(N_{ab}\) is the count of intersecting properties.}
+    \label{fig:implementation-itemsimilarity-tanimoto}
+\end{figure}
+
+The \emph{Tanimoto coeffcient} describes the similarity of two \emph{sets} as shown in Figure \ref{fig:implementation-itemsimilarity-tanimoto} \cite{segaran07}. An intersection of properties refer to all properties which exist in both sets.
+
+Since the attribute data of items is a \emph{hash map}, it needs to be converted into a set. A hash map can be seen as a key-value table whereas a set is just a list of properties. A typical way to convert a hash map into a set is by discarding its keys. However, this is not a solution in this case. Given the following two hash maps: \texttt{A = \{width: 3, height: 2\}} and \texttt{A = \{width: 4, height: 3\}}, discarding would produce as follows: \texttt{A = [3, 2]} and \texttt{B = [4, 3]}. The Tanimoto coefficient would assume that they have at least on similar property, although the \texttt{3} is actually from different properties. This engine solves this by concatenating the key and a string representation of the value. The converted sets now look like this: \texttt{A = [width3, height2]} and \texttt{B = [width4, height3]}, thus have no similarity. Another problem is that attributes do not only contain alphanumeric values but also lists, e.g.: \texttt{A = \{tags: red,circular\}} and \texttt{B = \{tags: green,circular\}}. Although the properties do not match exactly, both items are \texttt{circular}. A solution is to repeat the key and value concatenation for each list item: \texttt{A = [tagsred, tagscircular]} and \texttt{B = [tagsgreen, tagscircular]}.
+
+Figure \ref{fig:implementation-itemsimilarity-tanimotocode} lists the implementation of the Tanimoto coefficient in this engine.
+
+\begin{figure}[!ht]
+    \inputminted{php}{./includes/source/engines/itemSimilarity/src/Koklu/Model/Similarity/TanimotoCoefficient.php}
+    \caption{Tanimoto Coefficient Implementation (Code Listing)}
+    \label{fig:implementation-itemsimilarity-tanimotocode}
+\end{figure}
 
 \subsubsection{Testing}
 
@@ -306,11 +368,11 @@ This particular weighted implementation first fetches recommendations from each 
     \label{fig:implementation-weighted}
 \end{figure}
 
-This recommender has been tested with unit tests as part of the framework tests.
+This recommender engine has been tested with unit tests as part of the framework unit tests.
 
 \section{Demo Domain System: Magento}
 
-Section \ref{architecture-domain-applications} discussed the definition and characteristics of \emph{domain systems} as systems founded on extensive domain knowledge. Although the focus of the project is on the framework and recommender engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain system. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014.
+Section \ref{architecture-domain-applications} discussed the definition and characteristics of domain applications founded on extensive domain knowledge. Although the focus of the project is on the framework and recommender engines, it was clear from the beginning that they needed to be trialled and demonstrated on a complex domain application. Since e-commerce websites are amongst the major users of recommender engines, demonstrating the work on an e-commerce system. As proposed, the e-commerce software \emph{Magento} has been used for this. \citet{aheadworks14} analysed \emph{Alexa}'s 1 million top sites index and found that Magento was the leading open-source e-commerce software with a market share of 30 per cent in 2014. Magento is written in \emph{PHP: Hypertext Preprocessor (PHP)} and relies on the relational database management system \emph{MySQL}.
 
 \begin{figure}[!ht]
     \includegraphics[width=\textwidth,center]{screens/basket.png}
