@@ -20,12 +20,12 @@ CONF = {
     'magento': {
         'locations': ['demo'],
         'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md', 'pub'],
-        'softExclude': ['composer.lock', '.csv', 'Grid.php', 'Fixture.php', 'Logger/', 'acl.xml', 'system.xml', 'view/frontend', 'composer.json', 'Rest/Json/Client.php']
+        'softExclude': ['composer.lock', '.csv', 'Grid.php', 'Fixture.php', 'Logger/', 'acl.xml', 'system.xml', 'view/frontend', 'composer.json', 'Rest/Json/Client.php', 'module.xml', 'Adminhtml/Observer.php', 'Shell/Factory.php', 'ConfigFactory.php', 'InstallData.php', 'InstallSchema.php', 'di.xml', 'adminhtml/events.xml', 'MasterData/etc/config.xml', 'Recommender/etc/widget.xml', 'Catalog/Config.php', 'MasterData/Helper']
     },
     'framework': {
         'locations': ['framework'],
         'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md'],
-        'softExclude': ['monitor.py', 'core/__init__.py', 'tests/__init__.py', 'tests/config/__init__.py', 'tests/core/engine/__init__.py', 'tests/engines/hybrid/__init__.py', '.coveragerc', '.scrutinizer.yml', 'framework/tests/config/config.xml']
+        'softExclude': ['monitor.py', 'core/__init__.py', 'tests/__init__.py', 'tests/config/__init__.py', 'tests/core/engine/__init__.py', 'tests/engines/hybrid/__init__.py', '.coveragerc', '.scrutinizer.yml', 'framework/tests/config/config.xml', 'api.wsgi']
     },
     'inCommon': {
         'locations': ['engines/inCommon'],

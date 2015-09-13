@@ -44,13 +44,15 @@ It was originally proposed to use \emph{NodeJS} and \emph{express} for the API. 
 
 The project relies on the task queue system \emph{Celery} to establish an asynchronous and selectively synchronous communication between API and workers. Celery is written in Python and supports multiple brokers such as \emph{RabbitMQ} and \emph{Beanstalk}. The former is used as broker in this project.
 
-The Event API is calling its worker asynchronously -- thus not waiting for a response (\emph{queue \& forget}) -- whereas the Recommend API is doing that synchronously. Figure \ref{fig:implementation-framework-worker} lists the source code of the event worker which is upon request going through all recommenders subscribed to the given event and calls the configured event method on the engine adapter.
+
 
 \begin{figure}[ht]
     \inputminted{py}{./includes/source/framework/worker/event.py}
     \caption{Event Worker (Code Listing)}
     \label{fig:implementation-framework-worker}
 \end{figure}
+
+The Event API is calling its worker asynchronously -- thus not waiting for a response (\emph{queue \& forget}) -- whereas the Recommend API is doing that synchronously. Figure \ref{fig:implementation-framework-worker} lists the source code of the event worker which is upon request going through all recommenders subscribed to the given event and calls the configured event method on the engine adapter.
 
 It was initially intended to use RabbitMQ natively as a message queue implementing the \emph{advanced message queuing protocol (AMQP)}. However, while looking for RabbitMQ client libraries and elegant ways to manage the overhead of using message queues for distributing tasks, Celery was discovered which abstracts that complexity completely. Tasks can be run as if they are regular methods in the source code (see line 3 of Figure \ref{fig:implementation-framework-api-event}).
 
@@ -106,12 +108,7 @@ Flower is an administrative interface for Celery providing a real-time monitor a
         </engine>
         <!-- [...] -->
     </engines>
-    <settings>
-        <celery>
-            <broker>amqp://framework:framework@localhost:5672/framework</broker>
-            <backend>redis://localhost</backend>
-        </celery>
-    </settings>
+    <!-- [...] -->
 </config>
     \end{minted}
     \caption{Shortened XML Configuration (Code Listing)}
@@ -133,13 +130,13 @@ The project also provides an \emph{XML schema definition (XSD)} which can be use
 \subsection{Engine Adapters}
 \label{implementation-framework-engine-adapter}
 
-\emph{Engine adapters} are thin clients to recommender engines. The formal requirement is that they implement a \texttt{recommend} method as well as methods used in event subscriptions. Other than that, it is completely flexible in how the interaction with the engine happens. For convenience, the abstract base class provides a RESTful skeleton which is used by the engine adapters implemented in this project such as the \emph{item-similarity} adapter (see Figure \ref{fig:implementation-framework-engine-adapter}). Engine adapters have access to engine settings defined in the configuration file such as a \emph{uniform resource locator (URL)} for the engine.
-
 \begin{figure}[!ht]
     \inputminted{py}{./includes/source/framework/engines/item\string_similarity.py}
     \caption{Item-Similarity Engine Adapter (Code Listing)}
     \label{fig:implementation-framework-engine-adapter}
 \end{figure}
+
+\emph{Engine adapters} are thin clients to recommender engines. The formal requirement is that they implement a \texttt{recommend} method as well as methods used in event subscriptions. Other than that, it is completely flexible in how the interaction with the engine happens. For convenience, the abstract base class provides a RESTful skeleton which is used by the engine adapters implemented in this project such as the \emph{item-similarity} adapter (see Figure \ref{fig:implementation-framework-engine-adapter}). Engine adapters have access to engine settings defined in the configuration file such as a \emph{uniform resource locator (URL)} for the engine.
 
 Engine adapters for hybrid engines are more than just thin clients. Their formal requirement is to implement a \texttt{recommend} method but has no event methods. In this method they have full flexibility on how to make use of the components. Figure \ref{fig:implementation-framework-hybrid-engine-adapter} shows the implementation of the \emph{weighted} hybrid engine adapter.
 
@@ -273,6 +270,8 @@ In contrast to the API of the \emph{In-Common} recommender engine, this engine i
 
 The \emph{Item-Similarity} engine uses the document-oriented, \emph{NoSQL} database management system \emph{MongoDB}. NoSQL refers to a variety of data modelling and retrieval methods which differ from traditional, relational database management systems such as \emph{MySQL}. MongoDB stores data as schemaless, JSON documents in collections which is ideal for this use-case as the engine has no knowledge about the schema of the item features -- henceforth referred to as \emph{attributes}. The engine makes use of \emph{Doctrine MongoDB Object Document Mapper (ODM)} to interact with the MongoDB database in an object-oriented way.
 
+Another benefit is the support for subdocuments which allows nested data. Figure \ref{fig:implementation-itemsimilarity-entity} shows the following document structure for the \emph{Item} entity: \texttt{id} is a unique identifier of the item, usually the identifier passed through from the domain application, \texttt{attributes} holds a \emph{key-value} representation of the item features whereas \texttt{similar} contains \emph{Similar} entities which consists of a reference to another item and a similarity score.
+
 \begin{figure}[!ht]
     \def\arraystretch{1.5}
     \centering
@@ -291,8 +290,6 @@ The \emph{Item-Similarity} engine uses the document-oriented, \emph{NoSQL} datab
     \caption{Item Entity Model (Table)}
     \label{fig:implementation-itemsimilarity-entity}
 \end{figure}
-
-Another benefit is the support for subdocuments which allows nested data. Figure \ref{fig:implementation-itemsimilarity-entity} shows the following document structure for the \emph{Item} entity: \texttt{id} is a unique identifier of the item, usually the identifier passed through from the domain application, \texttt{attributes} holds a \emph{key-value} representation of the item features whereas \texttt{similar} contains \emph{Similar} entities which consists of a reference to another item and a similarity score.
 
 An item is created by instantiating an \emph{Item} entity and iterating through all other items in the collection; for each item the similarity is calculated and a \emph{Similar} entity referencing this item added to the created item as well as a \emph{Similar} entity referencing the created item to the compared item. An item is updated by removing and recreating. An item is removed by deleting the \emph{Item} entity and all \emph{Similar} entities referencing to it, which are subdocuments of other items. Figure \ref{fig:implementation-itemsimilarity-similarity} illustrates this as a matrix with the red column and row relating to data added or removed.
 
@@ -317,39 +314,28 @@ As the similarity of items is computed at the time of change rather than request
 
 \begin{figure}[!ht]
     \begin{minted}{php}
-<?php
-namespace Koklu\Repository;
-
-use Doctrine\ODM\MongoDB\DocumentRepository;
-use Koklu\Entity\Item;
-
-class ItemRepository extends DocumentRepository
+/**
+ * @param string   $collection
+ * @param array    $forItems
+ * @param int|bool $limit
+ * @return array
+ */
+public function findSimilarItems($collection, array $forItems, $limit)
 {
-    // [...]
+    $pipeline = [
+        ['$match' => ['_id' => ['$in' => $forItems]]],
+        ['$unwind' => '$similar'],
+        ['$group' => ['_id' => '$similar.item', 'score' => ['$max' => '$similar.score']]],
+        ['$sort' => ['score' => -1]]
+    ];
 
-    /**
-     * @param string   $collection
-     * @param array    $forItems
-     * @param int|bool $limit
-     * @return array
-     */
-    public function findSimilarItems($collection, array $forItems, $limit)
-    {
-        $pipeline = [
-            ['$match' => ['_id' => ['$in' => $forItems]]],
-            ['$unwind' => '$similar'],
-            ['$group' => ['_id' => '$similar.item', 'score' => ['$max' => '$similar.score']]],
-            ['$sort' => ['score' => -1]]
-        ];
-
-        if ($limit !== false) {
-            $pipeline[] = ['$limit' => (int) $limit];
-        }
-
-        return $this->getDocumentManager()->getDocumentDatabase($this->getClassName())->getMongoDB()
-            ->selectCollection($collection)
-            ->aggregate($pipeline);
+    if ($limit !== false) {
+        $pipeline[] = ['$limit' => (int) $limit];
     }
+
+    return $this->getDocumentManager()->getDocumentDatabase($this->getClassName())->getMongoDB()
+        ->selectCollection($collection)
+        ->aggregate($pipeline);
 }
     \end{minted}
     \caption{Item-Similarity Recommendation Query (Code Listing)}
@@ -475,42 +461,7 @@ This project relies on the \emph{Linux} operating system and comes with provisio
 
 \subsection{Virtualisation with Vagrant}
 
-\emph{Vagrant} is a software system that manages virtual environments -- emulated computer systems also known as \emph{virtual machines} -- for development purposes. It enables a development team to standardise their development environments. This is in particular useful when the computer systems of developers vary from the computer system of the development environment -- e.g. a developer on \emph{Windows} working on a software running on Linux -- or among each other -- i.e. developers using different computer systems which would require provisioning instructions for all computer systems used. In order to run Vagrant, a single configuration file called \emph{Vagrantfile}, written in \emph{Ruby}, is added to the project's \emph{version control system} such as \emph{Git} and then shared with the team. A simple \texttt{vagrant up} command in a terminal is enough to boot up the machine (Figure \ref{fig:implementation-provisioning-vagrant}).
-
-\begin{figure}[!ht]
-    \begin{minted}{text}
-$ vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-==> default: Clearing any previously set forwarded ports...
-==> default: Clearing any previously set network interfaces...
-==> default: Preparing network interfaces based on configuration...
-    default: Adapter 1: nat
-    default: Adapter 2: hostonly
-==> default: Forwarding ports...
-    default: 22 => 2222 (adapter 1)
-==> default: Running 'pre-boot' VM customizations...
-==> default: Booting VM...
-==> default: Waiting for machine to boot. This may take a few minutes...
-    default: SSH address: 127.0.0.1:2222
-    default: SSH username: vagrant
-    default: SSH auth method: private key
-    default: Warning: Connection timeout. Retrying...
-==> default: Machine booted and ready!
-GuestAdditions seems to be installed (5.0.0) correctly, but not running.
-stdin: is not a tty
-Starting the VirtualBox Guest Additions ...done.
-==> default: Checking for guest additions in VM...
-==> default: Configuring and enabling network interfaces...
-==> default: Mounting shared folders...
-    default: /vagrant => /Users/halil/src/github/halk/recowise-vagrant
-    default: /tmp/vagrant-puppet/modules-e256b2ae625d9ae5812996f1b5a73cff => /Users/halil/src/github/halk/recowise-vagrant/provision/modules
-    default: /tmp/vagrant-puppet/manifests-2c1be6756611028b6f44aed39d040449 => /Users/halil/src/github/halk/recowise-vagrant/provision/manifests
-==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
-==> default: flag to force provisioning. Provisioners marked to run always will still run.
-    \end{minted}
-    \caption{Booting Virtual Machine (Console Output)}
-    \label{fig:implementation-provisioning-vagrant}
-\end{figure}
+\emph{Vagrant} is a software system that manages virtual environments -- emulated computer systems also known as \emph{virtual machines} -- for development purposes. It enables a development team to standardise their development environments. This is in particular useful when the computer systems of developers vary from the computer system of the development environment -- e.g. a developer on \emph{Windows} working on a software running on Linux -- or among each other -- i.e. developers using different computer systems which would require provisioning instructions for all computer systems used. In order to run Vagrant, a single configuration file called \emph{Vagrantfile}, written in \emph{Ruby}, is added to the project's \emph{version control system} such as \emph{Git} and then shared with the team. A simple \texttt{vagrant up} command in a terminal is enough to boot up the machine.
 
 Vagrant does not do the virtualisation itself but relies on established virtualisation software such as \emph{VirtualBox} and \emph{VMWare}. It also relies on so called \emph{boxes} -- a bare bone installation of a computer system minimally configured for Vagrant -- to bootstrap the virtual machine. Although the project works on any Linux distribution, due to the box requirement of Vagrant the Linux distribution \emph{Ubuntu} (version 14.04) has been used.
 
