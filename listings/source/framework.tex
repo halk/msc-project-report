@@ -18,7 +18,8 @@
    │  ├─ config.py
    │  ├─ engine
    │  │  ├─ __init__.py
-   │  │  └─ hybrid.py
+   │  │  ├─ hybrid.py
+   │  │  └─ simple.py
    │  └─ taxonomy.py
    ├─ engines
    │  ├─ __init__.py
@@ -46,7 +47,7 @@
    │  │  ├─ engine
    │  │  │  ├─ __init__.py
    │  │  │  ├─ test_hybrid.py
-   │  │  │  └─ test_init.py
+   │  │  │  └─ test_simple.py
    │  │  ├─ test_config.py
    │  │  └─ test_taxonomy.py
    │  ├─ engines
@@ -68,12 +69,6 @@
 \end{minted}
 \end{codebox}
 
-\begin{codebox}[framework/.coveragerc]
-\inputminted{text}{./includes/source/framework/.coveragerc}
-\end{codebox}
-\begin{codebox}[framework/.scrutinizer.yml]
-\inputminted{yaml}{./includes/source/framework/.scrutinizer.yml}
-\end{codebox}
 \begin{codebox}[framework/.travis.yml]
 \inputminted{yaml}{./includes/source/framework/.travis.yml}
 \end{codebox}
@@ -106,6 +101,9 @@
 \end{codebox}
 \begin{codebox}[framework/core/engine/hybrid.py]
 \inputminted{py}{./includes/source/framework/core/engine/hybrid.py}
+\end{codebox}
+\begin{codebox}[framework/core/engine/simple.py]
+\inputminted{py}{./includes/source/framework/core/engine/simple.py}
 \end{codebox}
 \begin{codebox}[framework/core/taxonomy.py]
 \inputminted{py}{./includes/source/framework/core/taxonomy.py}
@@ -140,17 +138,14 @@
 \begin{codebox}[framework/tests/api/test\string_recommend.py]
 \inputminted{py}{./includes/source/framework/tests/api/test\string_recommend.py}
 \end{codebox}
-\begin{codebox}[framework/tests/config/config.xml]
-\inputminted{xml}{./includes/source/framework/tests/config/config.xml}
-\end{codebox}
 \begin{codebox}[framework/tests/config/config\string_xsd\string_test.py]
 \inputminted{py}{./includes/source/framework/tests/config/config\string_xsd\string_test.py}
 \end{codebox}
 \begin{codebox}[framework/tests/core/engine/test\string_hybrid.py]
 \inputminted{py}{./includes/source/framework/tests/core/engine/test\string_hybrid.py}
 \end{codebox}
-\begin{codebox}[framework/tests/core/engine/test\string_init.py]
-\inputminted{py}{./includes/source/framework/tests/core/engine/test\string_init.py}
+\begin{codebox}[framework/tests/core/engine/test\string_simple.py]
+\inputminted{py}{./includes/source/framework/tests/core/engine/test\string_simple.py}
 \end{codebox}
 \begin{codebox}[framework/tests/core/test\string_config.py]
 \inputminted{py}{./includes/source/framework/tests/core/test\string_config.py}

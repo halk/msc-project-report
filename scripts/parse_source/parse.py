@@ -20,25 +20,27 @@ CONF = {
     'magento': {
         'locations': ['demo'],
         'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md', 'pub'],
-        'softExclude': ['composer.lock', '.csv']
+        'softExclude': ['composer.lock', '.csv', 'Grid.php', 'Fixture.php', 'Logger/', 'acl.xml', 'system.xml', 'view/frontend', 'composer.json', 'Rest/Json/Client.php']
     },
     'framework': {
         'locations': ['framework'],
         'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md'],
-        'softExclude': ['monitor.py', 'core/__init__.py', 'tests/__init__.py', 'tests/config/__init__.py', 'tests/core/engine/__init__.py', 'tests/engines/hybrid/__init__.py']
+        'softExclude': ['monitor.py', 'core/__init__.py', 'tests/__init__.py', 'tests/config/__init__.py', 'tests/core/engine/__init__.py', 'tests/engines/hybrid/__init__.py', '.coveragerc', '.scrutinizer.yml', 'framework/tests/config/config.xml']
     },
     'inCommon': {
         'locations': ['engines/inCommon'],
-        'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md']
+        'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md'],
+        'softExclude': ['run.sh', 'util/string']
     },
     'itemSimilarity': {
         'locations': ['engines/itemSimilarity'],
         'exclude': ['.git', '.gitkeep', 'LICENSE', 'README.md'],
-        'softExclude': ['composer.lock']
+        'softExclude': ['composer.lock', '.scrutinizer.yml', 'composer.json', '.travis.yml', 'config.php.dist', 'phpunit.xml.dist', 'bootstrap.php', '.htaccess', 'web/index.php']
     },
     'provision': {
         'locations': ['Vagrantfile', 'provision', '.gitmodules'],
-        'exclude': []
+        'exclude': [],
+        'softExclude': ['hiera.yaml', 'hiera2define', 'limits.conf.rb', 'zsh/']
     },
 }
 
