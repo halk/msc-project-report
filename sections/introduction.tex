@@ -4,11 +4,11 @@ A \emph{recommender engine}, or just \emph{recommender}, is a system which sugge
 
 Recommender engines are usually tightly coupled to the application they are used in. Bespoke  engines may be very dependent on the data model as well as technical constraints of those applications such as programming languages and database management systems. The adaptation of recommender engines requires knowledge and expertise in both the application and recommender engines. That effort would also add more complexity and dependencies to those applications, which are probably complex themselves, making change very expensive and time consuming. Being tightly coupled, a recommender engine is very likely to be incompatible for another application.
 
-This project aims to design and develop a framework for integrating recommender engines into applications in a multi-purpose and loose-coupled approach which promotes amongst others reusability and is easy to integrate. In order to demonstrate those capabilities, two recommender engines -- each following a fundamentally different recommendation technique -- are implemented. Moreover, the framework and these recommender engines are then integrated into a complex e-commerce web application.
+This project aims to design and develop a framework for integrating recommender engines into applications in a multi-purpose and loose-coupled approach which promotes amongst others reusability and ease of integration. In order to demonstrate these capabilities, two recommender engines -- each following a fundamentally different recommendation technique -- are implemented. Moreover, the framework and these recommender engines are then integrated into a complex e-commerce web application.
 
 \section{Background Research}
 
-\citet{ricci11} write that traditional recommendations can be observed in various scenarios, such as a peer's recommendation when buying a book or reviews when choosing a movie. The authority of the recommender has an important role in the acceptance of a recommendation. A renowned film critic may appear more credible than a random colleague whereas when it comes to car parts, a mechanist may be a the first person to ask.
+\citet{ricci11} write that traditional recommendations can be observed in various scenarios, such as a peer's recommendation when buying a book or reviews when choosing a movie. The authority of the recommender has an important role in the acceptance of a recommendation. A renowned film critic may appear more credible than a random colleague whereas, when it comes to car parts, a mechanist may be a the first person to ask.
 
 With the growth of the Internet, the amount of information available on the Web increased rapidly. Especially, major e-commerce Web sites were extending their range of products and services. Although a wider and varied range of items is initially good for customers, they found it more and more difficult to find appropriate items and make the right choices of what to buy. Web sites have deployed different type of solutions -- such as search engines and more user-friendly interfaces -- to cope with this problem.
 
@@ -44,6 +44,7 @@ The major advantage of this approach is that the recommender engine does not req
 Figure \ref{fig:intro-techniques-collaborative} illustrates a scenario where a customer has purchased several items in the past. The recommender engine understands that the given customer is similar to other customers, as both have purchased the same phone and laptop. Then, the system computes items these similar customers purchased but the given customer has not yet. It therefore recommends a TV to the given customer.
 
 \subsubsection{Content-Based Filtering}
+\label{intro-bg-tech-contentbased}
 
 \begin{figure}[ht]
     \includegraphics[width=0.7\textwidth,center]{intro/background/contentbased.pdf}
@@ -65,12 +66,12 @@ There are many possible ways of combining techniques, which are outlined in the 
 \section{Objectives}
 \label{intro-objectives}
 
-The primary objective of this project is to develop an integration framework for recommender engines whereas the secondary objectives are the development of a collaborative and a content-based recommender engine as well as the exemplified integration of framework and recommender engines into an existing, complex web application. These secondary objectives are important to provide concrete findings for the evaluation of the primary objective.
+The primary objective of this project is to develop an integration framework for recommender engines whereas the secondary objectives are the development of a collaborative and a content-based recommender engine as well as the exemplified integration of framework and recommender engines into an existing, complex web application. These secondary objectives are important to provide the basis for evaluating the primary objective.
 
 \subsection{Development of an Integration Framework}
 \label{intro-objectives-framework}
 
-As mentioned, the primary objective of this project is the development of an framework for integrating recommender engines into any domain application. The framework should have the following properties:
+As mentioned above, the primary objective of this project is the development of a framework for integrating recommender engines into any domain application. The framework should have the following properties:
 
 \begin{description}
     \item[Multi-purpose] The framework should cope with different kind of data as well as recommendation techniques.
@@ -83,24 +84,25 @@ As mentioned, the primary objective of this project is the development of an fra
 \subsection{Development of Two Distinct Recommender Engines}
 \label{intro-objectives-engines}
 
-In order to validate that the framework implements the aforementioned properties, two recommender engines, fundamentally different in their approaches, are to be developed -- namely a collaborative recommender (as described in \ref{intro-bg-tech-collaborative}) and a content-based recommender (as specified in \ref{fig:intro-techniques-contentbased}).
+In order to validate that the framework implements the aforementioned properties, two recommender engines, fundamentally different in their approaches, are to be developed -- namely a collaborative recommender (as described in \ref{intro-bg-tech-collaborative}) and a content-based recommender (as specified in \ref{intro-bg-tech-contentbased}).
 
-Although they are going to be used with the framework, they should be designed to be fully functional, standalone recommender engine. Their algorithmic correctness and practicality shall be reviewed in the evaluation. At the same time, the focus of this project is on the development of the framework. This means that these recommender engines may be somewhat simplified.
+Although they are going to be used with the framework, they should be designed to be fully functional and exist standalone. Their algorithmic correctness and practicality shall be reviewed in the evaluation. At the same time, the focus of this project is on the development of the framework. This means that these recommender engines may be somewhat simplified.
 
 \subsection{Integration Into a Demo Application}
 \label{intro-objectives-demo}
 
 This objective is in particular relevant as it is a practical application of the rather theoretical framework and recommender engines. Whereas the recommender engines may be somewhat simple, it is important that the demo application is complex enough to be a good example for an integration. Henceforth, an existing, open-source e-commerce application shall be used as demo application.
 
-This objective is going to contribute significantly to the evaluation of the ease of integration property of the framework. The size and complexity of the integration source code are a good indicator in this case. A potential negative indicator is performance; the integration should not considerably block the domain application.
+This objective is going to contribute significantly to the evaluation of the \emph{ease of integration} property of the framework. The size and complexity of the integration source code are a good indicator in this case. A potential negative indicator is performance; the integration should not considerably block the domain application.
 
 \section{Structure of the Report}
 
 \begin{description}
     \item[Chapter 2] illustrates the architecture and concepts of various systems of the project.
-    \item[Chapter 3] goes into detail and describes the implementation, testing and technology choices.
-    \item[Chapter 4] evaluates the project against the project objectives.
-    \item[Chapter 5] reflects on the project outcome and possible future work.
+    \item[Chapter 3] goes into detail and describes the implementation and technology choices.
+    \item[Chapter 4] discusses the testing of the various systems.
+    \item[Chapter 5] evaluates the project against the project objectives.
+    \item[Chapter 6] reflects on the project outcome and possible future work.
     \item[Appendix A] contains the bibliographical references of the report.
     \item[Appendix B] offers user manuals of the various systems implemented.
     \item[Appendix C] lists the source code written for this project.
