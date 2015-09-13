@@ -1,12 +1,12 @@
 \chapter{Architecture \& Concepts}
 
-This chapter introduces essential concepts and discusses the architecture of the solution. Figure \ref{fig:architecture-overview} gives an overview of that architecture.
-
 \begin{figure}[ht]
     \includegraphics[width=\textwidth,center]{architecture/overview.pdf}
     \caption{Architectural Overview (Diagram)}
     \label{fig:architecture-overview}
 \end{figure}
+
+This chapter introduces essential concepts and discusses the architecture of the solution. Figure \ref{fig:architecture-overview} gives an overview of that architecture.
 
 \section{Concepts}
 
@@ -30,7 +30,7 @@ In order to comprehend the architecture entirely, this section explains some ess
 
 \item[\textnormal{An} event] relates to any change or information recommenders need to be notified about. For collaborative recommenders these are usually user behaviour such as \emph{customer viewed product} or \emph{user favourited movie}. Content-based recommenders on the other hand would usually like to be notified about data changes such as items added, updated or removed. Events have an alphanumeric subject as well as a payload. Originally, it was proposed to have a separate \emph{master data} concept as well. It was dropped in favour of incorporating it into the event concept due to the fact that even master data changes are triggered by some kind of event such as creation and removal.
 
-\item[\textnormal{A} taxonomy] is a mapping concept between domain and recommender engine terminologies as those are unknown to each other. It consists of \textbf{taxons} which define a map for a single term. It can also inherit from another taxonomy. Before passing a data payload to a recommender engine, it is going through the mapping process first.
+\item[\textnormal{A} taxonomy] is a data contract and mapping concept between domain and recommender engine terminologies as those are unknown to each other. It consists of \textbf{taxons} which define a map for a single term. The taxonomy describes the data fields the recommender expects from the domain application. It can also inherit from another taxonomy. Before the framework passes a data payload to a recommender engine, the data goes through the mapping process first.
 
 \end{description}
 
@@ -77,4 +77,4 @@ Figure \ref{fig:architecture-framework} illustrates the task queues \emph{Event}
 
 \subsection{Workers}
 
-\emph{Workers} are background processes and consume tasks from aforementioned task queues. Unlike the API is only considered a request proxy, workers are doing the actual processing. Similar to API and queues, they are also divided into \emph{Event} and \emph{Recommend} workers. Workers are designed to scale horizontally by running more instances.
+\emph{Workers} are background processes and consume tasks from aforementioned task queues. Unlike the API, workers are doing the actual processing. Similar to API and queues, they are also divided into \emph{Event} and \emph{Recommend} workers. Workers are designed to scale horizontally by running more instances.

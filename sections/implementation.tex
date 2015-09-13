@@ -1,8 +1,10 @@
 \chapter{Implementation}
 
-This chapter not only discusses the technological details of this project but also introduces concrete implementations of two recommender engines as well as one domain system.
+This chapter not only discusses the technological details of this project but also introduces concrete implementations of two recommender engines as well as the integration of a domain application.
 
 From the very start of this project, it was planned to use free and open-source technologies -- from database management systems to re-usable software libraries. Beside being a well-established best practice in the software programming, the main motivation for this is to avoid software code which is trivial and not contributing to the objectives of the project. It would have gone beyond the scope of this project to build everything from scratch. In fact, by using open-source technology the resulting software code has become very compact and readable.
+
+As a matter of fact, the implemented source code consists of more than 4 thousand lines.
 
 \section{Integration Framework}
 
@@ -437,6 +439,7 @@ There are more cases which are interesting in an e-commerce context such as the 
 Finally, the customer identification is most of the times part of the event data. A customer who has not logged in yet gets a \emph{visitor ID} assigned to by Magento. This allows behavioural analysis and production of recommendations even for logged out users. Once they log in, the \emph{customer ID} can be used so that the recommendations can source from historic sessions. In order to troubleshoot any issues, all requests and responses to the event API of the framework are logged in a file.
 
 \subsection{Master Data}
+\label{implementation-magento-masterdata}
 
 The master data is exceptionally important for content-based recommenders as they source their recommendations from similarities between item features. In the Magento context, master data refers to the product catalogue and is sent to the framework as regular events. Again, the event subsystem allows to observer product catalogue changes and notify the framework in real-time. On first run or if explicitly wished, the catalogue data can be exported as a whole with a command-line script. This is known as full export and the data is transmitted in batches.
 

@@ -4,7 +4,7 @@ A \emph{recommender engine}, or just \emph{recommender}, is a system which sugge
 
 Recommender engines are usually tightly coupled to the application they are used in. Bespoke  engines may be very dependent on the data model as well as technical constraints of those applications such as programming languages and database management systems. The adaptation of recommender engines requires knowledge and expertise in both the application and recommender engines. That effort would also add more complexity and dependencies to those applications, which are probably complex themselves, making change very expensive and time consuming. Being tightly coupled, a recommender engine is very likely to be incompatible for another application.
 
-This project aims to develop and evaluate a framework for integrating recommender engines into applications in a loose-coupled approach which promotes amongst others reusability and is easy to integrate. In order to demonstrate those capabilities, two recommender engines -- each implementing a fundamentally different recommendation technique -- are implemented. Moreover, the framework and these recommender engines are then integrated into a complex e-commerce web application.
+This project aims to design and develop a framework for integrating recommender engines into applications in a multi-purpose and loose-coupled approach which promotes amongst others reusability and is easy to integrate. In order to demonstrate those capabilities, two recommender engines -- each following a fundamentally different recommendation technique -- are implemented. Moreover, the framework and these recommender engines are then integrated into a complex e-commerce web application.
 
 \section{Background Research}
 
@@ -75,7 +75,6 @@ As mentioned, the primary objective of this project is the development of an fra
 \begin{description}
     \item[Multi-purpose] The framework should cope with different kind of data as well as recommendation techniques.
     \item[Easy to integrate] First, the integration into a domain application should be as easy and compact as possible. Second, setting up and integration of recommender engines should be simple as well.
-    \item[Non-restrictive] The usage of the framework should not restrict the capabilities of a recommender engine.
     \item[Encapsulated] Internals of domain applications and recommender engines should not be visible to each other.
     \item[Reusable] Recommender engines should be reusable. A domain application should be able to switch to another recommendation engine with minimal effort. Other recommenders shall be able to use recommendations from another recommender engine \cite{manouselis07}.
     \item[Technologically unbiased] The framework should support any technology stack and have no restrictions in that matter.
