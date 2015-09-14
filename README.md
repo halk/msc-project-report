@@ -10,6 +10,7 @@ Supervised by Nigel Martin
 
 - Respective [project proposal](https://github.com/halk/msc-project-proposal)
 - Resulting [projects](https://github.com/halk/recowise-vagrant)
+- [Final submission](https://github.com/halk/msc-project-report/releases/download/final/PROJ_KokluH.pdf)
 
 ## Build
 
